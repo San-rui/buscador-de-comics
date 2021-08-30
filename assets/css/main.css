@@ -1,0 +1,29 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box; }
+
+body {
+  margin: 0; }
+
+.primary-header {
+  background-color: #081324;
+  width: 100%;
+  height: 25rem;
+  display: flex;
+  flex-direction: column; }
+  .primary-header h1 {
+    width: 20%;
+    height: 12%;
+    font-size: 2.3rem;
+    color: whitesmoke;
+    margin: 0;
+    background-color: #e02b2b;
+    text-align: center;
+    align-self: center; }
+  .primary-header div {
+    height: 88%;
+    background-image: url("../../../assets/images/pngwing.com.png");
+    object-fit: contain;
+    background-position: center;
+    background-repeat: no-repeat; }
