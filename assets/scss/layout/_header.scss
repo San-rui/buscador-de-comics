@@ -1,0 +1,26 @@
+
+.primary-header {
+	background-color: $primary;
+	width: 100%;
+	height: 25rem;
+	display: flex;
+	flex-direction: column;
+	h1{
+		width: 20%;
+		height:12%;
+		font-size: 2.3rem;
+		color: whitesmoke;
+		margin:0;
+		background-color: rgb(224, 43, 43);
+		text-align: center;
+		align-self: center;
+	}
+	div{
+		height:88%;
+		background-image: url('../../../assets/images/pngwing.com.png');
+		object-fit:contain;
+		background-position:center;
+		background-repeat: no-repeat;	
+	}
+
+}
