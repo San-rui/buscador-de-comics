@@ -1,0 +1,39 @@
+.form-search{
+    display: flex;
+    justify-content: space-between;
+
+
+    .select-container{
+        font-weight: 800;
+        color:grey;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        label{
+            margin: 0 1% 0 0;
+        }
+        select{
+            font-weight: 800;
+            width:10rem;
+            height: 2rem;
+            margin: 0 2%;
+        }
+    }
+    .input-container{
+
+        display: flex;
+        flex-direction: row;
+
+        input{
+            width: 25rem;
+            height: 3rem;
+            margin-left: 25px;
+        }
+        input::placeholder{
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+    }
+    
+}
