@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 *,
 *::before,
 *::after {
@@ -9,21 +11,51 @@ body {
 .primary-header {
   background-color: #081324;
   width: 100%;
-  height: 25rem;
+  height: 27rem;
   display: flex;
   flex-direction: column; }
   .primary-header h1 {
-    width: 20%;
+    font-family: 'Bangers', cursive;
     height: 12%;
-    font-size: 2.3rem;
+    font-size: 3.2rem;
     color: whitesmoke;
     margin: 0;
+    padding: 0 10px;
     background-color: #e02b2b;
     text-align: center;
     align-self: center; }
-  .primary-header div {
+  .primary-header img {
     height: 88%;
-    background-image: url("../../../assets/images/pngwing.com.png");
-    object-fit: contain;
-    background-position: center;
-    background-repeat: no-repeat; }
+    object-fit: cover;
+    filter: opacity(45%); }
+
+.container {
+  margin: 0 15%;
+  font-family: 'Roboto', sans-serif; }
+
+.form-search {
+  display: flex;
+  justify-content: space-between; }
+  .form-search .select-container {
+    font-weight: 800;
+    color: grey;
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+    .form-search .select-container label {
+      margin: 0 1% 0 0; }
+    .form-search .select-container select {
+      font-weight: 800;
+      width: 10rem;
+      height: 2rem;
+      margin: 0 2%; }
+  .form-search .input-container {
+    display: flex;
+    flex-direction: row; }
+    .form-search .input-container input {
+      width: 25rem;
+      height: 3rem;
+      margin-left: 25px; }
+    .form-search .input-container input::placeholder {
+      font-weight: 800;
+      font-size: 1.5rem; }
