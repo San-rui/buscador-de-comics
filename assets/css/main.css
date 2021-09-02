@@ -30,7 +30,7 @@ body {
     filter: opacity(45%); }
 
 .container {
-  margin: 0 15%;
+  margin: 0 10%;
   font-family: 'Roboto', sans-serif; }
 
 .form-search {
@@ -41,21 +41,63 @@ body {
     color: grey;
     display: flex;
     flex-direction: row;
+    text-align-last: end;
     align-items: center; }
     .form-search .select-container label {
-      margin: 0 1% 0 0; }
+      margin: 0 1% 0 4%;
+      text-align: end; }
     .form-search .select-container select {
       font-weight: 800;
-      width: 10rem;
+      font-size: 1rem;
+      width: 9rem;
       height: 2rem;
-      margin: 0 2%; }
+      margin: 0 2% 0 0;
+      border: none;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      outline: none; }
+    .form-search .select-container button {
+      font-size: 1.2rem;
+      width: 10rem;
+      height: 2.5rem;
+      padding: 0 2% 0 2%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 5px;
+      background-color: #081324;
+      color: white;
+      background-color: #081324; }
+    .form-search .select-container button:hover {
+      background-color: #1a3661; }
   .form-search .input-container {
+    width: 45%;
     display: flex;
-    flex-direction: row; }
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 2px solid;
+    border-bottom-color: #081324; }
     .form-search .input-container input {
+      font-weight: 400;
+      font-size: 1.5rem;
       width: 25rem;
       height: 3rem;
-      margin-left: 25px; }
+      border: none;
+      margin-left: 25px;
+      outline: none; }
     .form-search .input-container input::placeholder {
       font-weight: 800;
       font-size: 1.5rem; }
+    .form-search .input-container input:active {
+      outline: none; }
+    .form-search .input-container i {
+      color: #081324; }
+
+.img-style {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; }
+  .img-style img {
+    width: 100px; }

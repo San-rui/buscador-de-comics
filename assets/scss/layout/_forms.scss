@@ -8,32 +8,73 @@
         color:grey;
         display: flex;
         flex-direction: row;
+        text-align-last: end;
         align-items: center;
 
         label{
-            margin: 0 1% 0 0;
+            margin: 0 1% 0 4%;
+            text-align: end;
         }
         select{
             font-weight: 800;
-            width:10rem;
+            font-size: 1rem;
+            width:9rem;
             height: 2rem;
-            margin: 0 2%;
+            margin:  0 2% 0 0;
+            border: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            outline: none;
         }
+        button{
+            font-size: 1.2rem;
+            width:10rem;
+            height: 2.5rem;
+            padding: 0 2% 0 2%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+            background-color:$primary;
+            color:white;
+            background-color:$primary;
+        }
+        button:hover{
+            background-color:$primary-hover;
+        } 
     }
     .input-container{
-
+        width: 45%;
         display: flex;
         flex-direction: row;
+        align-items: center;
+        border-bottom: 2px solid;
+        border-bottom-color: $primary;
 
         input{
+            font-weight: 400;
+            font-size: 1.5rem;
             width: 25rem;
             height: 3rem;
+            border: none;
             margin-left: 25px;
+            outline: none;
         }
         input::placeholder{
             font-weight: 800;
             font-size: 1.5rem;
         }
+        input:active{
+            outline: none;
+        }
+        i{
+            color:$primary;
+        }
     }
     
 }
+
+
+

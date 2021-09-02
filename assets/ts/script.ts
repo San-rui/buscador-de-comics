@@ -38,11 +38,11 @@ const controlsSearch = [
 		options: [
 			{
 				id: "comic",
-				name: "Comic",
+				name: "COMIC",
 			},
 			{
 				id: "personajes",
-				name: "Personajes",
+				name: "PERSONAJES",
 			},
 		],
 	},
@@ -72,10 +72,9 @@ const controlsSearch = [
 ];
 
 
-
 const container= document.createElement('div');
 const main= document.createElement('main');
-container.classList.add('container')
+main.classList.add('container')
 
 container.appendChild(main);
 const formSearch = document.createElement("form");
@@ -83,8 +82,7 @@ formSearch.classList.add('form-search')
 const searchContainerGeneral = document.createElement('div');
 const placeHolderText="Ingresa tu búsqueda";
 const icon = document.createElement('i');
-icon.classList.add("fas", "fa-search");
-//searchContainerGeneral.classList.add('search-container')
+icon.classList.add("fas", "fa-search", 'fa-lg');
 
 const makeForm = (form, ctrls, parent, containerSearch) => {
 
@@ -124,10 +122,8 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
                 elem.placeholder=placeHolderText;
                 inputContainer.appendChild(icon)
                 inputContainer.appendChild(elem);
-                console.log(elem)
 				break;
 		}
-
 	}
 
 	const button = document.createElement("button");
@@ -143,4 +139,17 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
 
 };
 
-makeForm(formSearch, controlsSearch, container, searchContainerGeneral);
+makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
+
+//-----------------API COMICS---------------
+
+
+const baseUrl: string = "https://gateway.marvel.com:443/v1/public/characters";
+const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
+const hash="bca60ca0198d3e720005add814760dde";
+const url: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}`
+
+
+
+
+	

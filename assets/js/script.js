@@ -32,11 +32,11 @@ var controlsSearch = [
         options: [
             {
                 id: "comic",
-                name: "Comic"
+                name: "COMIC"
             },
             {
                 id: "personajes",
-                name: "Personajes"
+                name: "PERSONAJES"
             },
         ]
     },
@@ -66,15 +66,14 @@ var controlsSearch = [
 ];
 var container = document.createElement('div');
 var main = document.createElement('main');
-container.classList.add('container');
+main.classList.add('container');
 container.appendChild(main);
 var formSearch = document.createElement("form");
 formSearch.classList.add('form-search');
 var searchContainerGeneral = document.createElement('div');
 var placeHolderText = "Ingresa tu búsqueda";
 var icon = document.createElement('i');
-icon.classList.add("fas", "fa-search");
-//searchContainerGeneral.classList.add('search-container')
+icon.classList.add("fas", "fa-search", 'fa-lg');
 var makeForm = function (form, ctrls, parent, containerSearch) {
     var tittleH2 = document.createElement('h2');
     tittleH2.appendChild(document.createTextNode("Búsqueda"));
@@ -108,7 +107,6 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
                 elem.placeholder = placeHolderText;
                 inputContainer.appendChild(icon);
                 inputContainer.appendChild(elem);
-                console.log(elem);
                 break;
         }
     }
@@ -123,4 +121,9 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
     parent.appendChild(containerSearch);
     document.body.appendChild(parent);
 };
-makeForm(formSearch, controlsSearch, container, searchContainerGeneral);
+makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
+//-----------------API COMICS---------------
+var baseUrl = "https://gateway.marvel.com:443/v1/public/characters";
+var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
+var hash = "bca60ca0198d3e720005add814760dde";
+var url = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash;
