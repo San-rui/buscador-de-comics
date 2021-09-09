@@ -78,4 +78,12 @@
 }
 
 
+@media screen and (max-width:1025px){
+    .form-search{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
 
