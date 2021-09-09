@@ -1,11 +1,3 @@
-//-----------TYPE---------------
-// type Control ={
-// 	type: string,
-// 	name: string,
-// 	id: string,
-// 	options: option[]
-// }
-
 
 //-------------Header-------------
 
@@ -23,6 +15,7 @@ const createHeader = ()=>{
     document.body.appendChild(header);
 }
 createHeader();
+
 
 //-------------SEARCH BAR-------------
 const controlsSearch = [
@@ -71,28 +64,30 @@ const controlsSearch = [
 	},
 ];
 
-
 const container= document.createElement('div');
 const main= document.createElement('main');
-main.classList.add('container')
-
-container.appendChild(main);
 const formSearch = document.createElement("form");
-formSearch.classList.add('form-search')
 const searchContainerGeneral = document.createElement('div');
 const placeHolderText="Ingresa tu búsqueda";
 const icon = document.createElement('i');
+const tittleSearch= document.createElement('h2');
+const inputContainer = document.createElement('div');
+const selectContainer = document.createElement('div');
+const button = document.createElement("button");
+button.type = "submit";
+button.appendChild(document.createTextNode("Buscar"));
+
+main.classList.add('container');
+container.appendChild(main);
+searchContainerGeneral.classList.add('search-container-general')
+formSearch.classList.add('form-search')
 icon.classList.add("fas", "fa-search", 'fa-lg');
+tittleSearch.appendChild(document.createTextNode("Búsqueda"));
+inputContainer.classList.add('input-container')
+selectContainer.classList.add('select-container');
 
 const makeForm = (form, ctrls, parent, containerSearch) => {
 
-    const tittleH2= document.createElement('h2');
-    tittleH2.appendChild(document.createTextNode("Búsqueda"));
-    const inputContainer = document.createElement('div');
-	inputContainer.classList.add('input-container')
-    const selectContainer = document.createElement('div');
-    selectContainer.classList.add('select-container')
-	
     for (const control of ctrls) {
 		let elem;
 
@@ -126,17 +121,13 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
 		}
 	}
 
-	const button = document.createElement("button");
-	button.type = "submit";
-	button.appendChild(document.createTextNode("Buscar"));
     selectContainer.appendChild(button);
     form.appendChild(inputContainer);
     form.appendChild(selectContainer);
-    containerSearch.appendChild(tittleH2);
+    containerSearch.appendChild(tittleSearch);
     containerSearch.appendChild(form); 
 	parent.appendChild(containerSearch);
     document.body.appendChild(parent);
-
 };
 
 makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
@@ -144,12 +135,9 @@ makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
 //-----------------API COMICS---------------
 
 
-const baseUrl: string = "https://gateway.marvel.com:443/v1/public/characters";
+const baseUrl: string = "https://gateway.marvel.com:443/v1/public/comics";
 const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
-const hash="bca60ca0198d3e720005add814760dde";
-const url: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}`
+const hash : string ="bca60ca0198d3e720005add814760dde";
+const url: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=5`
 
 
-
-
-	

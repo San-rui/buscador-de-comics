@@ -2,6 +2,31 @@
     margin: 0 10%;
     font-family: 'Roboto', sans-serif;
 
+    .search-container-general{
+        margin: 4rem 0 4rem 0 ;
+    }
+
+}
+
+.style-result-number{
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: $secondary;
+}
+
+.img-style{
+    width:100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .container-comic{
+
+        img{
+            width: 13rem;
+        }
+    }
     
 }
+
 
