@@ -1,10 +1,3 @@
-//-----------TYPE---------------
-// type Control ={
-// 	type: string,
-// 	name: string,
-// 	id: string,
-// 	options: option[]
-// }
 //-------------Header-------------
 var createHeader = function () {
     var header = document.createElement('header');
@@ -66,21 +59,25 @@ var controlsSearch = [
 ];
 var container = document.createElement('div');
 var main = document.createElement('main');
-main.classList.add('container');
-container.appendChild(main);
 var formSearch = document.createElement("form");
-formSearch.classList.add('form-search');
 var searchContainerGeneral = document.createElement('div');
 var placeHolderText = "Ingresa tu búsqueda";
 var icon = document.createElement('i');
+var tittleSearch = document.createElement('h2');
+var inputContainer = document.createElement('div');
+var selectContainer = document.createElement('div');
+var button = document.createElement("button");
+button.type = "submit";
+button.appendChild(document.createTextNode("Buscar"));
+main.classList.add('container');
+container.appendChild(main);
+searchContainerGeneral.classList.add('search-container-general');
+formSearch.classList.add('form-search');
 icon.classList.add("fas", "fa-search", 'fa-lg');
+tittleSearch.appendChild(document.createTextNode("Búsqueda"));
+inputContainer.classList.add('input-container');
+selectContainer.classList.add('select-container');
 var makeForm = function (form, ctrls, parent, containerSearch) {
-    var tittleH2 = document.createElement('h2');
-    tittleH2.appendChild(document.createTextNode("Búsqueda"));
-    var inputContainer = document.createElement('div');
-    inputContainer.classList.add('input-container');
-    var selectContainer = document.createElement('div');
-    selectContainer.classList.add('select-container');
     for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
         var control = ctrls_1[_i];
         var elem = void 0;
@@ -110,20 +107,17 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
                 break;
         }
     }
-    var button = document.createElement("button");
-    button.type = "submit";
-    button.appendChild(document.createTextNode("Buscar"));
     selectContainer.appendChild(button);
     form.appendChild(inputContainer);
     form.appendChild(selectContainer);
-    containerSearch.appendChild(tittleH2);
+    containerSearch.appendChild(tittleSearch);
     containerSearch.appendChild(form);
     parent.appendChild(containerSearch);
     document.body.appendChild(parent);
 };
 makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
 //-----------------API COMICS---------------
-var baseUrl = "https://gateway.marvel.com:443/v1/public/characters";
+var baseUrl = "https://gateway.marvel.com:443/v1/public/comics";
 var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 var hash = "bca60ca0198d3e720005add814760dde";
-var url = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash;
+var url = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=5";

@@ -32,13 +32,28 @@ body {
 .container {
   margin: 0 10%;
   font-family: 'Roboto', sans-serif; }
+  .container .search-container-general {
+    margin: 4rem 0 4rem 0; }
+
+.style-result-number {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #76768d; }
+
+.img-style {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; }
+  .img-style .container-comic img {
+    width: 13rem; }
 
 .form-search {
   display: flex;
   justify-content: space-between; }
   .form-search .select-container {
     font-weight: 800;
-    color: grey;
+    color: #76768d;
     display: flex;
     flex-direction: row;
     text-align-last: end;
@@ -88,16 +103,10 @@ body {
       margin-left: 25px;
       outline: none; }
     .form-search .input-container input::placeholder {
+      color: #76768d;
       font-weight: 800;
       font-size: 1.5rem; }
     .form-search .input-container input:active {
       outline: none; }
     .form-search .input-container i {
       color: #081324; }
-
-.img-style {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap; }
-  .img-style img {
-    width: 100px; }
