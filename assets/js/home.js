@@ -34,8 +34,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-//----------- CREATE CARD -------------
+//-------------------GET NUMBER OF PAGES---------------
 var _this = this;
+var getNumberPages = function (total, limitPerPage) {
+    var pages = 1;
+    return pages = Math.ceil(total / limitPerPage);
+};
+//------------- PAGINATION-----------------------
+var params = new URLSearchParams(window.location.search);
+var createButtons = function (pagesNumber, container) {
+    var count = 0;
+    var arrayPageNumber = [];
+    var containerPages = document.createElement('div');
+    containerPages.classList.add('container-pages');
+    var listUl = document.createElement('ul');
+    var previousPage = document.createElement('button');
+    previousPage.innerHTML = "Página anterior";
+    var nextPage = document.createElement('button');
+    nextPage.innerHTML = "Página Siguiente";
+    containerPages.appendChild(previousPage);
+    for (var i = 0; i < pagesNumber; i++) {
+        count++;
+        arrayPageNumber.push(count);
+    }
+    for (var _i = 0, arrayPageNumber_1 = arrayPageNumber; _i < arrayPageNumber_1.length; _i++) {
+        var page = arrayPageNumber_1[_i];
+        var itemList = document.createElement('li');
+        itemList.classList.add('pagination-number');
+        var pageNumner = document.createElement('a');
+        pageNumner.setAttribute('id', page);
+        itemList.appendChild(pageNumner);
+        pageNumner.innerHTML = page;
+        //---SET QUERY PARAMS-----
+        pageNumner.setAttribute('href', "./index.html?page=" + pageNumner.id);
+        //---SHOW ONLY 5 NUMBERS----
+        if (page > 5) {
+            itemList.classList.add('hidden');
+        }
+        listUl.appendChild(itemList);
+        containerPages.appendChild(listUl);
+        containerPages.appendChild(nextPage);
+        container.appendChild(containerPages);
+    }
+};
+var pageClicked = params.get("page");
+console.log("params", pageClicked);
+//----------- CREATE CARD -------------
 var comicClass = "container-comic";
 var characterClass = "container-character";
 var titleComic = "title";
@@ -58,19 +102,19 @@ var createCard = function (list, classCont, textBelow) {
         contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"" + urlItem + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + item[textBelow] + "</h3>\n                    </a>\n            </div>\n        ";
     }
     ;
+    var pagesTotal = getNumberPages(list.total, list.limit);
     resultNumber.innerHTML = list.total + " RESULTADOS";
     containerElement.innerHTML = contentHTML;
     results.appendChild(containerElement);
+    createButtons(pagesTotal, results);
     main.appendChild(results);
 };
-//-------------------GET NUMBER OF PAGES---------------
-var getNumberPages = function (total, limitPerPage) {
-    var pages = 1;
-    return pages = Math.ceil(total / limitPerPage);
-};
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
+var offset = Number(pageClicked) * 20 - 20;
+var url1 = baseUrl1 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+var url2 = baseUrl2 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
 var getMarvelSection = function (url, className, itemName) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listCharacters, resultsCharacters, _i, resultsCharacters_1, item;
+    var response, items, listItems, resultsItems, _i, resultsItems_1, item;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, fetch(url)];
@@ -79,10 +123,10 @@ var getMarvelSection = function (url, className, itemName) { return __awaiter(_t
                 return [4 /*yield*/, response.json()];
             case 2:
                 items = _a.sent();
-                listCharacters = items.data;
-                resultsCharacters = listCharacters.results;
-                for (_i = 0, resultsCharacters_1 = resultsCharacters; _i < resultsCharacters_1.length; _i++) {
-                    item = resultsCharacters_1[_i];
+                listItems = items.data;
+                resultsItems = listItems.results;
+                for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
+                    item = resultsItems_1[_i];
                     if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
                         item.thumbnail.path = './assets/images/clean';
                     }
