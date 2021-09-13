@@ -117,11 +117,38 @@ type Comic = {
 	events ?: EventList,
 }
 
+type ComicList = {
+	available ?: number,
+	returned ?: number,
+	collectionURI ?: string,
+	items ?: ComicSummary[],
+}
 
-type ComicList ={
+type SeriesList = {
+	available ?: number,
+	returned ?: number,
+	collectionURI ?: string,
+	items ?: SeriesSummary[],
+}
+
+type Character = {
+	id ?: number;
+	name ?: string,
+	description ?: string,
+	modified ?: Date,
+	resourceURI ?: string,
+	urls ?: Url[],
+	thumbnail ?: Image,
+	comics ?: ComicList,
+	stories ?: StoryList,
+	events ?: EventList,
+	series ?: SeriesList,
+}
+
+type DataContainer= {
 	offset: number,
 	limit: number,
 	total: number,
 	count: number,
-	result: Comic[],
+	results: Comic[] | Character [],
 }

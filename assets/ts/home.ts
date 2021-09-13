@@ -1,91 +1,79 @@
-//Estos son los contenedores de comic & personajes
-const resultsComics = document.createElement('div');
-const resultsCharacters = document.createElement('div');
-
-// Estas son las cards
-
-const containerElementComic = document.createElement('div');
-containerElementComic.classList.add('img-comic');
-
-resultsComics.appendChild(containerElementComic);
-let contenComictHTML = '';
-let contenCharactertHTML = '';
-
-const containerElementCharacter = document.createElement('div');
-containerElementCharacter.classList.add('img-characters');
-
-const tittleResultComic= document.createElement('h2');
-tittleResultComic.innerHTML= "Resultados";
-resultsComics.appendChild(tittleResultComic);
-
-const tittleResultCharacter= document.createElement('h2');
-tittleResultCharacter.innerHTML= "Resultados";
-resultsCharacters.appendChild(tittleResultCharacter);
-
-const resultNumberComic = document.createElement('p');
-const resultNumberCharacter = document.createElement('p');
-resultNumberComic.classList.add('style-result-number');
-resultNumberCharacter.classList.add('style-result-number');
-
+//----------- CREATE CARD -------------
 
 const comicClass = "container-comic";
 const characterClass = "container-character";
-
-
-resultsComics.appendChild(resultNumberComic);
-resultsCharacters.appendChild(resultNumberCharacter);
-
 const titleComic= "title";
 const nameCharacter= "name";
 
 
+const createCard = (list : DataContainer , classCont, textBelow)=>{
 
+    const results = document.createElement('div');
+    let contentHTML = '';
+    const containerElement = document.createElement('div');
+    containerElement.classList.add('img-item');
+    const tittleResult= document.createElement('h2');
+    tittleResult.innerHTML= "Resultados";
+    const resultNumber = document.createElement('p');
+    resultNumber.classList.add('style-result-number');
 
-const createCard = (comicList :ComicList , results, containerElement, classCont, contentHTML, resultNumber, textBelow)=>{
+    results.appendChild(tittleResult);
+    results.appendChild(containerElement);
+    results.appendChild(resultNumber);
 
-    for(const hero of comicList.results){
+    for(const item of list.results){
         
-        let urlHero = hero.urls[0].url;
-
-        if (hero.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
-            contentHTML += `
-            <div class="${classCont}">
-                <a href="${urlHero }">
-                    <img src="./assets/images/clean.jpeg" alt="${hero.name}" class="img-thumbnail">
-                    <h3>${hero[textBelow]}</h3>
-                </a>
-            </div>
-        ` 
-        }else{
+        let urlItem = item.urls[0].url;
             contentHTML += `
             <div class=${classCont}>
-                <a href="${urlHero }">
-                    <img src="${hero.thumbnail.path}.${hero.thumbnail.extension}" alt="${hero.name}" class="img-thumbnail">
-                    <h3>${hero[textBelow]}</h3>
+                <a href="${urlItem }">
+                    <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}" class="img-thumbnail">
+                    <h3>${item[textBelow]}</h3>
                     </a>
             </div>
         ` 
-        }
-        resultNumber.innerHTML = `${comicList.total} RESULTADOS`;
+    };
+
+        resultNumber.innerHTML = `${list.total} RESULTADOS`;
         containerElement.innerHTML = contentHTML;
         results.appendChild(containerElement);
         main.appendChild(results);
-    }
 }
 
 
-fetch(url1)
-.then(res => res.json())
-.then((json)=>{
-    console.log(json.data, 'COMICS')
-    createCard(json.data, resultsComics, containerElementComic, comicClass, contenComictHTML, resultNumberComic, titleComic);
-    
-});
+//-------------------GET NUMBER OF PAGES---------------
 
-fetch(url2)
-.then(res => res.json())
-.then((json)=>{
-    console.log(json.data, 'PERSONAJES')
-    createCard(json.data, resultsCharacters, containerElementCharacter, characterClass, contenCharactertHTML, resultNumberCharacter, nameCharacter);
-});
+const getNumberPages = (total, limitPerPage)=>{
+    let pages=1;
+    return pages = Math.ceil(total/ limitPerPage)
+}
+;
+
+//-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
+
+const getMarvelSection = async(url, className, itemName)=>{
+    const response = await fetch(url);
+    const items = await response.json();
+
+    const listCharacters= items.data;
+    const resultsCharacters= listCharacters.results;
+
+    for(const item of resultsCharacters){
+        if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+            item.thumbnail.path='./assets/images/clean'
+        }
+    }
+    createCard(items.data, className, itemName);
+    getNumberPages(items.data.total, items.data.limit);
+    console.log("Numero de paginas" ,getNumberPages(items.data.total, items.data.limit))
+    
+}
+
+getMarvelSection(url1, comicClass, titleComic);
+getMarvelSection(url2, characterClass, nameCharacter);
+
+
+
+
+
 

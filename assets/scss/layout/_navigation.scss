@@ -14,12 +14,11 @@
     color: $secondary;
 }
 
-.img-comic, .img-characters{
+.img-item, .img-characters{
     width:100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    border: solid red;
     
     .container-comic{
         width: 14rem;
@@ -40,8 +39,6 @@
                 font-size: 0.8rem;
             }
         }
-
-
     }
 
     .container-character{
@@ -77,11 +74,7 @@
                 
             }
         }
-        
-        
     }
-    
-    
 }
 
 

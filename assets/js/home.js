@@ -1,55 +1,98 @@
-//Estos son los contenedores de comic & personajes
-var resultsComics = document.createElement('div');
-var resultsCharacters = document.createElement('div');
-// Estas son las cards
-var containerElementComic = document.createElement('div');
-containerElementComic.classList.add('img-comic');
-resultsComics.appendChild(containerElementComic);
-var contenComictHTML = '';
-var contenCharactertHTML = '';
-var containerElementCharacter = document.createElement('div');
-containerElementCharacter.classList.add('img-characters');
-var tittleResultComic = document.createElement('h2');
-tittleResultComic.innerHTML = "Resultados";
-resultsComics.appendChild(tittleResultComic);
-var tittleResultCharacter = document.createElement('h2');
-tittleResultCharacter.innerHTML = "Resultados";
-resultsCharacters.appendChild(tittleResultCharacter);
-var resultNumberComic = document.createElement('p');
-var resultNumberCharacter = document.createElement('p');
-resultNumberComic.classList.add('style-result-number');
-resultNumberCharacter.classList.add('style-result-number');
-var comicClass = "container-comic";
-var characterClass = "container-character";
-resultsComics.appendChild(resultNumberComic);
-resultsCharacters.appendChild(resultNumberCharacter);
-var titleComic = "title";
-var nameCharacter = "name";
-var createCard = function (comicList, results, containerElement, classCont, contentHTML, resultNumber, textBelow) {
-    for (var _i = 0, _a = comicList.results; _i < _a.length; _i++) {
-        var hero = _a[_i];
-        var urlHero = hero.urls[0].url;
-        if (hero.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
-            contentHTML += "\n            <div class=\"" + classCont + "\">\n                <a href=\"" + urlHero + "\">\n                    <img src=\"./assets/images/clean.jpeg\" alt=\"" + hero.name + "\" class=\"img-thumbnail\">\n                    <h3>" + hero[textBelow] + "</h3>\n                </a>\n            </div>\n        ";
-        }
-        else {
-            contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"" + urlHero + "\">\n                    <img src=\"" + hero.thumbnail.path + "." + hero.thumbnail.extension + "\" alt=\"" + hero.name + "\" class=\"img-thumbnail\">\n                    <h3>" + hero[textBelow] + "</h3>\n                    </a>\n            </div>\n        ";
-        }
-        resultNumber.innerHTML = comicList.total + " RESULTADOS";
-        containerElement.innerHTML = contentHTML;
-        results.appendChild(containerElement);
-        main.appendChild(results);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-fetch(url1)
-    .then(function (res) { return res.json(); })
-    .then(function (json) {
-    console.log(json.data, 'COMICS');
-    createCard(json.data, resultsComics, containerElementComic, comicClass, contenComictHTML, resultNumberComic, titleComic);
-});
-fetch(url2)
-    .then(function (res) { return res.json(); })
-    .then(function (json) {
-    console.log(json.data, 'PERSONAJES');
-    createCard(json.data, resultsCharacters, containerElementCharacter, characterClass, contenCharactertHTML, resultNumberCharacter, nameCharacter);
-});
+//----------- CREATE CARD -------------
+var _this = this;
+var comicClass = "container-comic";
+var characterClass = "container-character";
+var titleComic = "title";
+var nameCharacter = "name";
+var createCard = function (list, classCont, textBelow) {
+    var results = document.createElement('div');
+    var contentHTML = '';
+    var containerElement = document.createElement('div');
+    containerElement.classList.add('img-item');
+    var tittleResult = document.createElement('h2');
+    tittleResult.innerHTML = "Resultados";
+    var resultNumber = document.createElement('p');
+    resultNumber.classList.add('style-result-number');
+    results.appendChild(tittleResult);
+    results.appendChild(containerElement);
+    results.appendChild(resultNumber);
+    for (var _i = 0, _a = list.results; _i < _a.length; _i++) {
+        var item = _a[_i];
+        var urlItem = item.urls[0].url;
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"" + urlItem + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + item[textBelow] + "</h3>\n                    </a>\n            </div>\n        ";
+    }
+    ;
+    resultNumber.innerHTML = list.total + " RESULTADOS";
+    containerElement.innerHTML = contentHTML;
+    results.appendChild(containerElement);
+    main.appendChild(results);
+};
+//-------------------GET NUMBER OF PAGES---------------
+var getNumberPages = function (total, limitPerPage) {
+    var pages = 1;
+    return pages = Math.ceil(total / limitPerPage);
+};
+//-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
+var getMarvelSection = function (url, className, itemName) { return __awaiter(_this, void 0, void 0, function () {
+    var response, items, listCharacters, resultsCharacters, _i, resultsCharacters_1, item;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, fetch(url)];
+            case 1:
+                response = _a.sent();
+                return [4 /*yield*/, response.json()];
+            case 2:
+                items = _a.sent();
+                listCharacters = items.data;
+                resultsCharacters = listCharacters.results;
+                for (_i = 0, resultsCharacters_1 = resultsCharacters; _i < resultsCharacters_1.length; _i++) {
+                    item = resultsCharacters_1[_i];
+                    if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
+                        item.thumbnail.path = './assets/images/clean';
+                    }
+                }
+                createCard(items.data, className, itemName);
+                getNumberPages(items.data.total, items.data.limit);
+                console.log("Numero de paginas", getNumberPages(items.data.total, items.data.limit));
+                return [2 /*return*/];
+        }
+    });
+}); };
+getMarvelSection(url1, comicClass, titleComic);
+getMarvelSection(url2, characterClass, nameCharacter);
