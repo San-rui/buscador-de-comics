@@ -139,8 +139,7 @@ const baseUrl2: string = "https://gateway.marvel.com:443/v1/public/characters";
 
 const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 const hash : string ="bca60ca0198d3e720005add814760dde";
-const url1: string = `${baseUrl1}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
-const url2: string = `${baseUrl2}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
+
 
 
 

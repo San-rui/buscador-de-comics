@@ -85,6 +85,18 @@ body {
         color: whitesmoke;
         padding: 16px 24px 17px 20px; }
 
+.container-pages {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .container-pages button {
+    width: 8rem;
+    height: 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #081324;
+    color: whitesmoke; }
+
 .form-search {
   display: flex;
   justify-content: space-between; }
@@ -152,3 +164,22 @@ body {
   .form-search {
     display: flex;
     flex-direction: column; } }
+
+ul {
+  height: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0; }
+  ul .pagination-number {
+    list-style: none;
+    width: 2rem;
+    border-radius: 0.2rem;
+    background-color: #081324;
+    text-align: center;
+    margin: 0 1rem  0 1rem;
+    padding: 0.2rem 0 0.2rem 0; }
+    ul .pagination-number a {
+      color: whitesmoke;
+      text-decoration: none; }

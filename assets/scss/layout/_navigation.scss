@@ -75,6 +75,21 @@
             }
         }
     }
+};
+
+.container-pages{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+
+    button{
+        width: 8rem;
+        height: 2rem;
+        border: none;
+        border-radius: 0.5rem;
+        background-color:$primary;
+        color:$primary-white;
+    }
 }
 
 
