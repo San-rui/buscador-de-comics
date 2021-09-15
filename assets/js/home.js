@@ -37,48 +37,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 //-------------------GET NUMBER OF PAGES---------------
 var _this = this;
 var getNumberPages = function (total, limitPerPage) {
-    var pages = 1;
+    var pages = 0;
     return pages = Math.ceil(total / limitPerPage);
 };
 //------------- PAGINATION-----------------------
 var params = new URLSearchParams(window.location.search);
+var pageClicked = Number(params.get("page"));
+var previousPage;
+var nextPage;
 var createButtons = function (pagesNumber, container) {
     var count = 0;
     var arrayPageNumber = [];
+    var auxArray = (pageClicked > 5) ? [pageClicked - 4, pageClicked - 3, pageClicked - 2, pageClicked - 1, pageClicked] : [1, 2, 3, 4, 5];
     var containerPages = document.createElement('div');
     containerPages.classList.add('container-pages');
     var listUl = document.createElement('ul');
-    var previousPage = document.createElement('button');
+    previousPage = document.createElement('a');
     previousPage.innerHTML = "Página anterior";
-    var nextPage = document.createElement('button');
+    nextPage = document.createElement('a');
     nextPage.innerHTML = "Página Siguiente";
+    previousPage.classList.add('page-next-previous');
+    nextPage.classList.add('page-next-previous');
     containerPages.appendChild(previousPage);
     for (var i = 0; i < pagesNumber; i++) {
         count++;
         arrayPageNumber.push(count);
     }
-    for (var _i = 0, arrayPageNumber_1 = arrayPageNumber; _i < arrayPageNumber_1.length; _i++) {
-        var page = arrayPageNumber_1[_i];
+    for (var _i = 0, auxArray_1 = auxArray; _i < auxArray_1.length; _i++) {
+        var page = auxArray_1[_i];
+        //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
+        (!pageClicked || pageClicked == 1) ? previousPage.classList.add('hidden') : previousPage.setAttribute('href', "./index.html?page=" + (pageClicked - 1));
+        (pageClicked == arrayPageNumber.length) ? nextPage.classList.add('hidden') : nextPage.setAttribute('href', "./index.html?page=" + (pageClicked + 1));
+        //---CREATE LIST OF ANCHORS-----
         var itemList = document.createElement('li');
         itemList.classList.add('pagination-number');
         var pageNumner = document.createElement('a');
-        pageNumner.setAttribute('id', page);
+        pageNumner.setAttribute('id', "" + page);
         itemList.appendChild(pageNumner);
-        pageNumner.innerHTML = page;
-        //---SET QUERY PARAMS-----
-        pageNumner.setAttribute('href', "./index.html?page=" + pageNumner.id);
-        //---SHOW ONLY 5 NUMBERS----
-        if (page > 5) {
-            itemList.classList.add('hidden');
+        pageNumner.innerHTML = "" + page;
+        if (Number(pageNumner.innerHTML) == pageClicked) {
+            itemList.classList.add('clicked-number');
         }
+        //---SET QUERY PARAMS TO NUMBER BUTTONS-----
+        pageNumner.setAttribute('href', "./index.html?page=" + pageNumner.id);
+        //---SET ITEMS INTO CONTAINER-----
         listUl.appendChild(itemList);
         containerPages.appendChild(listUl);
         containerPages.appendChild(nextPage);
         container.appendChild(containerPages);
     }
 };
-var pageClicked = params.get("page");
-console.log("params", pageClicked);
 //----------- CREATE CARD -------------
 var comicClass = "container-comic";
 var characterClass = "container-character";
@@ -110,7 +118,7 @@ var createCard = function (list, classCont, textBelow) {
     main.appendChild(results);
 };
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
-var offset = Number(pageClicked) * 20 - 20;
+var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
 var url1 = baseUrl1 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
 var url2 = baseUrl2 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
 var getMarvelSection = function (url, className, itemName) { return __awaiter(_this, void 0, void 0, function () {
@@ -133,7 +141,6 @@ var getMarvelSection = function (url, className, itemName) { return __awaiter(_t
                 }
                 createCard(items.data, className, itemName);
                 getNumberPages(items.data.total, items.data.limit);
-                console.log("Numero de paginas", getNumberPages(items.data.total, items.data.limit));
                 return [2 /*return*/];
         }
     });

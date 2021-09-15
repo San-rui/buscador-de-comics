@@ -1,27 +1,35 @@
 //-------------------GET NUMBER OF PAGES---------------
 
 const getNumberPages = (total, limitPerPage)=>{
-    let pages=1;
-    return pages = Math.ceil(total/ limitPerPage)
+    let pages=0;
+    return pages = Math.ceil(total/ limitPerPage);
 };
 
 //------------- PAGINATION-----------------------
 
 let params= new URLSearchParams(window.location.search);
+let pageClicked = Number(params.get("page"));
+
+let previousPage;
+let nextPage;
 
 const createButtons =(pagesNumber, container)=>{
 
     let count = 0;
     let arrayPageNumber =[];
+    let auxArray= (pageClicked>5)? [pageClicked -4, pageClicked -3, pageClicked -2, pageClicked -1, pageClicked]:  [1,2,3,4,5] ;
 
     const containerPages= document.createElement('div');
-    containerPages.classList.add('container-pages')
+    containerPages.classList.add('container-pages');
 
     const listUl = document.createElement('ul');
-    const previousPage= document.createElement('button');
+    previousPage= document.createElement('a');
     previousPage.innerHTML="Página anterior";
-    const nextPage= document.createElement('button');
+    nextPage= document.createElement('a');
     nextPage.innerHTML="Página Siguiente";
+    previousPage.classList.add('page-next-previous');
+    nextPage.classList.add('page-next-previous');
+
     containerPages.appendChild(previousPage);
 
     for (let i=0; i < pagesNumber; i++){
@@ -29,34 +37,37 @@ const createButtons =(pagesNumber, container)=>{
         arrayPageNumber.push(count);
     }
 
-    for(const page of arrayPageNumber){
-        
+    for(const page of auxArray){
+
+        //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
+        (!pageClicked || pageClicked==1)? previousPage.classList.add('hidden') : previousPage.setAttribute('href',  `./index.html?page=${pageClicked-1}`);
+        (pageClicked==arrayPageNumber.length)? nextPage.classList.add('hidden') :nextPage.setAttribute('href',  `./index.html?page=${pageClicked+1}`);
+
+        //---CREATE LIST OF ANCHORS-----
         const itemList= document.createElement('li');
         itemList.classList.add('pagination-number');
         const pageNumner = document.createElement('a');
-        pageNumner.setAttribute('id', page);
+        pageNumner.setAttribute('id', `${page}`);
         itemList.appendChild(pageNumner);
-        pageNumner.innerHTML=page;
+        pageNumner.innerHTML=`${page}`;
 
-        //---SET QUERY PARAMS-----
+        if(Number(pageNumner.innerHTML)==pageClicked){
+            itemList.classList.add('clicked-number');
+        }
+
+        //---SET QUERY PARAMS TO NUMBER BUTTONS-----
         pageNumner.setAttribute('href', `./index.html?page=${pageNumner.id}`);
         
-        //---SHOW ONLY 5 NUMBERS----
-
-        if( page> 5){
-            itemList.classList.add('hidden')
-        }
+        //---SET ITEMS INTO CONTAINER-----
         listUl.appendChild(itemList);
         containerPages.appendChild(listUl);
         containerPages.appendChild(nextPage);
         container.appendChild(containerPages);
+        
     }
-
+    
 };
 
-let pageClicked = params.get("page");
-
-console.log("params", pageClicked)
 
 //----------- CREATE CARD -------------
 
@@ -64,7 +75,6 @@ const comicClass = "container-comic";
 const characterClass = "container-character";
 const titleComic= "title";
 const nameCharacter= "name";
-
 
 const createCard = (list : DataContainer , classCont, textBelow)=>{
 
@@ -82,6 +92,7 @@ const createCard = (list : DataContainer , classCont, textBelow)=>{
     results.appendChild(resultNumber);
 
     for(const item of list.results){
+
         
         let urlItem = item.urls[0].url;
             contentHTML += `
@@ -93,6 +104,7 @@ const createCard = (list : DataContainer , classCont, textBelow)=>{
             </div>
         ` 
     };
+
 
     const pagesTotal= getNumberPages(list.total, list.limit);
 
@@ -106,7 +118,7 @@ const createCard = (list : DataContainer , classCont, textBelow)=>{
 
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 
-let offset=  Number(pageClicked) *20-20;
+let offset= (pageClicked) ? Number(pageClicked) *20-20 : 0;
 
 const url1: string = `${baseUrl1}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
 const url2: string = `${baseUrl2}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
@@ -115,9 +127,7 @@ const getMarvelSection = async(url, className, itemName)=>{
     const response = await fetch(url);
     const items = await response.json();
 
-    
     const listItems= items.data;
-
     const resultsItems= listItems.results;
 
     for(const item of resultsItems){
@@ -127,7 +137,6 @@ const getMarvelSection = async(url, className, itemName)=>{
     }
     createCard(items.data, className, itemName);
     getNumberPages(items.data.total, items.data.limit);
-    console.log("Numero de paginas" ,getNumberPages(items.data.total, items.data.limit))
     
 }
 

@@ -89,11 +89,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center; }
-  .container-pages button {
-    width: 8rem;
-    height: 2rem;
+  .container-pages .page-next-previous {
+    padding: 0.5rem;
+    text-align: center;
+    text-decoration: none;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
     background-color: #081324;
     color: whitesmoke; }
 
@@ -171,7 +172,8 @@ ul {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 0; }
+  margin: 0;
+  padding: 0; }
   ul .pagination-number {
     list-style: none;
     width: 2rem;
@@ -183,3 +185,5 @@ ul {
     ul .pagination-number a {
       color: whitesmoke;
       text-decoration: none; }
+  ul .clicked-number {
+    background-color: #3f80e2; }

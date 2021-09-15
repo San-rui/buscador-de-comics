@@ -6,11 +6,11 @@ ul{
     justify-content: center;
     align-items: center;
     margin:0;
+    padding:0;
 
     .pagination-number{
         list-style: none;
         width: 2rem;
-        
         border-radius: 0.2rem;
         background-color:$primary;
         text-align: center;
@@ -23,5 +23,11 @@ ul{
             
         }
         
+    };
+
+    .clicked-number{
+        background-color: $active-number;
     }
 }
+
+
