@@ -1,4 +1,4 @@
-//-------------Header-------------
+//-------------HEADER -------------
 var createHeader = function () {
     var header = document.createElement('header');
     var mainTitle = document.createElement('h1');

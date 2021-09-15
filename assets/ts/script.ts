@@ -1,5 +1,5 @@
 
-//-------------Header-------------
+//-------------HEADER -------------
 
 const createHeader = ()=>{
     const header = document.createElement('header');
