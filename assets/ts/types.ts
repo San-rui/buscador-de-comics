@@ -109,7 +109,7 @@ type Comic = {
 	collectedIssues ?: ComicSummary[],
 	dates ?: ComicDate[],
 	prices ?: ComicPrice[],
-	thumbnail ?: string,
+	thumbnail ?: Image,
 	images ?: Image[],
 	creators ?: CreatorList,
 	characters ?: CharacterList,
@@ -151,4 +151,12 @@ type DataContainer= {
 	total: number,
 	count: number,
 	results: Comic[] | Character [],
+}
+
+//-----LOCA STORAGE------
+
+type LocalStorage = {
+	wordToSearch ?: string,
+	type : string,
+	order : string,
 }

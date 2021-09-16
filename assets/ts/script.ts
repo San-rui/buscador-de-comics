@@ -1,4 +1,3 @@
-
 //-------------HEADER -------------
 
 const createHeader = ()=>{
@@ -7,7 +6,7 @@ const createHeader = ()=>{
     const headerImg = document.createElement('img');
 
     mainTitle.innerHTML="ADA COMICS"
-    headerImg.setAttribute('src','./assets/images/pngwing.com.png');
+    headerImg.setAttribute('src', '../assets/images/pngwing.com.png');
     header.classList.add('primary-header');
 
     header.appendChild(mainTitle);
@@ -119,6 +118,8 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
                 inputContainer.appendChild(elem);
 				break;
 		}
+		elem.name= control.name;
+		elem.id= control.id;
 	}
 
     selectContainer.appendChild(button);
@@ -141,5 +142,18 @@ const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 const hash : string ="bca60ca0198d3e720005add814760dde";
 
 
+const getStorage = (): LocalStorage =>{
+    let fullLocalStorage : LocalStorage = JSON.parse(localStorage.getItem('full-storage'));
 
+    if(!fullLocalStorage) {
+        fullLocalStorage = {
+        wordToSearch: '',
+		type: '',
+		order: '',
+        } 
+    };
 
+    return fullLocalStorage;
+};
+
+getStorage()

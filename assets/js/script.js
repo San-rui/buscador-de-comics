@@ -4,7 +4,7 @@ var createHeader = function () {
     var mainTitle = document.createElement('h1');
     var headerImg = document.createElement('img');
     mainTitle.innerHTML = "ADA COMICS";
-    headerImg.setAttribute('src', './assets/images/pngwing.com.png');
+    headerImg.setAttribute('src', '../assets/images/pngwing.com.png');
     header.classList.add('primary-header');
     header.appendChild(mainTitle);
     header.appendChild(headerImg);
@@ -106,6 +106,8 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
                 inputContainer.appendChild(elem);
                 break;
         }
+        elem.name = control.name;
+        elem.id = control.id;
     }
     selectContainer.appendChild(button);
     form.appendChild(inputContainer);
@@ -121,3 +123,16 @@ var baseUrl1 = "https://gateway.marvel.com:443/v1/public/comics";
 var baseUrl2 = "https://gateway.marvel.com:443/v1/public/characters";
 var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 var hash = "bca60ca0198d3e720005add814760dde";
+var getStorage = function () {
+    var fullLocalStorage = JSON.parse(localStorage.getItem('full-storage'));
+    if (!fullLocalStorage) {
+        fullLocalStorage = {
+            wordToSearch: '',
+            type: '',
+            order: ''
+        };
+    }
+    ;
+    return fullLocalStorage;
+};
+getStorage();
