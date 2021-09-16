@@ -63,6 +63,7 @@ var createButtons = function (pagesNumber, container) {
         count++;
         arrayPageNumber.push(count);
     }
+    ;
     for (var _i = 0, auxArray_1 = auxArray; _i < auxArray_1.length; _i++) {
         var page = auxArray_1[_i];
         //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
@@ -75,9 +76,10 @@ var createButtons = function (pagesNumber, container) {
         pageNumner.setAttribute('id', "" + page);
         itemList.appendChild(pageNumner);
         pageNumner.innerHTML = "" + page;
-        if (Number(pageNumner.innerHTML) == pageClicked) {
+        if (Number(pageNumner.innerHTML) == pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1) {
             itemList.classList.add('clicked-number');
         }
+        ;
         //---SET QUERY PARAMS TO NUMBER BUTTONS-----
         pageNumner.setAttribute('href', "./index.html?page=" + pageNumner.id);
         //---SET ITEMS INTO CONTAINER-----
@@ -86,10 +88,11 @@ var createButtons = function (pagesNumber, container) {
         containerPages.appendChild(nextPage);
         container.appendChild(containerPages);
     }
+    ;
 };
 //----------- CREATE CARD -------------
-var comicClass = "container-comic";
-var characterClass = "container-character";
+var comicClass = "comic";
+var characterClass = "personajes";
 var titleComic = "title";
 var nameCharacter = "name";
 var createCard = function (list, classCont, textBelow) {
@@ -107,7 +110,7 @@ var createCard = function (list, classCont, textBelow) {
     for (var _i = 0, _a = list.results; _i < _a.length; _i++) {
         var item = _a[_i];
         var urlItem = item.urls[0].url;
-        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"" + urlItem + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + item[textBelow] + "</h3>\n                    </a>\n            </div>\n        ";
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + item[textBelow] + "</h3>\n                    </a>\n            </div>\n        ";
     }
     ;
     var pagesTotal = getNumberPages(list.total, list.limit);
@@ -117,6 +120,29 @@ var createCard = function (list, classCont, textBelow) {
     createButtons(pagesTotal, results);
     main.appendChild(results);
 };
+//-----------SEARCH BY FILTERS------------
+var params2 = new URLSearchParams(window.location.search);
+var storage = getStorage();
+var getFormInfo = function (event) {
+    event.preventDefault();
+    var form = event.target;
+    var searchData = {
+        wordToSearch: form.addSearch.value,
+        type: form.type.value,
+        order: form.order.value
+    };
+    params2.set('wordToSearch', searchData.wordToSearch);
+    params2.set('type', searchData.type);
+    params2.set('order', searchData.order);
+    window.location.href = 'index.html?' + params2.toString();
+    return searchData;
+};
+formSearch.addEventListener('submit', getFormInfo);
+//--------SET LOCAL STORAGE---------------
+storage.wordToSearch = params2.get('wordToSearch');
+storage.type = params2.get('type');
+storage.order = params2.get('order');
+localStorage.setItem('to-search-storage', JSON.stringify(storage));
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
 var url1 = baseUrl1 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
