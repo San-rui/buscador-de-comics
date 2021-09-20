@@ -91,11 +91,9 @@ var createButtons = function (pagesNumber, container) {
     ;
 };
 //----------- CREATE CARD -------------
-var comicClass = "comic";
-var characterClass = "personajes";
-var titleComic = "title";
-var nameCharacter = "name";
-var createCard = function (list, classCont, textBelow) {
+var comicClass = "comics";
+var characterClass = "characters";
+var createCard = function (list, classCont, resultss) {
     var results = document.createElement('div');
     var contentHTML = '';
     var containerElement = document.createElement('div');
@@ -107,10 +105,10 @@ var createCard = function (list, classCont, textBelow) {
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
-    for (var _i = 0, _a = list.results; _i < _a.length; _i++) {
-        var item = _a[_i];
+    for (var _i = 0, resultss_1 = resultss; _i < resultss_1.length; _i++) {
+        var item = resultss_1[_i];
         var urlItem = item.urls[0].url;
-        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + item[textBelow] + "</h3>\n                    </a>\n            </div>\n        ";
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n        ";
     }
     ;
     var pagesTotal = getNumberPages(list.total, list.limit);
@@ -130,18 +128,69 @@ var getFormInfo = function (event) {
         type: form.type.value,
         order: form.order.value
     };
+    console.log("aqui", form);
     params2.set('wordToSearch', searchData.wordToSearch);
     params2.set('type', searchData.type);
     params2.set('order', searchData.order);
     window.location.href = 'index.html?' + params2.toString();
 };
 formSearch.addEventListener('submit', getFormInfo);
+//-------------SEARCH FILTERS-----------------
+var orderBy = function (arrayAux, param) {
+    var order = params2.get('order');
+    switch (order) {
+        case 'a-z':
+            arrayAux = arrayAux.sort(function (a, b) {
+                if (a[param] > b[param]) {
+                    return 1;
+                }
+                if (a[param] < b[param]) {
+                    return -1;
+                }
+                return 0;
+            });
+            break;
+        case 'z-a':
+            arrayAux = arrayAux.sort(function (b, a) {
+                if (a[param] > b[param]) {
+                    return 1;
+                }
+                if (a[param] < b[param]) {
+                    return -1;
+                }
+                return 0;
+            });
+            break;
+        case 'mas-viejos':
+            arrayAux = arrayAux.sort(function (a, b) { return new Date(a.modified).getTime() - new Date(b.modified).getTime(); });
+            break;
+        case 'mas-nuevos':
+            arrayAux = arrayAux.sort(function (a, b) { return new Date(b.modified).getTime() - new Date(a.modified).getTime(); });
+            break;
+        default:
+    }
+    return arrayAux;
+};
+var updateResults = function (results) {
+    var type = params2.get('type');
+    var filtersAppy = [];
+    if (type == "comics") {
+        filtersAppy = results.filter(function (Element) { return Element.characters; });
+        filtersAppy = orderBy(filtersAppy, "title");
+    }
+    else {
+        filtersAppy = results.filter(function (Element) { return Element.comics; });
+        filtersAppy = orderBy(filtersAppy, "name");
+    }
+    console.log("sss", filtersAppy);
+    return filtersAppy;
+};
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
-var url1 = baseUrl1 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-var url2 = baseUrl2 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-var getMarvelSection = function (url, className, itemName) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listItems, resultsItems, _i, resultsItems_1, item, err_1;
+var typeData = (params2.get("type")) ? (params2.get("type")) : "comics";
+var url = "" + baseUrl + typeData + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+var getMarvelSection = function (url, className) { return __awaiter(_this, void 0, void 0, function () {
+    var response, items, listItems, resultsItems, array, _i, array_1, item, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -154,16 +203,15 @@ var getMarvelSection = function (url, className, itemName) { return __awaiter(_t
                 items = _a.sent();
                 listItems = items.data;
                 resultsItems = listItems.results;
-                if (className == formSearch.type.value) {
-                    for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
-                        item = resultsItems_1[_i];
-                        if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
-                            item.thumbnail.path = './assets/images/clean';
-                        }
+                array = updateResults(resultsItems).length !== 0 ? updateResults(resultsItems) : resultsItems;
+                for (_i = 0, array_1 = array; _i < array_1.length; _i++) {
+                    item = array_1[_i];
+                    if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
+                        item.thumbnail.path = './assets/images/clean';
                     }
-                    createCard(items.data, className, itemName);
-                    getNumberPages(items.data.total, items.data.limit);
                 }
+                createCard(items.data, className, array);
+                getNumberPages(items.data.total, items.data.limit);
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
@@ -175,5 +223,4 @@ var getMarvelSection = function (url, className, itemName) { return __awaiter(_t
         }
     });
 }); };
-getMarvelSection(url1, comicClass, titleComic);
-getMarvelSection(url2, characterClass, nameCharacter);
+getMarvelSection(url, typeData);
