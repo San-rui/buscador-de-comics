@@ -123,16 +123,3 @@ var baseUrl1 = "https://gateway.marvel.com:443/v1/public/comics";
 var baseUrl2 = "https://gateway.marvel.com:443/v1/public/characters";
 var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 var hash = "bca60ca0198d3e720005add814760dde";
-var getStorage = function () {
-    var fullLocalStorage = JSON.parse(localStorage.getItem('full-storage'));
-    if (!fullLocalStorage) {
-        fullLocalStorage = {
-            wordToSearch: '',
-            type: '',
-            order: ''
-        };
-    }
-    ;
-    return fullLocalStorage;
-};
-getStorage();

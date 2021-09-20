@@ -122,7 +122,6 @@ var createCard = function (list, classCont, textBelow) {
 };
 //-----------SEARCH BY FILTERS------------
 var params2 = new URLSearchParams(window.location.search);
-var storage = getStorage();
 var getFormInfo = function (event) {
     event.preventDefault();
     var form = event.target;
@@ -135,23 +134,19 @@ var getFormInfo = function (event) {
     params2.set('type', searchData.type);
     params2.set('order', searchData.order);
     window.location.href = 'index.html?' + params2.toString();
-    return searchData;
 };
 formSearch.addEventListener('submit', getFormInfo);
-//--------SET LOCAL STORAGE---------------
-storage.wordToSearch = params2.get('wordToSearch');
-storage.type = params2.get('type');
-storage.order = params2.get('order');
-localStorage.setItem('to-search-storage', JSON.stringify(storage));
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
 var url1 = baseUrl1 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
 var url2 = baseUrl2 + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
 var getMarvelSection = function (url, className, itemName) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listItems, resultsItems, _i, resultsItems_1, item;
+    var response, items, listItems, resultsItems, _i, resultsItems_1, item, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch(url)];
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, fetch(url)];
             case 1:
                 response = _a.sent();
                 return [4 /*yield*/, response.json()];
@@ -159,14 +154,23 @@ var getMarvelSection = function (url, className, itemName) { return __awaiter(_t
                 items = _a.sent();
                 listItems = items.data;
                 resultsItems = listItems.results;
-                for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
-                    item = resultsItems_1[_i];
-                    if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
-                        item.thumbnail.path = './assets/images/clean';
+                if (className == formSearch.type.value) {
+                    for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
+                        item = resultsItems_1[_i];
+                        if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
+                            item.thumbnail.path = './assets/images/clean';
+                        }
                     }
+                    createCard(items.data, className, itemName);
+                    getNumberPages(items.data.total, items.data.limit);
                 }
-                createCard(items.data, className, itemName);
-                getNumberPages(items.data.total, items.data.limit);
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                alert("La API esta fuera de servicio");
+                return [3 /*break*/, 4];
+            case 4:
+                ;
                 return [2 /*return*/];
         }
     });

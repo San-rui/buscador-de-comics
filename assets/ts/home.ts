@@ -91,7 +91,6 @@ const createCard = (list : DataContainer , classCont, textBelow)=>{
     results.appendChild(resultNumber);
 
     for(const item of list.results){
-
         
         let urlItem = item.urls[0].url;
             contentHTML += `
@@ -117,7 +116,6 @@ const createCard = (list : DataContainer , classCont, textBelow)=>{
 //-----------SEARCH BY FILTERS------------
 
 let params2 = new URLSearchParams(window.location.search);
-let storage= getStorage();
 
 const getFormInfo = (event)=>{
     event.preventDefault();
@@ -133,18 +131,11 @@ const getFormInfo = (event)=>{
     params2.set('type', searchData.type);
     params2.set('order', searchData.order);
     window.location.href='index.html?'+params2.toString();
-    return searchData;
+
 };
 
 formSearch.addEventListener('submit', getFormInfo);
 
-//--------SET LOCAL STORAGE---------------
-
-storage.wordToSearch=params2.get('wordToSearch');
-storage.type= params2.get('type');
-storage.order=params2.get('order');
-
-localStorage.setItem('to-search-storage', JSON.stringify(storage));
 
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 
@@ -154,23 +145,30 @@ const url1: string = `${baseUrl1}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${of
 const url2: string = `${baseUrl2}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
 
 const getMarvelSection = async(url, className, itemName)=>{
-    const response = await fetch(url);
-    const items = await response.json();
+    try{
+        const response = await fetch(url);
+        const items = await response.json();
 
-    const listItems= items.data;
-    const resultsItems= listItems.results;
+        const listItems= items.data;
+        const resultsItems= listItems.results;
 
-
-        for(const item of resultsItems){
-            if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
-                item.thumbnail.path='./assets/images/clean'
+        if(className==formSearch.type.value){
+            for(const item of resultsItems){
+                if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+                    item.thumbnail.path='./assets/images/clean'
+                }
             }
+            createCard(items.data, className, itemName);
+            getNumberPages(items.data.total, items.data.limit);
         }
-        createCard(items.data, className, itemName);
-        getNumberPages(items.data.total, items.data.limit);
-    
 
-}
+    }
+    catch(err){
+        alert("La API esta fuera de servicio") 
+
+    };
+
+};
 
 getMarvelSection(url1, comicClass, titleComic);
 getMarvelSection(url2, characterClass, nameCharacter);

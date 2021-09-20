@@ -153,10 +153,4 @@ type DataContainer= {
 	results: Comic[] | Character [],
 }
 
-//-----LOCA STORAGE------
 
-type LocalStorage = {
-	wordToSearch ?: string,
-	type : string,
-	order : string,
-}
