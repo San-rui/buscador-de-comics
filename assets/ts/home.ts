@@ -70,12 +70,10 @@ const createButtons =(pagesNumber, container)=>{
 
 //----------- CREATE CARD -------------
 
-const comicClass = "comic";
-const characterClass = "personajes";
-const titleComic= "title";
-const nameCharacter= "name";
+const comicClass = "comics";
+const characterClass = "characters";
 
-const createCard = (list : DataContainer , classCont, textBelow)=>{
+const createCard = (list : DataContainer , classCont, resultss)=>{
 
     const results = document.createElement('div');
     let contentHTML = '';
@@ -90,14 +88,14 @@ const createCard = (list : DataContainer , classCont, textBelow)=>{
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
 
-    for(const item of list.results){
+    for(const item of resultss){
         
         let urlItem = item.urls[0].url;
             contentHTML += `
             <div class=${classCont}>
                 <a href="./pages/info.html">
                     <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}" class="img-thumbnail">
-                    <h3>${item[textBelow]}</h3>
+                    <h3>${item["name"] || item["title"]}</h3>
                     </a>
             </div>
         ` 
@@ -127,6 +125,8 @@ const getFormInfo = (event)=>{
 		order: form.order.value,
 	};
 
+    console.log("aqui", form)
+
     params2.set('wordToSearch', searchData.wordToSearch);
     params2.set('type', searchData.type);
     params2.set('order', searchData.order);
@@ -137,46 +137,84 @@ const getFormInfo = (event)=>{
 formSearch.addEventListener('submit', getFormInfo);
 
 
+//-------------SEARCH FILTERS-----------------
+
+const orderBy = (arrayAux, param)=>{
+    const order = params2.get('order');
+
+    switch (order) {
+        case 'a-z': arrayAux = arrayAux.sort((a, b) => {if (a[param]> b[param])  {return 1
+        }if (a[param] < b[param]) {
+            return -1;
+        }return 0;});
+        break
+
+        case 'z-a':arrayAux= arrayAux.sort((b, a) => {if (a[param] > b[param]) {return 1
+        }if (a[param]< b[param]) {
+            return -1;
+        }return 0;})
+        break
+
+        case 'mas-viejos':arrayAux= arrayAux.sort((a, b) => new Date(a.modified).getTime() - new Date(b.modified).getTime());
+        break
+
+        case 'mas-nuevos':arrayAux= arrayAux.sort((a, b) => new Date(b.modified).getTime() - new Date(a.modified).getTime());
+        break
+
+        default:
+    }
+    return arrayAux
+
+};
+
+
+const updateResults = (results) =>{
+    const type = params2.get('type');
+    
+    let filtersAppy=[];
+
+    if(type=="comics"){
+        filtersAppy= results.filter(Element =>Element.characters);
+        filtersAppy=orderBy(filtersAppy, "title");
+    }else{
+        filtersAppy= results.filter(Element =>Element.comics);
+        filtersAppy=orderBy(filtersAppy, "name");
+    }
+    console.log("sss", filtersAppy);
+    return filtersAppy
+}
+
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 
 let offset= (pageClicked) ? Number(pageClicked) *20-20 : 0;
+const typeData= (params2.get("type")) ? (params2.get("type")): "comics";
+const url: string = `${baseUrl}${typeData}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
 
-const url1: string = `${baseUrl1}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
-const url2: string = `${baseUrl2}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
 
-const getMarvelSection = async(url, className, itemName)=>{
+const getMarvelSection = async(url, className)=>{ 
     try{
         const response = await fetch(url);
         const items = await response.json();
 
         const listItems= items.data;
         const resultsItems= listItems.results;
-
-        if(className==formSearch.type.value){
-            for(const item of resultsItems){
-                if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
-                    item.thumbnail.path='./assets/images/clean'
-                }
+        const array = updateResults(resultsItems).length!==0? updateResults(resultsItems): resultsItems;
+        
+        for(const item of array){
+            if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+                item.thumbnail.path='./assets/images/clean'
             }
-            createCard(items.data, className, itemName);
-            getNumberPages(items.data.total, items.data.limit);
         }
-
+        createCard(items.data, className, array);
+        getNumberPages(items.data.total, items.data.limit);
+    
     }
     catch(err){
-        alert("La API esta fuera de servicio") 
-
+        alert("La API esta fuera de servicio"); 
     };
-
 };
 
-getMarvelSection(url1, comicClass, titleComic);
-getMarvelSection(url2, characterClass, nameCharacter);
-
-
-
-
-
+getMarvelSection(url, typeData);
 
 
 

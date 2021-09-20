@@ -24,11 +24,11 @@ var controlsSearch = [
         id: "type",
         options: [
             {
-                id: "comic",
+                id: "comics",
                 name: "COMIC"
             },
             {
-                id: "personajes",
+                id: "characters",
                 name: "PERSONAJES"
             },
         ]
@@ -119,7 +119,6 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
 };
 makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
 //-----------------API COMICS---------------
-var baseUrl1 = "https://gateway.marvel.com:443/v1/public/comics";
-var baseUrl2 = "https://gateway.marvel.com:443/v1/public/characters";
+var baseUrl = "https://gateway.marvel.com:443/v1/public/";
 var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 var hash = "bca60ca0198d3e720005add814760dde";
