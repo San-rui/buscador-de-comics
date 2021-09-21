@@ -125,8 +125,6 @@ const getFormInfo = (event)=>{
 		order: form.order.value,
 	};
 
-    console.log("aqui", form)
-
     params2.set('wordToSearch', searchData.wordToSearch);
     params2.set('type', searchData.type);
     params2.set('order', searchData.order);
@@ -180,7 +178,6 @@ const updateResults = (results) =>{
         filtersAppy= results.filter(Element =>Element.comics);
         filtersAppy=orderBy(filtersAppy, "name");
     }
-    console.log("sss", filtersAppy);
     return filtersAppy
 }
 
@@ -188,7 +185,24 @@ const updateResults = (results) =>{
 
 let offset= (pageClicked) ? Number(pageClicked) *20-20 : 0;
 const typeData= (params2.get("type")) ? (params2.get("type")): "comics";
-const url: string = `${baseUrl}${typeData}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+const toSearch=encodeURIComponent(params2.get('wordToSearch'));
+
+//---------------------------------------------------
+
+const getURL = () =>{
+    let url="";
+    
+    if(params2.get("type")==null || toSearch==""){
+        url = `${baseUrl}${typeData}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+    } else if(typeData=="comics"){
+        url=  `${baseUrl}${typeData}?title=${toSearch}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+    } else if(typeData=="characters"){
+        url=  `${baseUrl}${typeData}?name=${toSearch}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+    }
+    return url;
+}
+
+const urlToUse= getURL();
 
 
 const getMarvelSection = async(url, className)=>{ 
@@ -199,6 +213,8 @@ const getMarvelSection = async(url, className)=>{
         const listItems= items.data;
         const resultsItems= listItems.results;
         const array = updateResults(resultsItems).length!==0? updateResults(resultsItems): resultsItems;
+
+        console.log(array)
         
         for(const item of array){
             if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
@@ -214,7 +230,7 @@ const getMarvelSection = async(url, className)=>{
     };
 };
 
-getMarvelSection(url, typeData);
+getMarvelSection(urlToUse, typeData);
 
 
 
