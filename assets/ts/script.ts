@@ -19,7 +19,7 @@ createHeader();
 //-------------SEARCH BAR-------------
 const controlsSearch = [
 	{
-		type: "text",
+		type: "search",
 		name: "addSearch",
 		id: "addSearch",
 	},

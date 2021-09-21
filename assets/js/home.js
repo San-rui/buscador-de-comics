@@ -128,7 +128,6 @@ var getFormInfo = function (event) {
         type: form.type.value,
         order: form.order.value
     };
-    console.log("aqui", form);
     params2.set('wordToSearch', searchData.wordToSearch);
     params2.set('type', searchData.type);
     params2.set('order', searchData.order);
@@ -182,13 +181,27 @@ var updateResults = function (results) {
         filtersAppy = results.filter(function (Element) { return Element.comics; });
         filtersAppy = orderBy(filtersAppy, "name");
     }
-    console.log("sss", filtersAppy);
     return filtersAppy;
 };
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
 var typeData = (params2.get("type")) ? (params2.get("type")) : "comics";
-var url = "" + baseUrl + typeData + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+var toSearch = encodeURIComponent(params2.get('wordToSearch'));
+//---------------------------------------------------
+var getURL = function () {
+    var url = "";
+    if (params2.get("type") == null || toSearch == "") {
+        url = "" + baseUrl + typeData + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+    }
+    else if (typeData == "comics") {
+        url = "" + baseUrl + typeData + "?title=" + toSearch + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+    }
+    else if (typeData == "characters") {
+        url = "" + baseUrl + typeData + "?name=" + toSearch + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+    }
+    return url;
+};
+var urlToUse = getURL();
 var getMarvelSection = function (url, className) { return __awaiter(_this, void 0, void 0, function () {
     var response, items, listItems, resultsItems, array, _i, array_1, item, err_1;
     return __generator(this, function (_a) {
@@ -204,6 +217,7 @@ var getMarvelSection = function (url, className) { return __awaiter(_this, void 
                 listItems = items.data;
                 resultsItems = listItems.results;
                 array = updateResults(resultsItems).length !== 0 ? updateResults(resultsItems) : resultsItems;
+                console.log(array);
                 for (_i = 0, array_1 = array; _i < array_1.length; _i++) {
                     item = array_1[_i];
                     if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
@@ -223,4 +237,4 @@ var getMarvelSection = function (url, className) { return __awaiter(_this, void 
         }
     });
 }); };
-getMarvelSection(url, typeData);
+getMarvelSection(urlToUse, typeData);
