@@ -98,6 +98,13 @@ body {
     background-color: #081324;
     color: whitesmoke; }
 
+.container-all-info {
+  display: flex;
+  margin-bottom: 2rem; }
+  .container-all-info img {
+    width: 30%;
+    margin-right: 2rem; }
+
 .form-search {
   display: flex;
   justify-content: space-between; }

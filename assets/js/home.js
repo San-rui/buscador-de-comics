@@ -67,8 +67,8 @@ var createButtons = function (pagesNumber, container) {
     for (var _i = 0, auxArray_1 = auxArray; _i < auxArray_1.length; _i++) {
         var page = auxArray_1[_i];
         //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
-        (!pageClicked || pageClicked == 1) ? previousPage.classList.add('hidden') : previousPage.setAttribute('href', "./index.html?page=" + (pageClicked - 1));
-        (pageClicked == arrayPageNumber.length) ? nextPage.classList.add('hidden') : nextPage.setAttribute('href', "./index.html?page=" + (pageClicked + 1));
+        (!pageClicked || pageClicked == 1) ? previousPage.classList.add('hidden') : previousPage.setAttribute('href', "./index.html?page=" + (pageClicked - 1) + "&wordTosearch=" + params.get('wordToSearch') + "&orderBy=" + params.get('order'));
+        (pageClicked == arrayPageNumber.length) ? nextPage.classList.add('hidden') : nextPage.setAttribute('href', "./index.html?page=" + (pageClicked + 1) + "&wordTosearch=" + params.get('wordToSearch') + "&orderBy=" + params.get('order'));
         //---CREATE LIST OF ANCHORS-----
         var itemList = document.createElement('li');
         itemList.classList.add('pagination-number');
@@ -81,7 +81,8 @@ var createButtons = function (pagesNumber, container) {
         }
         ;
         //---SET QUERY PARAMS TO NUMBER BUTTONS-----
-        pageNumner.setAttribute('href', "./index.html?page=" + pageNumner.id);
+        params.set('page', pageNumner.id);
+        pageNumner.setAttribute('href', "./index.html?" + params.toString());
         //---SET ITEMS INTO CONTAINER-----
         listUl.appendChild(itemList);
         containerPages.appendChild(listUl);
@@ -90,6 +91,7 @@ var createButtons = function (pagesNumber, container) {
     }
     ;
 };
+var paramsInfo = new URLSearchParams(window.location.search);
 //----------- CREATE CARD -------------
 var comicClass = "comics";
 var characterClass = "characters";
@@ -105,10 +107,13 @@ var createCard = function (list, classCont, resultss) {
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
+    var name = (classCont == "comics") ? "title" : "name";
     for (var _i = 0, resultss_1 = resultss; _i < resultss_1.length; _i++) {
         var item = resultss_1[_i];
+        var detail = item.id;
+        paramsInfo.set('info', detail);
         var urlItem = item.urls[0].url;
-        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n        ";
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + paramsInfo.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n        ";
     }
     ;
     var pagesTotal = getNumberPages(list.total, list.limit);
@@ -119,7 +124,7 @@ var createCard = function (list, classCont, resultss) {
     main.appendChild(results);
 };
 //-----------SEARCH BY FILTERS------------
-var params2 = new URLSearchParams(window.location.search);
+//let params2 = new URLSearchParams(window.location.search);
 var getFormInfo = function (event) {
     event.preventDefault();
     var form = event.target;
@@ -128,80 +133,58 @@ var getFormInfo = function (event) {
         type: form.type.value,
         order: form.order.value
     };
-    params2.set('wordToSearch', searchData.wordToSearch);
-    params2.set('type', searchData.type);
-    params2.set('order', searchData.order);
-    window.location.href = 'index.html?' + params2.toString();
+    params.set('wordToSearch', searchData.wordToSearch);
+    params.set('type', searchData.type);
+    params.set('order', searchData.order);
+    window.location.href = 'index.html?' + params.toString();
 };
 formSearch.addEventListener('submit', getFormInfo);
+console.log("Params", params.toString());
 //-------------SEARCH FILTERS-----------------
-var orderBy = function (arrayAux, param) {
-    var order = params2.get('order');
-    switch (order) {
-        case 'a-z':
-            arrayAux = arrayAux.sort(function (a, b) {
-                if (a[param] > b[param]) {
-                    return 1;
-                }
-                if (a[param] < b[param]) {
-                    return -1;
-                }
-                return 0;
-            });
-            break;
-        case 'z-a':
-            arrayAux = arrayAux.sort(function (b, a) {
-                if (a[param] > b[param]) {
-                    return 1;
-                }
-                if (a[param] < b[param]) {
-                    return -1;
-                }
-                return 0;
-            });
-            break;
-        case 'mas-viejos':
-            arrayAux = arrayAux.sort(function (a, b) { return new Date(a.modified).getTime() - new Date(b.modified).getTime(); });
-            break;
-        case 'mas-nuevos':
-            arrayAux = arrayAux.sort(function (a, b) { return new Date(b.modified).getTime() - new Date(a.modified).getTime(); });
-            break;
-        default:
-    }
-    return arrayAux;
-};
 var updateResults = function (results) {
-    var type = params2.get('type');
+    var type = params.get('type');
     var filtersAppy = [];
     if (type == "comics") {
         filtersAppy = results.filter(function (Element) { return Element.characters; });
-        filtersAppy = orderBy(filtersAppy, "title");
     }
     else {
         filtersAppy = results.filter(function (Element) { return Element.comics; });
-        filtersAppy = orderBy(filtersAppy, "name");
     }
     return filtersAppy;
 };
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
-var typeData = (params2.get("type")) ? (params2.get("type")) : "comics";
-var toSearch = encodeURIComponent(params2.get('wordToSearch'));
-//---------------------------------------------------
+var typeData = (params.get("type")) ? (params.get("type")) : "comics";
+var orderData = (params.get("order"));
+var toSearch = encodeURIComponent(params.get('wordToSearch'));
+console.log("tosearch", params.get('wordToSearch'));
+//-------------------GET URL --------------------------------
 var getURL = function () {
     var url = "";
-    if (params2.get("type") == null || toSearch == "") {
-        url = "" + baseUrl + typeData + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+    if (params.get("type") == null) {
+        url = "" + baseUrl + typeData + "?orderBy=title&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+        console.log("URL:", url);
     }
-    else if (typeData == "comics") {
-        url = "" + baseUrl + typeData + "?title=" + toSearch + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+    else if (typeData == "comics" && toSearch !== "") {
+        url = "" + baseUrl + typeData + "?title=" + toSearch + "&orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+        console.log("URL:", url);
     }
-    else if (typeData == "characters") {
-        url = "" + baseUrl + typeData + "?name=" + toSearch + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+    else if (typeData == "comics" && toSearch == "") {
+        url = "" + baseUrl + typeData + "?orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+        console.log("URL:", url);
+    }
+    else if (typeData == "characters" && toSearch !== "") {
+        url = "" + baseUrl + typeData + "?name=" + toSearch + "&orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+        console.log("URL:", url);
+    }
+    else if (typeData == "characters" && toSearch == "") {
+        url = "" + baseUrl + typeData + "?orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
+        console.log("URL:", url);
     }
     return url;
 };
 var urlToUse = getURL();
+//-------------GET MARVEL SELECTION: COMICS OR CHARACTERS---------------
 var getMarvelSection = function (url, className) { return __awaiter(_this, void 0, void 0, function () {
     var response, items, listItems, resultsItems, array, _i, array_1, item, err_1;
     return __generator(this, function (_a) {
@@ -217,7 +200,6 @@ var getMarvelSection = function (url, className) { return __awaiter(_this, void 
                 listItems = items.data;
                 resultsItems = listItems.results;
                 array = updateResults(resultsItems).length !== 0 ? updateResults(resultsItems) : resultsItems;
-                console.log(array);
                 for (_i = 0, array_1 = array; _i < array_1.length; _i++) {
                     item = array_1[_i];
                     if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {

@@ -25,34 +25,39 @@ var controlsSearch = [
         options: [
             {
                 id: "comics",
-                name: "COMIC"
+                name: "COMIC",
+                options: [
+                    {
+                        id: "title",
+                        name: "A-Z"
+                    },
+                    {
+                        id: "-title",
+                        name: "Z-A"
+                    },
+                    {
+                        id: "modified",
+                        name: "Más nuevos"
+                    },
+                    {
+                        id: "-modified",
+                        name: "Más viejos"
+                    },
+                ]
             },
             {
                 id: "characters",
-                name: "PERSONAJES"
-            },
-        ]
-    },
-    {
-        type: "select",
-        name: "Orden",
-        id: "order",
-        options: [
-            {
-                id: "a-z",
-                name: "A-Z"
-            },
-            {
-                id: "z-a",
-                name: "Z-A"
-            },
-            {
-                id: "mas-nuevos",
-                name: "Más nuevos"
-            },
-            {
-                id: "mas-viejos",
-                name: "Más viejos"
+                name: "PERSONAJES",
+                options: [
+                    {
+                        id: "name",
+                        name: "A-Z"
+                    },
+                    {
+                        id: "-name",
+                        name: "Z-A"
+                    },
+                ]
             },
         ]
     },
@@ -78,9 +83,10 @@ tittleSearch.appendChild(document.createTextNode("Búsqueda"));
 inputContainer.classList.add('input-container');
 selectContainer.classList.add('select-container');
 var makeForm = function (form, ctrls, parent, containerSearch) {
+    var elem;
+    var elemOrder;
     for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
         var control = ctrls_1[_i];
-        var elem = void 0;
         if (control.type === "select") {
             var labelselect = document.createElement('label');
             labelselect.appendChild(document.createTextNode(control.name));
@@ -88,14 +94,30 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
         }
         switch (control.type) {
             case "select":
-                elem = document.createElement("select");
-                for (var _a = 0, _b = control.options; _a < _b.length; _a++) {
-                    var option = _b[_a];
-                    var op = document.createElement("option");
-                    elem.appendChild(op);
-                    op.value = option.id.toString();
-                    op.appendChild(document.createTextNode(option.name));
-                    selectContainer.appendChild(elem);
+                if (control.type == "select" && control.options !== undefined) {
+                    var labelselectOrder = document.createElement('label');
+                    labelselectOrder.appendChild(document.createTextNode("ORDEN"));
+                    elem = document.createElement("select");
+                    elemOrder = document.createElement("select");
+                    elemOrder.id = "order";
+                    for (var _a = 0, _b = control.options; _a < _b.length; _a++) {
+                        var cont = _b[_a];
+                        var op = document.createElement("option");
+                        op.value = cont.id.toString();
+                        op.appendChild(document.createTextNode(cont.name));
+                        elem.appendChild(op);
+                        selectContainer.appendChild(elem);
+                        selectContainer.appendChild(labelselectOrder);
+                        selectContainer.appendChild(elemOrder);
+                        var options = cont.options;
+                        for (var _c = 0, options_1 = options; _c < options_1.length; _c++) {
+                            var item = options_1[_c];
+                            var op_1 = document.createElement("option");
+                            op_1.value = item.id.toString();
+                            op_1.appendChild(document.createTextNode(item.name));
+                            elemOrder.appendChild(op_1);
+                        }
+                    }
                 }
                 break;
             default:
