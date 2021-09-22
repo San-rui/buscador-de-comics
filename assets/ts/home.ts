@@ -40,8 +40,8 @@ const createButtons =(pagesNumber, container)=>{
     for(const page of auxArray){
 
         //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
-        (!pageClicked || pageClicked==1)? previousPage.classList.add('hidden') : previousPage.setAttribute('href',  `./index.html?page=${pageClicked-1}`);
-        (pageClicked==arrayPageNumber.length)? nextPage.classList.add('hidden') :nextPage.setAttribute('href',  `./index.html?page=${pageClicked+1}`);
+        (!pageClicked || pageClicked==1)? previousPage.classList.add('hidden') : previousPage.setAttribute('href',  `./index.html?page=${pageClicked-1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
+        (pageClicked==arrayPageNumber.length)? nextPage.classList.add('hidden') :nextPage.setAttribute('href',  `./index.html?page=${pageClicked+1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
 
         //---CREATE LIST OF ANCHORS-----
         const itemList= document.createElement('li');
@@ -54,9 +54,9 @@ const createButtons =(pagesNumber, container)=>{
         if(Number(pageNumner.innerHTML)==pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1){
             itemList.classList.add('clicked-number');
         };
-
         //---SET QUERY PARAMS TO NUMBER BUTTONS-----
-        pageNumner.setAttribute('href', `./index.html?page=${pageNumner.id}`);
+        params.set('page', pageNumner.id);
+        pageNumner.setAttribute('href', `./index.html?${params.toString()}`);
         
         //---SET ITEMS INTO CONTAINER-----
         listUl.appendChild(itemList);
@@ -67,6 +67,7 @@ const createButtons =(pagesNumber, container)=>{
     };
 };
 
+let paramsInfo= new URLSearchParams(window.location.search);
 
 //----------- CREATE CARD -------------
 
@@ -88,12 +89,15 @@ const createCard = (list : DataContainer , classCont, resultss)=>{
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
 
+    let name=(classCont=="comics")? "title":"name";
+
     for(const item of resultss){
-        
+        let detail=item.id;
+        paramsInfo.set('info', detail);
         let urlItem = item.urls[0].url;
             contentHTML += `
             <div class=${classCont}>
-                <a href="./pages/info.html">
+                <a href="./pages/info.html?${paramsInfo.toString()}">
                     <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}" class="img-thumbnail">
                     <h3>${item["name"] || item["title"]}</h3>
                     </a>
@@ -113,7 +117,7 @@ const createCard = (list : DataContainer , classCont, resultss)=>{
 
 //-----------SEARCH BY FILTERS------------
 
-let params2 = new URLSearchParams(window.location.search);
+//let params2 = new URLSearchParams(window.location.search);
 
 const getFormInfo = (event)=>{
     event.preventDefault();
@@ -125,58 +129,28 @@ const getFormInfo = (event)=>{
 		order: form.order.value,
 	};
 
-    params2.set('wordToSearch', searchData.wordToSearch);
-    params2.set('type', searchData.type);
-    params2.set('order', searchData.order);
-    window.location.href='index.html?'+params2.toString();
-
+    params.set('wordToSearch', searchData.wordToSearch);
+    params.set('type', searchData.type);
+    params.set('order', searchData.order);
+    window.location.href='index.html?'+params.toString();
+    
 };
 
 formSearch.addEventListener('submit', getFormInfo);
 
+console.log("Params",params.toString())
+
 
 //-------------SEARCH FILTERS-----------------
 
-const orderBy = (arrayAux, param)=>{
-    const order = params2.get('order');
-
-    switch (order) {
-        case 'a-z': arrayAux = arrayAux.sort((a, b) => {if (a[param]> b[param])  {return 1
-        }if (a[param] < b[param]) {
-            return -1;
-        }return 0;});
-        break
-
-        case 'z-a':arrayAux= arrayAux.sort((b, a) => {if (a[param] > b[param]) {return 1
-        }if (a[param]< b[param]) {
-            return -1;
-        }return 0;})
-        break
-
-        case 'mas-viejos':arrayAux= arrayAux.sort((a, b) => new Date(a.modified).getTime() - new Date(b.modified).getTime());
-        break
-
-        case 'mas-nuevos':arrayAux= arrayAux.sort((a, b) => new Date(b.modified).getTime() - new Date(a.modified).getTime());
-        break
-
-        default:
-    }
-    return arrayAux
-
-};
-
-
 const updateResults = (results) =>{
-    const type = params2.get('type');
-    
+    const type = params.get('type');
     let filtersAppy=[];
 
     if(type=="comics"){
         filtersAppy= results.filter(Element =>Element.characters);
-        filtersAppy=orderBy(filtersAppy, "title");
     }else{
         filtersAppy= results.filter(Element =>Element.comics);
-        filtersAppy=orderBy(filtersAppy, "name");
     }
     return filtersAppy
 }
@@ -184,26 +158,38 @@ const updateResults = (results) =>{
 //-------------GET COMICS AND CHARACTERS FROM MARVEL API-------
 
 let offset= (pageClicked) ? Number(pageClicked) *20-20 : 0;
-const typeData= (params2.get("type")) ? (params2.get("type")): "comics";
-const toSearch=encodeURIComponent(params2.get('wordToSearch'));
+const typeData= (params.get("type")) ? (params.get("type")): "comics";
+const orderData=(params.get("order"))
+const toSearch=encodeURIComponent(params.get('wordToSearch'));
+console.log("tosearch", params.get('wordToSearch'))
 
-//---------------------------------------------------
+//-------------------GET URL --------------------------------
 
 const getURL = () =>{
     let url="";
     
-    if(params2.get("type")==null || toSearch==""){
-        url = `${baseUrl}${typeData}?ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
-    } else if(typeData=="comics"){
-        url=  `${baseUrl}${typeData}?title=${toSearch}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
-    } else if(typeData=="characters"){
-        url=  `${baseUrl}${typeData}?name=${toSearch}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+    if(params.get("type")==null){
+        url = `${baseUrl}${typeData}?orderBy=title&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        console.log("URL:",url)
+    } else if(typeData=="comics" && toSearch!==""){
+        url=  `${baseUrl}${typeData}?title=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        console.log("URL:",url)
+    } else if(typeData=="comics" && toSearch==""){
+        url=  `${baseUrl}${typeData}?orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        console.log("URL:",url)
+    }else if(typeData=="characters" && toSearch!==""){
+        url=  `${baseUrl}${typeData}?name=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        console.log("URL:",url)
+    }else if(typeData=="characters" && toSearch==""){
+        url=  `${baseUrl}${typeData}?orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        console.log("URL:",url)
     }
     return url;
 }
 
 const urlToUse= getURL();
 
+//-------------GET MARVEL SELECTION: COMICS OR CHARACTERS---------------
 
 const getMarvelSection = async(url, className)=>{ 
     try{
@@ -213,8 +199,6 @@ const getMarvelSection = async(url, className)=>{
         const listItems= items.data;
         const resultsItems= listItems.results;
         const array = updateResults(resultsItems).length!==0? updateResults(resultsItems): resultsItems;
-
-        console.log(array)
         
         for(const item of array){
             if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
