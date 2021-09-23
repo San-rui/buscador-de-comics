@@ -1,4 +1,6 @@
 
+//------------------VARIABLES-------------------------
+
 const url3: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
 const url4: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
 
@@ -7,11 +9,6 @@ let info= encodeURIComponent(params3.get('info'));
 let type= (params3.get("type")) ? (params3.get("type")): "comics"
 let toSearchInfo = params3.get('wordToSearch');
 
-
-console.log(info)
-console.log(type)
-
-//------------------CREATE CARD INFO-------------------------
 const containerAllInfo= document.createElement('div');
 containerAllInfo.classList.add('container-all-info');
 
@@ -23,6 +20,66 @@ const title= document.createElement('h3');
 const titleDescription= document.createElement('h4');
 titleDescription.appendChild(document.createTextNode("Descripción:"));
 const description= document.createElement('p');
+
+let urlAssociated=""
+const containerInfoAssociated = document.createElement('div');
+containerInfoAssociated.classList.add('container-info-associated');
+
+const containerInfoPlusPages= document.createElement('div');
+
+
+const containerPagination= document.createElement('div');
+
+
+//------------------INFO ASSOCIATED-------------------------
+
+const infoAssociated = (data)=>{
+
+    const kind= (type=="comics")? "characters": "comics";
+    const results= (type=="comics")?data[0].characters.items: data[0].comics.items;
+    let arrayReults=[];
+
+    for(let item of results){
+        const array= item.resourceURI.split('/');
+        const urlAssociatedId= `https://gateway.marvel.com:443/v1/public/${kind}/${array[array.length-1]}?`;
+        urlAssociated=  `${urlAssociatedId}&ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
+        arrayReults.push(urlAssociated)
+    }
+    return arrayReults;
+
+};
+
+//------------------CREATE CARD INFO ASSOCIATED-------------------------
+
+
+const createCardInfoAssociated =(data)=>{
+    let contentHTML = '';
+    const containerInfo=document.createElement('div');
+    const classInfo = (type=="comics")? "characters": "comics";
+
+    const id= data[0].id;
+
+    params3.set('info', id);
+    params3.set('type', classInfo);
+
+    contentHTML=`
+                <div class="${classInfo}">
+                    <a href="./info.html?${params3.toString()}">
+                        <img src="${data[0].thumbnail.path}.${data[0].thumbnail.extension}" alt="${data[0].name || data[0].title}">
+                        <h3>${data[0]["name"] || data[0]["title"]}</h3>
+                    </a>
+                </div>
+    `
+
+    containerInfo.innerHTML=contentHTML;
+    containerInfoAssociated.appendChild(containerInfo);
+    containerInfoPlusPages.appendChild(containerInfoAssociated);
+    containerInfoPlusPages.appendChild(containerPagination);
+    main.appendChild(containerInfoPlusPages);
+};
+
+
+//------------------CREATE CARD INFO COMICS-------------------------
 
 const createComicCard = (data)=>{
     title.innerHTML=data[0].title;
@@ -36,12 +93,12 @@ const createComicCard = (data)=>{
     titleScreenwriter.appendChild(document.createTextNode("Guionistas:"));
     const screenwrite= document.createElement('p');
 
-    if(data[0].creators.items){
-        console.log(data[0].creators.items)
+    let arrayCreators= data[0].creators.items
+    for(let item of arrayCreators){
+        if(item.role=="writer"){
+            screenwrite.innerHTML=item.name
+        }
     }
-    
-    //screenwrite.innerHTML=data[0].creators
-
 
     description.innerHTML=data[0].description;
 
@@ -52,7 +109,9 @@ const createComicCard = (data)=>{
 
     containerInfo.appendChild(titleScreenwriter);
     containerInfo.appendChild(screenwrite);
-}
+};
+
+//------------------CREATE CARD INFO -------------------------
 
 const createInfoCard = (data)=>{
     
@@ -88,6 +147,23 @@ const getURLInfo = () =>{
 
 const urlToUseInfo= getURLInfo();
 
+//---------------GET INFO ASSOCISTED FROM API MARVEL-------------
+
+const getInfoAssociated = async(url)=>{
+    const response = await fetch(url);
+    const items = await response.json();
+    const listItems= items.data;
+    const resultsItems= listItems.results;
+
+    for(const item of resultsItems){
+        if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+            item.thumbnail.path='../assets/images/clean'
+        }
+    }
+
+    createCardInfoAssociated(resultsItems);
+};
+
 //---------------GET INFO FROM API MARVEL-------------
 
 const getMarvelInfo = async(url)=>{
@@ -97,17 +173,22 @@ const getMarvelInfo = async(url)=>{
     const listItems= items.data;
     const resultsItems= listItems.results;
 
-    //console.log("result",resultsItems[0].creators.items[1].name)
-
     for(const item of resultsItems){
         if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
             item.thumbnail.path='../assets/images/clean'
         }
-    }
+    };
 
-    createInfoCard(resultsItems)
+    createInfoCard(resultsItems);
+    infoAssociated(resultsItems);
+    const infoResults= infoAssociated(resultsItems);
+    for(const item of infoResults){
+        getInfoAssociated(item)
+    };
+    createButtons (infoResults.length, containerPagination)
 
 }
 
 getMarvelInfo(urlToUseInfo);
+
 

@@ -142,5 +142,61 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
 makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
 //-----------------API COMICS---------------
 var baseUrl = "https://gateway.marvel.com:443/v1/public/";
-var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
-var hash = "bca60ca0198d3e720005add814760dde";
+var apiKey = "11b3c5b160d3bbe8c3663a93aedc5517";
+var hash = "657308e35113f895458620b0b5ec9384";
+//-------------------GET NUMBER OF PAGES---------------
+var getNumberPages = function (total, limitPerPage) {
+    var pages = 0;
+    return pages = Math.ceil(total / limitPerPage);
+};
+//------------- PAGINATION-----------------------
+var params = new URLSearchParams(window.location.search);
+var pageClicked = Number(params.get("page"));
+var previousPage;
+var nextPage;
+var createButtons = function (pagesNumber, container) {
+    var count = 0;
+    var arrayPageNumber = [];
+    var auxArray = (pageClicked > 5) ? [pageClicked - 4, pageClicked - 3, pageClicked - 2, pageClicked - 1, pageClicked] : [1, 2, 3, 4, 5];
+    var containerPages = document.createElement('div');
+    containerPages.classList.add('container-pages');
+    var listUl = document.createElement('ul');
+    previousPage = document.createElement('a');
+    previousPage.innerHTML = "Página anterior";
+    nextPage = document.createElement('a');
+    nextPage.innerHTML = "Página Siguiente";
+    previousPage.classList.add('page-next-previous');
+    nextPage.classList.add('page-next-previous');
+    containerPages.appendChild(previousPage);
+    for (var i = 0; i < pagesNumber; i++) {
+        count++;
+        arrayPageNumber.push(count);
+    }
+    ;
+    for (var _i = 0, auxArray_1 = auxArray; _i < auxArray_1.length; _i++) {
+        var page = auxArray_1[_i];
+        //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
+        (!pageClicked || pageClicked == 1) ? previousPage.classList.add('hidden') : previousPage.setAttribute('href', "./index.html?page=" + (pageClicked - 1) + "&wordTosearch=" + params.get('wordToSearch') + "&orderBy=" + params.get('order'));
+        (pageClicked == arrayPageNumber.length) ? nextPage.classList.add('hidden') : nextPage.setAttribute('href', "./index.html?page=" + (pageClicked + 1) + "&wordTosearch=" + params.get('wordToSearch') + "&orderBy=" + params.get('order'));
+        //---CREATE LIST OF ANCHORS-----
+        var itemList = document.createElement('li');
+        itemList.classList.add('pagination-number');
+        var pageNumner = document.createElement('a');
+        pageNumner.setAttribute('id', "" + page);
+        itemList.appendChild(pageNumner);
+        pageNumner.innerHTML = "" + page;
+        if (Number(pageNumner.innerHTML) == pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1) {
+            itemList.classList.add('clicked-number');
+        }
+        ;
+        //---SET QUERY PARAMS TO NUMBER BUTTONS-----
+        params.set('page', pageNumner.id);
+        pageNumner.setAttribute('href', "./index.html?" + params.toString());
+        //---SET ITEMS INTO CONTAINER-----
+        listUl.appendChild(itemList);
+        containerPages.appendChild(listUl);
+        containerPages.appendChild(nextPage);
+        container.appendChild(containerPages);
+    }
+    ;
+};

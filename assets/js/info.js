@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+//------------------VARIABLES-------------------------
 var _this = this;
 var url3 = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
 var url4 = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
@@ -41,9 +42,6 @@ var params3 = new URLSearchParams(window.location.search);
 var info = encodeURIComponent(params3.get('info'));
 var type = (params3.get("type")) ? (params3.get("type")) : "comics";
 var toSearchInfo = params3.get('wordToSearch');
-console.log(info);
-console.log(type);
-//------------------CREATE CARD INFO-------------------------
 var containerAllInfo = document.createElement('div');
 containerAllInfo.classList.add('container-all-info');
 var containerInfo = document.createElement('div');
@@ -53,6 +51,41 @@ var title = document.createElement('h3');
 var titleDescription = document.createElement('h4');
 titleDescription.appendChild(document.createTextNode("Descripción:"));
 var description = document.createElement('p');
+var urlAssociated = "";
+var containerInfoAssociated = document.createElement('div');
+containerInfoAssociated.classList.add('container-info-associated');
+var containerInfoPlusPages = document.createElement('div');
+var containerPagination = document.createElement('div');
+//------------------INFO ASSOCIATED-------------------------
+var infoAssociated = function (data) {
+    var kind = (type == "comics") ? "characters" : "comics";
+    var results = (type == "comics") ? data[0].characters.items : data[0].comics.items;
+    var arrayReults = [];
+    for (var _i = 0, results_1 = results; _i < results_1.length; _i++) {
+        var item = results_1[_i];
+        var array = item.resourceURI.split('/');
+        var urlAssociatedId = "https://gateway.marvel.com:443/v1/public/" + kind + "/" + array[array.length - 1] + "?";
+        urlAssociated = urlAssociatedId + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
+        arrayReults.push(urlAssociated);
+    }
+    return arrayReults;
+};
+//------------------CREATE CARD INFO ASSOCIATED-------------------------
+var createCardInfoAssociated = function (data) {
+    var contentHTML = '';
+    var containerInfo = document.createElement('div');
+    var classInfo = (type == "comics") ? "characters" : "comics";
+    var id = data[0].id;
+    params3.set('info', id);
+    params3.set('type', classInfo);
+    contentHTML = "\n                <div class=\"" + classInfo + "\">\n                    <a href=\"./info.html?" + params3.toString() + "\">\n                        <img src=\"" + data[0].thumbnail.path + "." + data[0].thumbnail.extension + "\" alt=\"" + (data[0].name || data[0].title) + "\">\n                        <h3>" + (data[0]["name"] || data[0]["title"]) + "</h3>\n                    </a>\n                </div>\n    ";
+    containerInfo.innerHTML = contentHTML;
+    containerInfoAssociated.appendChild(containerInfo);
+    containerInfoPlusPages.appendChild(containerInfoAssociated);
+    containerInfoPlusPages.appendChild(containerPagination);
+    main.appendChild(containerInfoPlusPages);
+};
+//------------------CREATE CARD INFO COMICS-------------------------
 var createComicCard = function (data) {
     title.innerHTML = data[0].title;
     var titlePublicationDate = document.createElement('h4');
@@ -62,10 +95,13 @@ var createComicCard = function (data) {
     var titleScreenwriter = document.createElement('h4');
     titleScreenwriter.appendChild(document.createTextNode("Guionistas:"));
     var screenwrite = document.createElement('p');
-    if (data[0].creators.items) {
-        console.log(data[0].creators.items);
+    var arrayCreators = data[0].creators.items;
+    for (var _i = 0, arrayCreators_1 = arrayCreators; _i < arrayCreators_1.length; _i++) {
+        var item = arrayCreators_1[_i];
+        if (item.role == "writer") {
+            screenwrite.innerHTML = item.name;
+        }
     }
-    //screenwrite.innerHTML=data[0].creators
     description.innerHTML = data[0].description;
     containerInfo.appendChild(title);
     containerInfo.appendChild(titlePublicationDate);
@@ -73,6 +109,7 @@ var createComicCard = function (data) {
     containerInfo.appendChild(titleScreenwriter);
     containerInfo.appendChild(screenwrite);
 };
+//------------------CREATE CARD INFO -------------------------
 var createInfoCard = function (data) {
     var srcInfo = data[0].thumbnail.path + "." + data[0].thumbnail.extension;
     imgInfo.setAttribute('src', srcInfo);
@@ -102,8 +139,8 @@ var getURLInfo = function () {
     return url;
 };
 var urlToUseInfo = getURLInfo();
-//---------------GET INFO FROM API MARVEL-------------
-var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, function () {
+//---------------GET INFO ASSOCISTED FROM API MARVEL-------------
+var getInfoAssociated = function (url) { return __awaiter(_this, void 0, void 0, function () {
     var response, items, listItems, resultsItems, _i, resultsItems_1, item;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -115,14 +152,46 @@ var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, fun
                 items = _a.sent();
                 listItems = items.data;
                 resultsItems = listItems.results;
-                //console.log("result",resultsItems[0].creators.items[1].name)
                 for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
                     item = resultsItems_1[_i];
                     if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
                         item.thumbnail.path = '../assets/images/clean';
                     }
                 }
+                createCardInfoAssociated(resultsItems);
+                return [2 /*return*/];
+        }
+    });
+}); };
+//---------------GET INFO FROM API MARVEL-------------
+var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, function () {
+    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults, _a, infoResults_1, item;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, fetch(url)];
+            case 1:
+                response = _b.sent();
+                return [4 /*yield*/, response.json()];
+            case 2:
+                items = _b.sent();
+                listItems = items.data;
+                resultsItems = listItems.results;
+                for (_i = 0, resultsItems_2 = resultsItems; _i < resultsItems_2.length; _i++) {
+                    item = resultsItems_2[_i];
+                    if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
+                        item.thumbnail.path = '../assets/images/clean';
+                    }
+                }
+                ;
                 createInfoCard(resultsItems);
+                infoAssociated(resultsItems);
+                infoResults = infoAssociated(resultsItems);
+                for (_a = 0, infoResults_1 = infoResults; _a < infoResults_1.length; _a++) {
+                    item = infoResults_1[_a];
+                    getInfoAssociated(item);
+                }
+                ;
+                createButtons(infoResults.length, containerPagination);
                 return [2 /*return*/];
         }
     });

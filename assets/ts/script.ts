@@ -167,5 +167,75 @@ makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
 
 const baseUrl: string = "https://gateway.marvel.com:443/v1/public/";
 
-const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
-const hash : string ="bca60ca0198d3e720005add814760dde";
+const apiKey: string = "11b3c5b160d3bbe8c3663a93aedc5517";
+const hash : string ="657308e35113f895458620b0b5ec9384";
+
+
+//-------------------GET NUMBER OF PAGES---------------
+
+const getNumberPages = (total, limitPerPage)=>{
+    let pages=0;
+    return pages = Math.ceil(total/ limitPerPage);
+};
+
+//------------- PAGINATION-----------------------
+
+let params= new URLSearchParams(window.location.search);
+let pageClicked = Number(params.get("page"));
+
+let previousPage;
+let nextPage;
+
+const createButtons =(pagesNumber, container)=>{
+
+    let count = 0;
+    let arrayPageNumber =[];
+    let auxArray= (pageClicked>5)? [pageClicked -4, pageClicked -3, pageClicked -2, pageClicked -1, pageClicked]:  [1,2,3,4,5] ;
+
+    const containerPages= document.createElement('div');
+    containerPages.classList.add('container-pages');
+
+    const listUl = document.createElement('ul');
+    previousPage= document.createElement('a');
+    previousPage.innerHTML="Página anterior";
+    nextPage= document.createElement('a');
+    nextPage.innerHTML="Página Siguiente";
+    previousPage.classList.add('page-next-previous');
+    nextPage.classList.add('page-next-previous');
+
+    containerPages.appendChild(previousPage);
+
+    for (let i=0; i < pagesNumber; i++){
+        count ++
+        arrayPageNumber.push(count);
+    };
+
+    for(const page of auxArray){
+
+        //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
+        (!pageClicked || pageClicked==1)? previousPage.classList.add('hidden') : previousPage.setAttribute('href',  `./index.html?page=${pageClicked-1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
+        (pageClicked==arrayPageNumber.length)? nextPage.classList.add('hidden') :nextPage.setAttribute('href',  `./index.html?page=${pageClicked+1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
+
+        //---CREATE LIST OF ANCHORS-----
+        const itemList= document.createElement('li');
+        itemList.classList.add('pagination-number');
+        const pageNumner = document.createElement('a');
+        pageNumner.setAttribute('id', `${page}`);
+        itemList.appendChild(pageNumner);
+        pageNumner.innerHTML=`${page}`;
+
+        if(Number(pageNumner.innerHTML)==pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1){
+            itemList.classList.add('clicked-number');
+        };
+        //---SET QUERY PARAMS TO NUMBER BUTTONS-----
+        params.set('page', pageNumner.id);
+        pageNumner.setAttribute('href', `./index.html?${params.toString()}`);
+        
+        //---SET ITEMS INTO CONTAINER-----
+        listUl.appendChild(itemList);
+        containerPages.appendChild(listUl);
+        containerPages.appendChild(nextPage);
+        container.appendChild(containerPages);
+        
+    };
+};
