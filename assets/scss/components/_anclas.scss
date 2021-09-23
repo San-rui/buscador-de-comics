@@ -30,4 +30,25 @@ ul{
     }
 }
 
+.go-back{
+    font-size: 1.2rem;
+    width:10rem;
+    height: 2.5rem;
+    padding: 0 2% 0 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    background-color:$primary;
+    color:white;
+    background-color:$primary;
+    align-self: flex-end;
+    text-decoration: none;
+};
+
+.go-back:hover{
+    background-color:$primary-hover;
+} 
+
 

@@ -239,3 +239,8 @@ const createButtons =(pagesNumber, container)=>{
         
     };
 };
+
+const goBack= document.createElement('a');
+goBack.innerHTML="Volver";
+goBack.setAttribute('href', "javascript:history.back()");
+goBack.classList.add('go-back');

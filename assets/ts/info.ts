@@ -1,4 +1,3 @@
-
 //------------------VARIABLES-------------------------
 
 const url3: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
@@ -26,9 +25,10 @@ const containerInfoAssociated = document.createElement('div');
 containerInfoAssociated.classList.add('container-info-associated');
 
 const containerInfoPlusPages= document.createElement('div');
-
-
+containerInfoPlusPages.classList.add('container-info-plus-pages')
 const containerPagination= document.createElement('div');
+
+
 
 
 //------------------INFO ASSOCIATED-------------------------
@@ -40,6 +40,7 @@ const infoAssociated = (data)=>{
     let arrayReults=[];
 
     for(let item of results){
+
         const array= item.resourceURI.split('/');
         const urlAssociatedId= `https://gateway.marvel.com:443/v1/public/${kind}/${array[array.length-1]}?`;
         urlAssociated=  `${urlAssociatedId}&ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
@@ -109,6 +110,7 @@ const createComicCard = (data)=>{
 
     containerInfo.appendChild(titleScreenwriter);
     containerInfo.appendChild(screenwrite);
+    
 };
 
 //------------------CREATE CARD INFO -------------------------
@@ -129,6 +131,7 @@ const createInfoCard = (data)=>{
     containerInfo.appendChild(description);
 
     containerAllInfo.appendChild(imgInfo);
+    containerInfo.appendChild(goBack);
     containerAllInfo.appendChild(containerInfo);
     main.appendChild(containerAllInfo);
 };

@@ -1,11 +1,16 @@
+
 .container{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    flex-direction: column;
     margin: 0 8%;
     font-family: 'Roboto', sans-serif;
 
     .search-container-general{
-        margin: 4rem 0 4rem 0 ;
+        width: 100%;
+        margin: 4rem 1rem 4rem 1rem ;
     }
-
 }
 
 .style-result-number{
@@ -15,14 +20,11 @@
 }
 
 .img-item, .img-characters{
-    width:100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    
-
-
-
+    justify-content:space-between;
+    margin:0;
+    padding:0;
 };
 
 .container-pages{
@@ -44,6 +46,7 @@
 .container-all-info{
     display: flex;
     margin-bottom: 2rem;
+
     img{
         width: 30%;
         margin-right: 2rem;
@@ -56,7 +59,16 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    
 }
 
+.container-info-plus-pages{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+}
 
+.results-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

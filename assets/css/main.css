@@ -33,10 +33,15 @@ body {
     opacity: 0.5; }
 
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   margin: 0 8%;
   font-family: 'Roboto', sans-serif; }
   .container .search-container-general {
-    margin: 4rem 0 4rem 0; }
+    width: 100%;
+    margin: 4rem 1rem 4rem 1rem; }
 
 .style-result-number {
   font-size: 0.8rem;
@@ -44,10 +49,11 @@ body {
   color: #76768d; }
 
 .img-item, .img-characters {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; }
+  justify-content: space-between;
+  margin: 0;
+  padding: 0; }
 
 .container-pages {
   display: flex;
@@ -76,6 +82,16 @@ body {
   align-items: center;
   flex-wrap: wrap; }
 
+.container-info-plus-pages {
+  width: 100%;
+  display: flex;
+  flex-direction: column; }
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
 .form-search {
   display: flex;
   justify-content: space-between; }
@@ -100,21 +116,6 @@ body {
       justify-content: flex-end;
       align-items: center;
       outline: none; }
-    .form-search .select-container button {
-      font-size: 1.2rem;
-      width: 10rem;
-      height: 2.5rem;
-      padding: 0 2% 0 2%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      border-radius: 5px;
-      background-color: #081324;
-      color: white;
-      background-color: #081324; }
-    .form-search .select-container button:hover {
-      background-color: #1a3661; }
   .form-search .input-container {
     width: 45%;
     display: flex;
@@ -149,7 +150,7 @@ body {
   width: 11rem;
   height: 20rem;
   background-color: #081324;
-  margin-bottom: 1rem; }
+  margin-bottom: 0.5rem; }
   .characters a {
     width: 100%;
     text-decoration: none; }
@@ -168,8 +169,7 @@ body {
       padding: 16px 24px 17px 20px; }
 
 .comics {
-  width: 14rem;
-  margin: 0 1rem 0 1rem; }
+  width: 14rem; }
   .comics a {
     text-decoration: none; }
     .comics a img {
@@ -204,3 +204,39 @@ ul {
       text-decoration: none; }
   ul .clicked-number {
     background-color: #3f80e2; }
+
+.go-back {
+  font-size: 1.2rem;
+  width: 10rem;
+  height: 2.5rem;
+  padding: 0 2% 0 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  background-color: #081324;
+  color: white;
+  background-color: #081324;
+  align-self: flex-end;
+  text-decoration: none; }
+
+.go-back:hover {
+  background-color: #1a3661; }
+
+button {
+  font-size: 1.2rem;
+  width: 10rem;
+  height: 2.5rem;
+  padding: 0 2% 0 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  background-color: #081324;
+  color: white;
+  background-color: #081324; }
+
+button:hover {
+  background-color: #1a3661; }
