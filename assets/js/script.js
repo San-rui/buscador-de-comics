@@ -200,3 +200,7 @@ var createButtons = function (pagesNumber, container) {
     }
     ;
 };
+var goBack = document.createElement('a');
+goBack.innerHTML = "Volver";
+goBack.setAttribute('href', "javascript:history.back()");
+goBack.classList.add('go-back');

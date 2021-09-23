@@ -34,72 +34,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-// //-------------------GET NUMBER OF PAGES---------------
 var _this = this;
-// const getNumberPages = (total, limitPerPage)=>{
-//     let pages=0;
-//     return pages = Math.ceil(total/ limitPerPage);
-// };
-// //------------- PAGINATION-----------------------
-// let params= new URLSearchParams(window.location.search);
-// let pageClicked = Number(params.get("page"));
-// let previousPage;
-// let nextPage;
-// const createButtons =(pagesNumber, container)=>{
-//     let count = 0;
-//     let arrayPageNumber =[];
-//     let auxArray= (pageClicked>5)? [pageClicked -4, pageClicked -3, pageClicked -2, pageClicked -1, pageClicked]:  [1,2,3,4,5] ;
-//     const containerPages= document.createElement('div');
-//     containerPages.classList.add('container-pages');
-//     const listUl = document.createElement('ul');
-//     previousPage= document.createElement('a');
-//     previousPage.innerHTML="Página anterior";
-//     nextPage= document.createElement('a');
-//     nextPage.innerHTML="Página Siguiente";
-//     previousPage.classList.add('page-next-previous');
-//     nextPage.classList.add('page-next-previous');
-//     containerPages.appendChild(previousPage);
-//     for (let i=0; i < pagesNumber; i++){
-//         count ++
-//         arrayPageNumber.push(count);
-//     };
-//     for(const page of auxArray){
-//         //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
-//         (!pageClicked || pageClicked==1)? previousPage.classList.add('hidden') : previousPage.setAttribute('href',  `./index.html?page=${pageClicked-1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
-//         (pageClicked==arrayPageNumber.length)? nextPage.classList.add('hidden') :nextPage.setAttribute('href',  `./index.html?page=${pageClicked+1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
-//         //---CREATE LIST OF ANCHORS-----
-//         const itemList= document.createElement('li');
-//         itemList.classList.add('pagination-number');
-//         const pageNumner = document.createElement('a');
-//         pageNumner.setAttribute('id', `${page}`);
-//         itemList.appendChild(pageNumner);
-//         pageNumner.innerHTML=`${page}`;
-//         if(Number(pageNumner.innerHTML)==pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1){
-//             itemList.classList.add('clicked-number');
-//         };
-//         //---SET QUERY PARAMS TO NUMBER BUTTONS-----
-//         params.set('page', pageNumner.id);
-//         pageNumner.setAttribute('href', `./index.html?${params.toString()}`);
-//         //---SET ITEMS INTO CONTAINER-----
-//         listUl.appendChild(itemList);
-//         containerPages.appendChild(listUl);
-//         containerPages.appendChild(nextPage);
-//         container.appendChild(containerPages);
-//     };
-// };
 var paramsInfo = new URLSearchParams(window.location.search);
 //----------- CREATE CARD -------------
 var comicClass = "comics";
 var characterClass = "characters";
+var results = document.createElement('div');
+results.classList.add('results-container');
+var contentHTML = '';
+var containerElement = document.createElement('div');
+containerElement.classList.add('img-item');
+var tittleResult = document.createElement('h2');
+tittleResult.innerHTML = "Resultados";
+var resultNumber = document.createElement('p');
+resultNumber.classList.add('style-result-number');
 var createCard = function (list, classCont, resultss) {
-    var results = document.createElement('div');
-    var contentHTML = '';
-    var containerElement = document.createElement('div');
-    containerElement.classList.add('img-item');
-    var tittleResult = document.createElement('h2');
-    tittleResult.innerHTML = "Resultados";
-    var resultNumber = document.createElement('p');
-    resultNumber.classList.add('style-result-number');
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
@@ -215,3 +164,4 @@ var getMarvelSection = function (url, className) { return __awaiter(_this, void 
     });
 }); };
 getMarvelSection(urlToUse, typeData);
+main.appendChild(goBack);

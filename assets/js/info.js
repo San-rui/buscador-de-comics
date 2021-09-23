@@ -55,6 +55,7 @@ var urlAssociated = "";
 var containerInfoAssociated = document.createElement('div');
 containerInfoAssociated.classList.add('container-info-associated');
 var containerInfoPlusPages = document.createElement('div');
+containerInfoPlusPages.classList.add('container-info-plus-pages');
 var containerPagination = document.createElement('div');
 //------------------INFO ASSOCIATED-------------------------
 var infoAssociated = function (data) {
@@ -124,6 +125,7 @@ var createInfoCard = function (data) {
     containerInfo.appendChild(titleDescription);
     containerInfo.appendChild(description);
     containerAllInfo.appendChild(imgInfo);
+    containerInfo.appendChild(goBack);
     containerAllInfo.appendChild(containerInfo);
     main.appendChild(containerAllInfo);
 };
