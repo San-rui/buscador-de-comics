@@ -51,15 +51,14 @@ var tittleResult = document.createElement('h2');
 tittleResult.innerHTML = "Resultados";
 var resultNumber = document.createElement('p');
 resultNumber.classList.add('style-result-number');
-var createCard = function (list, classCont, resultss) {
+var createCard = function (list, classCont, resultsList) {
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
-    for (var _i = 0, resultss_1 = resultss; _i < resultss_1.length; _i++) {
-        var item = resultss_1[_i];
+    for (var _i = 0, resultsList_1 = resultsList; _i < resultsList_1.length; _i++) {
+        var item = resultsList_1[_i];
         var detail = item.id;
         paramsInfo.set('info', detail);
-        var urlItem = item.urls[0].url;
         contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + paramsInfo.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n        ";
     }
     ;
@@ -67,7 +66,7 @@ var createCard = function (list, classCont, resultss) {
     resultNumber.innerHTML = list.total + " RESULTADOS";
     containerElement.innerHTML = contentHTML;
     results.appendChild(containerElement);
-    createButtons(pagesTotal, results);
+    createButtons(pagesTotal, results, "./index.html?");
     main.appendChild(results);
 };
 //-------------SEARCH FILTERS-----------------

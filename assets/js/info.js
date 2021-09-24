@@ -39,8 +39,6 @@ formSearch.addEventListener('submit', function () {
     getFormInfo(event, "../index.html?");
 });
 //------------------VARIABLES-------------------------
-var url3 = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
-var url4 = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
 var info = encodeURIComponent(params.get('info'));
 var type = (params.get("type")) ? (params.get("type")) : "comics";
 var toSearchInfo = params.get('wordToSearch');
@@ -59,34 +57,52 @@ containerInfoAssociated.classList.add('container-info-associated');
 var containerInfoPlusPages = document.createElement('div');
 containerInfoPlusPages.classList.add('container-info-plus-pages');
 var containerPagination = document.createElement('div');
+var totalResultTitle = document.createElement('h2');
+totalResultTitle.innerHTML = (type == "comics") ? "Personajes" : "Comics";
+var numberOfResult = document.createElement('p');
+numberOfResult.classList.add('style-result-number');
 //------------------INFO ASSOCIATED-------------------------
 var infoAssociated = function (data) {
+    var results = (type == "comics") ? data[0].characters : data[0].comics;
+    var array = results.collectionURI.split('/');
+    array[0] = "https:";
+    var urlFinal = array.toString();
+    urlAssociated = urlFinal.replaceAll(',', '/') + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
+    return urlAssociated;
+};
+var infoAsso = function (data) {
     var kind = (type == "comics") ? "characters" : "comics";
     var results = (type == "comics") ? data[0].characters.items : data[0].comics.items;
     var arrayReults = [];
     for (var _i = 0, results_1 = results; _i < results_1.length; _i++) {
         var item = results_1[_i];
         var array = item.resourceURI.split('/');
-        var urlAssociatedId = "https://gateway.marvel.com:443/v1/public/" + kind + "/" + array[array.length - 1] + "?";
+        var urlAssociatedId = "https://gateway.marvel.com:443/v1/public/" + kind + "/" + array[array.length - 1] + "/" + type + "?";
         urlAssociated = urlAssociatedId + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
         arrayReults.push(urlAssociated);
     }
     return arrayReults;
 };
 //------------------CREATE CARD INFO ASSOCIATED-------------------------
-var createCardInfoAssociated = function (data) {
-    var contentHTML = '';
-    var containerInfo = document.createElement('div');
+var contentHTML = '';
+var createCardInfoAssociated = function (data, results) {
     var classInfo = (type == "comics") ? "characters" : "comics";
-    var id = data[0].id;
-    params.set('info', id);
-    params.set('type', classInfo);
-    contentHTML = "\n                <div class=\"" + classInfo + "\">\n                    <a href=\"./info.html?" + params.toString() + "\">\n                        <img src=\"" + data[0].thumbnail.path + "." + data[0].thumbnail.extension + "\" alt=\"" + (data[0].name || data[0].title) + "\">\n                        <h3>" + (data[0]["name"] || data[0]["title"]) + "</h3>\n                    </a>\n                </div>\n    ";
-    containerInfo.innerHTML = contentHTML;
-    containerInfoAssociated.appendChild(containerInfo);
+    for (var _i = 0, results_2 = results; _i < results_2.length; _i++) {
+        var item = results_2[_i];
+        var id = item.id;
+        params.set('page', "1");
+        params.set('info', id);
+        params.set('type', classInfo);
+        var urlItem = item.urls[0].url;
+        contentHTML += "\n                    <div class=\"" + classInfo + "\">\n                        <a href=\"./info.html?" + params.toString() + "\">\n                            <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\">\n                            <h3>" + (item["name"] || item["title"]) + "</h3>\n                        </a>\n                    </div>\n        ";
+    }
+    var pagesTotal = getNumberPages(data.total, data.limit);
+    numberOfResult.innerHTML = data.total + " RESULTADOS";
+    containerInfoAssociated.innerHTML = contentHTML;
     containerInfoPlusPages.appendChild(containerInfoAssociated);
     containerInfoPlusPages.appendChild(containerPagination);
     main.appendChild(containerInfoPlusPages);
+    createButtons(pagesTotal, containerPagination, "./info.html?");
 };
 //------------------CREATE CARD INFO COMICS-------------------------
 var createComicCard = function (data) {
@@ -130,6 +146,8 @@ var createInfoCard = function (data) {
     containerInfo.appendChild(goBack);
     containerAllInfo.appendChild(containerInfo);
     main.appendChild(containerAllInfo);
+    main.appendChild(totalResultTitle);
+    main.appendChild(numberOfResult);
 };
 //------------------GET URL-------------------------
 var getURLInfo = function () {
@@ -156,28 +174,29 @@ var getInfoAssociated = function (url) { return __awaiter(_this, void 0, void 0,
                 items = _a.sent();
                 listItems = items.data;
                 resultsItems = listItems.results;
+                console.log(listItems);
                 for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
                     item = resultsItems_1[_i];
                     if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
                         item.thumbnail.path = '../assets/images/clean';
                     }
                 }
-                createCardInfoAssociated(resultsItems);
+                createCardInfoAssociated(listItems, resultsItems);
                 return [2 /*return*/];
         }
     });
 }); };
 //---------------GET INFO FROM API MARVEL-------------
 var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults, _a, infoResults_1, item;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0: return [4 /*yield*/, fetch(url)];
             case 1:
-                response = _b.sent();
+                response = _a.sent();
                 return [4 /*yield*/, response.json()];
             case 2:
-                items = _b.sent();
+                items = _a.sent();
                 listItems = items.data;
                 resultsItems = listItems.results;
                 for (_i = 0, resultsItems_2 = resultsItems; _i < resultsItems_2.length; _i++) {
@@ -190,14 +209,10 @@ var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, fun
                 createInfoCard(resultsItems);
                 infoAssociated(resultsItems);
                 infoResults = infoAssociated(resultsItems);
-                for (_a = 0, infoResults_1 = infoResults; _a < infoResults_1.length; _a++) {
-                    item = infoResults_1[_a];
-                    getInfoAssociated(item);
-                }
-                ;
-                createButtons(infoResults.length, containerPagination);
+                getInfoAssociated(infoResults);
                 return [2 /*return*/];
         }
     });
 }); };
 getMarvelInfo(urlToUseInfo);
+console.log(info);

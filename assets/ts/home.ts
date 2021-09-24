@@ -12,7 +12,7 @@ const characterClass = "characters";
 
 const results = document.createElement('div');
 results.classList.add('results-container');
-let contentHTML = '';
+let contentHTML= '';
 const containerElement = document.createElement('div');
 containerElement.classList.add('img-item');
 const tittleResult= document.createElement('h2');
@@ -20,17 +20,17 @@ tittleResult.innerHTML= "Resultados";
 const resultNumber = document.createElement('p');
 resultNumber.classList.add('style-result-number');
 
-const createCard = (list : DataContainer , classCont, resultss)=>{
+const createCard = (list : DataContainer , classCont, resultsList)=>{
 
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
 
-    for(const item of resultss){
+    for(const item of resultsList){
         let detail=item.id;
         paramsInfo.set('info', detail);
 
-        let urlItem = item.urls[0].url;
+        
             contentHTML += `
             <div class=${classCont}>
                 <a href="./pages/info.html?${paramsInfo.toString()}">
@@ -46,7 +46,7 @@ const createCard = (list : DataContainer , classCont, resultss)=>{
     resultNumber.innerHTML = `${list.total} RESULTADOS`;
     containerElement.innerHTML = contentHTML;
     results.appendChild(containerElement);
-    createButtons(pagesTotal, results);
+    createButtons(pagesTotal, results, "./index.html?");
     main.appendChild(results);
 };
 
