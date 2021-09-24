@@ -11,6 +11,11 @@ body {
 .hidden {
   display: none; }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
 .primary-header {
   background-color: #081324;
   width: 100%;
@@ -69,18 +74,24 @@ body {
     color: whitesmoke; }
 
 .container-all-info {
+  width: 100%;
   display: flex;
-  margin-bottom: 2rem; }
+  margin-bottom: 2rem;
+  justify-content: flex-start; }
   .container-all-info img {
-    width: 30%;
-    margin-right: 2rem; }
+    width: 25%;
+    margin-right: 2rem;
+    border-radius: 2%;
+    box-shadow: 10px 10px 5px 0px rgba(8, 19, 36, 0.75); }
 
 .container-info-associated {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap; }
+  .container-info-associated .characters {
+    margin: 1rem; }
 
 .container-info-plus-pages {
   width: 100%;
@@ -148,40 +159,76 @@ body {
 .characters {
   overflow: hidden;
   width: 11rem;
-  height: 20rem;
+  height: 22rem;
+  margin-bottom: 0.5rem;
   background-color: #081324;
-  margin-bottom: 0.5rem; }
+  position: relative;
+  border-radius: 1%;
+  box-shadow: 3px 4px 6px 1px rgba(8, 19, 36, 0.45); }
   .characters a {
-    width: 100%;
-    text-decoration: none; }
+    text-decoration: none;
+    display: flex; }
     .characters a img {
-      width: 100%;
-      transition: 0.2s;
-      border-bottom: 4px solid #ed1d23; }
-    .characters a img:hover {
-      transform: scale(1.2);
+      height: 260px;
       transition: 0.2s; }
-    .characters a h3 {
-      height: 3rem;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      color: whitesmoke;
-      padding: 16px 24px 17px 20px; }
+  .characters h3 {
+    width: 100%;
+    height: 30%;
+    background-color: #081324;
+    border-top: 4px solid #c01919;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: whitesmoke;
+    margin: 0;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    z-index: 1;
+    padding-left: 0.5rem; }
+  .characters a:hover img {
+    transform: scale(1.2);
+    transition: 0.2s; }
+  .characters a:hover h3 {
+    background-color: #c01919; }
 
 .comics {
-  width: 14rem; }
+  overflow: hidden;
+  width: 14rem;
+  height: 25rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  border-radius: 1%; }
   .comics a {
+    width: 100%;
     text-decoration: none; }
     .comics a img {
-      width: 100%;
+      height: 80%;
       box-shadow: 0 26px 24px -16px #1a3661;
       transform: translateY(0);
       transition: 0.2s; }
-    .comics a img:hover {
-      transform: translateY(-10px);
-      transition: 0.2s; }
-    .comics a h3 {
-      font-size: 0.8rem; }
+  .comics h3 {
+    width: 80%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #081324;
+    margin: 0;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    z-index: 1;
+    padding-left: 0.5rem; }
+  .comics a:hover img {
+    transform: translateY(-10px);
+    transition: 0.2s; }
+  .comics a:hover h3 {
+    color: #c01919; }
 
 ul {
   height: 3rem;

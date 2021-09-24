@@ -44,21 +44,29 @@
 }
 
 .container-all-info{
+    width:100%;
     display: flex;
     margin-bottom: 2rem;
+    justify-content: flex-start;
 
     img{
-        width: 30%;
+        width: 25%;
         margin-right: 2rem;
+        border-radius: 2%;
+        box-shadow: 10px 10px 5px 0px rgba(8,19,36,0.75);
+
     }
 }
 
 .container-info-associated{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    .characters{
+        margin: 1rem;
+    }
 }
 
 .container-info-plus-pages{

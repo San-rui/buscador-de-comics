@@ -59,7 +59,7 @@ var createCard = function (list, classCont, resultsList) {
         var item = resultsList_1[_i];
         var detail = item.id;
         paramsInfo.set('info', detail);
-        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + paramsInfo.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n        ";
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + paramsInfo.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n            ";
     }
     ;
     var pagesTotal = getNumberPages(list.total, list.limit);

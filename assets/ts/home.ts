@@ -38,7 +38,7 @@ const createCard = (list : DataContainer , classCont, resultsList)=>{
                     <h3>${item["name"] || item["title"]}</h3>
                     </a>
             </div>
-        ` 
+            ` 
     };
 
     const pagesTotal= getNumberPages(list.total, list.limit);
