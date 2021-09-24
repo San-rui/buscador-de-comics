@@ -36,11 +36,11 @@ var controlsSearch = [
                         name: "Z-A"
                     },
                     {
-                        id: "modified",
+                        id: "-focDate",
                         name: "Más nuevos"
                     },
                     {
-                        id: "-modified",
+                        id: "focDate",
                         name: "Más viejos"
                     },
                 ]
@@ -82,9 +82,53 @@ icon.classList.add("fas", "fa-search", 'fa-lg');
 tittleSearch.appendChild(document.createTextNode("Búsqueda"));
 inputContainer.classList.add('input-container');
 selectContainer.classList.add('select-container');
+var elemOrder = document.createElement("select");
+elemOrder.id = "order";
+var handlerForm = function (event) {
+    event.preventDefault();
+    elemOrder.innerHTML = "";
+    var typeInfo = event.target;
+    if (typeInfo.value == "comics") {
+        for (var _i = 0, controlsSearch_1 = controlsSearch; _i < controlsSearch_1.length; _i++) {
+            var item = controlsSearch_1[_i];
+            if (item.type == "select") {
+                for (var _a = 0, _b = item.options; _a < _b.length; _a++) {
+                    var element = _b[_a];
+                    if (element.id == "comics") {
+                        for (var _c = 0, _d = element.options; _c < _d.length; _c++) {
+                            var item_1 = _d[_c];
+                            var op = document.createElement("option");
+                            op.value = item_1.id.toString();
+                            op.appendChild(document.createTextNode(item_1.name));
+                            elemOrder.appendChild(op);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else {
+        for (var _e = 0, controlsSearch_2 = controlsSearch; _e < controlsSearch_2.length; _e++) {
+            var item = controlsSearch_2[_e];
+            if (item.type == "select") {
+                for (var _f = 0, _g = item.options; _f < _g.length; _f++) {
+                    var element = _g[_f];
+                    if (element.id == "characters") {
+                        for (var _h = 0, _j = element.options; _h < _j.length; _h++) {
+                            var item_2 = _j[_h];
+                            var op = document.createElement("option");
+                            op.value = item_2.id.toString();
+                            op.appendChild(document.createTextNode(item_2.name));
+                            elemOrder.appendChild(op);
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
 var makeForm = function (form, ctrls, parent, containerSearch) {
     var elem;
-    var elemOrder;
     for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
         var control = ctrls_1[_i];
         if (control.type === "select") {
@@ -98,8 +142,7 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
                     var labelselectOrder = document.createElement('label');
                     labelselectOrder.appendChild(document.createTextNode("ORDEN"));
                     elem = document.createElement("select");
-                    elemOrder = document.createElement("select");
-                    elemOrder.id = "order";
+                    elem.addEventListener('change', handlerForm);
                     for (var _a = 0, _b = control.options; _a < _b.length; _a++) {
                         var cont = _b[_a];
                         var op = document.createElement("option");
@@ -109,13 +152,14 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
                         selectContainer.appendChild(elem);
                         selectContainer.appendChild(labelselectOrder);
                         selectContainer.appendChild(elemOrder);
-                        var options = cont.options;
-                        for (var _c = 0, options_1 = options; _c < options_1.length; _c++) {
-                            var item = options_1[_c];
-                            var op_1 = document.createElement("option");
-                            op_1.value = item.id.toString();
-                            op_1.appendChild(document.createTextNode(item.name));
-                            elemOrder.appendChild(op_1);
+                        if (cont.id == "comics") {
+                            for (var _c = 0, _d = cont.options; _c < _d.length; _c++) {
+                                var item = _d[_c];
+                                var op_1 = document.createElement("option");
+                                op_1.value = item.id.toString();
+                                op_1.appendChild(document.createTextNode(item.name));
+                                elemOrder.appendChild(op_1);
+                            }
                         }
                     }
                 }
