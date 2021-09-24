@@ -1,3 +1,9 @@
+//-------------GO BACK PARAMETERS------------------
+const goBack= document.createElement('a');
+goBack.innerHTML="Volver";
+goBack.setAttribute('href', "javascript:history.back()");
+goBack.classList.add('go-back');  
+
 //-------------HEADER -------------
 
 const createHeader = ()=>{
@@ -289,7 +295,24 @@ const createButtons =(pagesNumber, container)=>{
     };
 };
 
-const goBack= document.createElement('a');
-goBack.innerHTML="Volver";
-goBack.setAttribute('href', "javascript:history.back()");
-goBack.classList.add('go-back');
+
+
+//-----------SEARCH BY FILTERS------------
+
+const getFormInfo = (event, data:string)=>{
+	console.log(" hola",event.target)
+    event.preventDefault();
+    const form= event.target;
+    params.set('wordToSearch', null);
+    params.set('type', null);
+    params.set('order', null);
+    params.set('page', null);
+	params.set('info', null);
+
+    params.set('wordToSearch', form.addSearch.value);
+    params.set('type', form.type.value);
+    params.set('order', form.order.value);
+    params.set('page', "1");
+    window.location.href=data+params.toString();
+};
+

@@ -1,3 +1,8 @@
+//-------------GO BACK PARAMETERS------------------
+var goBack = document.createElement('a');
+goBack.innerHTML = "Volver";
+goBack.setAttribute('href', "javascript:history.back()");
+goBack.classList.add('go-back');
 //-------------HEADER -------------
 var createHeader = function () {
     var header = document.createElement('header');
@@ -244,7 +249,19 @@ var createButtons = function (pagesNumber, container) {
     }
     ;
 };
-var goBack = document.createElement('a');
-goBack.innerHTML = "Volver";
-goBack.setAttribute('href', "javascript:history.back()");
-goBack.classList.add('go-back');
+//-----------SEARCH BY FILTERS------------
+var getFormInfo = function (event, data) {
+    console.log(" hola", event.target);
+    event.preventDefault();
+    var form = event.target;
+    params.set('wordToSearch', null);
+    params.set('type', null);
+    params.set('order', null);
+    params.set('page', null);
+    params.set('info', null);
+    params.set('wordToSearch', form.addSearch.value);
+    params.set('type', form.type.value);
+    params.set('order', form.order.value);
+    params.set('page', "1");
+    window.location.href = data + params.toString();
+};

@@ -34,14 +34,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-//------------------VARIABLES-------------------------
 var _this = this;
+formSearch.addEventListener('submit', function () {
+    getFormInfo(event, "../index.html?");
+});
+//------------------VARIABLES-------------------------
 var url3 = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
 var url4 = baseUrl + "?ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=0";
-var params3 = new URLSearchParams(window.location.search);
-var info = encodeURIComponent(params3.get('info'));
-var type = (params3.get("type")) ? (params3.get("type")) : "comics";
-var toSearchInfo = params3.get('wordToSearch');
+var info = encodeURIComponent(params.get('info'));
+var type = (params.get("type")) ? (params.get("type")) : "comics";
+var toSearchInfo = params.get('wordToSearch');
 var containerAllInfo = document.createElement('div');
 containerAllInfo.classList.add('container-all-info');
 var containerInfo = document.createElement('div');
@@ -77,9 +79,9 @@ var createCardInfoAssociated = function (data) {
     var containerInfo = document.createElement('div');
     var classInfo = (type == "comics") ? "characters" : "comics";
     var id = data[0].id;
-    params3.set('info', id);
-    params3.set('type', classInfo);
-    contentHTML = "\n                <div class=\"" + classInfo + "\">\n                    <a href=\"./info.html?" + params3.toString() + "\">\n                        <img src=\"" + data[0].thumbnail.path + "." + data[0].thumbnail.extension + "\" alt=\"" + (data[0].name || data[0].title) + "\">\n                        <h3>" + (data[0]["name"] || data[0]["title"]) + "</h3>\n                    </a>\n                </div>\n    ";
+    params.set('info', id);
+    params.set('type', classInfo);
+    contentHTML = "\n                <div class=\"" + classInfo + "\">\n                    <a href=\"./info.html?" + params.toString() + "\">\n                        <img src=\"" + data[0].thumbnail.path + "." + data[0].thumbnail.extension + "\" alt=\"" + (data[0].name || data[0].title) + "\">\n                        <h3>" + (data[0]["name"] || data[0]["title"]) + "</h3>\n                    </a>\n                </div>\n    ";
     containerInfo.innerHTML = contentHTML;
     containerInfoAssociated.appendChild(containerInfo);
     containerInfoPlusPages.appendChild(containerInfoAssociated);
