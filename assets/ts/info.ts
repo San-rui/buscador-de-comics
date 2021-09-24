@@ -4,10 +4,6 @@ formSearch.addEventListener('submit', ()=>{
 
 //------------------VARIABLES-------------------------
 
-const url3: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
-const url4: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
-
-
 let info= encodeURIComponent(params.get('info'));
 let type= (params.get("type")) ? (params.get("type")): "comics"
 let toSearchInfo = params.get('wordToSearch');
@@ -32,20 +28,34 @@ const containerInfoPlusPages= document.createElement('div');
 containerInfoPlusPages.classList.add('container-info-plus-pages')
 const containerPagination= document.createElement('div');
 
+const totalResultTitle= document.createElement('h2');
+totalResultTitle.innerHTML=(type=="comics")? "Personajes": "Comics";
+
+const numberOfResult = document.createElement('p');
+numberOfResult.classList.add('style-result-number');
 
 
 //------------------INFO ASSOCIATED-------------------------
 
 const infoAssociated = (data)=>{
 
+    const results= (type=="comics")?data[0].characters: data[0].comics;
+    const array= results.collectionURI.split('/');
+    array[0]="https:";
+    const urlFinal=array.toString();
+    urlAssociated=  `${urlFinal.replaceAll(',' ,'/')}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
+    return urlAssociated;
+};
+
+const infoAsso = (data)=>{
+
     const kind= (type=="comics")? "characters": "comics";
     const results= (type=="comics")?data[0].characters.items: data[0].comics.items;
     let arrayReults=[];
-
     for(let item of results){
 
         const array= item.resourceURI.split('/');
-        const urlAssociatedId= `https://gateway.marvel.com:443/v1/public/${kind}/${array[array.length-1]}?`;
+        const urlAssociatedId= `https://gateway.marvel.com:443/v1/public/${kind}/${array[array.length-1]}/${type}?`;
         urlAssociated=  `${urlAssociatedId}&ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
         arrayReults.push(urlAssociated)
     }
@@ -55,31 +65,38 @@ const infoAssociated = (data)=>{
 
 //------------------CREATE CARD INFO ASSOCIATED-------------------------
 
+let contentHTML= '';
+const createCardInfoAssociated =(data, results)=>{
 
-const createCardInfoAssociated =(data)=>{
-    let contentHTML = '';
-    const containerInfo=document.createElement('div');
     const classInfo = (type=="comics")? "characters": "comics";
 
-    const id= data[0].id;
+    for(const item of results){
+        let id= item.id;
+        
+        params.set('page', "1");
+        params.set('info', id);
+        params.set('type', classInfo);
 
-    params.set('info', id);
-    params.set('type', classInfo);
 
-    contentHTML=`
-                <div class="${classInfo}">
-                    <a href="./info.html?${params.toString()}">
-                        <img src="${data[0].thumbnail.path}.${data[0].thumbnail.extension}" alt="${data[0].name || data[0].title}">
-                        <h3>${data[0]["name"] || data[0]["title"]}</h3>
-                    </a>
-                </div>
-    `
+        let urlItem = item.urls[0].url;
+        contentHTML+=`
+                    <div class="${classInfo}">
+                        <a href="./info.html?${params.toString()}">
+                            <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}">
+                            <h3>${item["name"] || item["title"]}</h3>
+                        </a>
+                    </div>
+        `
+    }
+    const pagesTotal= getNumberPages(data.total, data.limit);
 
-    containerInfo.innerHTML=contentHTML;
-    containerInfoAssociated.appendChild(containerInfo);
+    numberOfResult.innerHTML=`${data.total} RESULTADOS`;
+    containerInfoAssociated.innerHTML=contentHTML;
     containerInfoPlusPages.appendChild(containerInfoAssociated);
     containerInfoPlusPages.appendChild(containerPagination);
     main.appendChild(containerInfoPlusPages);
+
+    createButtons (pagesTotal, containerPagination, "./info.html?")
 };
 
 
@@ -113,7 +130,6 @@ const createComicCard = (data)=>{
 
     containerInfo.appendChild(titleScreenwriter);
     containerInfo.appendChild(screenwrite);
-    
 };
 
 //------------------CREATE CARD INFO -------------------------
@@ -137,6 +153,8 @@ const createInfoCard = (data)=>{
     containerInfo.appendChild(goBack);
     containerAllInfo.appendChild(containerInfo);
     main.appendChild(containerAllInfo);
+    main.appendChild(totalResultTitle);
+    main.appendChild(numberOfResult)
 };
 
 //------------------GET URL-------------------------
@@ -157,10 +175,13 @@ const urlToUseInfo= getURLInfo();
 //---------------GET INFO ASSOCISTED FROM API MARVEL-------------
 
 const getInfoAssociated = async(url)=>{
+
     const response = await fetch(url);
     const items = await response.json();
     const listItems= items.data;
     const resultsItems= listItems.results;
+
+    console.log(listItems)
 
     for(const item of resultsItems){
         if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
@@ -168,7 +189,7 @@ const getInfoAssociated = async(url)=>{
         }
     }
 
-    createCardInfoAssociated(resultsItems);
+    createCardInfoAssociated(listItems,resultsItems);
 };
 
 //---------------GET INFO FROM API MARVEL-------------
@@ -189,13 +210,11 @@ const getMarvelInfo = async(url)=>{
     createInfoCard(resultsItems);
     infoAssociated(resultsItems);
     const infoResults= infoAssociated(resultsItems);
-    for(const item of infoResults){
-        getInfoAssociated(item)
-    };
-    createButtons (infoResults.length, containerPagination)
+    getInfoAssociated(infoResults)
 
 }
 
 getMarvelInfo(urlToUseInfo);
 
 
+console.log(info)
