@@ -201,22 +201,30 @@ var getNumberPages = function (total, limitPerPage) {
 //------------- PAGINATION-----------------------
 var params = new URLSearchParams(window.location.search);
 var pageClicked = Number(params.get("page"));
-var previousPage;
-var nextPage;
+var containerPages = document.createElement('div');
+containerPages.classList.add('container-pages');
+var listUl = document.createElement('ul');
+var previousPage = document.createElement('a');
+previousPage.innerHTML = "Página anterior";
+var nextPage = document.createElement('a');
+nextPage.innerHTML = "Página Siguiente";
+previousPage.classList.add('page-next-previous');
+nextPage.classList.add('page-next-previous');
+containerPages.appendChild(previousPage);
 var createButtons = function (pagesNumber, container, pageloc) {
     var count = 0;
     var arrayPageNumber = [];
-    var auxArray = (pageClicked > 5) ? [pageClicked - 4, pageClicked - 3, pageClicked - 2, pageClicked - 1, pageClicked] : [1, 2, 3, 4, 5];
-    var containerPages = document.createElement('div');
-    containerPages.classList.add('container-pages');
-    var listUl = document.createElement('ul');
-    previousPage = document.createElement('a');
-    previousPage.innerHTML = "Página anterior";
-    nextPage = document.createElement('a');
-    nextPage.innerHTML = "Página Siguiente";
-    previousPage.classList.add('page-next-previous');
-    nextPage.classList.add('page-next-previous');
-    containerPages.appendChild(previousPage);
+    var auxArray = [];
+    if (pagesNumber >= 5) {
+        auxArray = (pageClicked > 5) ? [pageClicked - 4, pageClicked - 3, pageClicked - 2, pageClicked - 1, pageClicked] : [1, 2, 3, 4, 5];
+    }
+    else if (pagesNumber < 5) {
+        for (var i = 0; i < pagesNumber; i++) {
+            auxArray.push(i + 1);
+            previousPage.classList.add('hidden');
+            nextPage.classList.add('hidden');
+        }
+    }
     if (pagesNumber > 1) {
         for (var i = 0; i < pagesNumber; i++) {
             count++;
