@@ -1,12 +1,16 @@
+formSearch.addEventListener('submit', ()=>{
+	getFormInfo(event, "../index.html?");
+});
+
 //------------------VARIABLES-------------------------
 
 const url3: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
 const url4: string = `${baseUrl}?ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
 
-const params3 = new URLSearchParams(window.location.search)
-let info= encodeURIComponent(params3.get('info'));
-let type= (params3.get("type")) ? (params3.get("type")): "comics"
-let toSearchInfo = params3.get('wordToSearch');
+
+let info= encodeURIComponent(params.get('info'));
+let type= (params.get("type")) ? (params.get("type")): "comics"
+let toSearchInfo = params.get('wordToSearch');
 
 const containerAllInfo= document.createElement('div');
 containerAllInfo.classList.add('container-all-info');
@@ -27,7 +31,6 @@ containerInfoAssociated.classList.add('container-info-associated');
 const containerInfoPlusPages= document.createElement('div');
 containerInfoPlusPages.classList.add('container-info-plus-pages')
 const containerPagination= document.createElement('div');
-
 
 
 
@@ -60,12 +63,12 @@ const createCardInfoAssociated =(data)=>{
 
     const id= data[0].id;
 
-    params3.set('info', id);
-    params3.set('type', classInfo);
+    params.set('info', id);
+    params.set('type', classInfo);
 
     contentHTML=`
                 <div class="${classInfo}">
-                    <a href="./info.html?${params3.toString()}">
+                    <a href="./info.html?${params.toString()}">
                         <img src="${data[0].thumbnail.path}.${data[0].thumbnail.extension}" alt="${data[0].name || data[0].title}">
                         <h3>${data[0]["name"] || data[0]["title"]}</h3>
                     </a>
@@ -139,6 +142,7 @@ const createInfoCard = (data)=>{
 //------------------GET URL-------------------------
 
 const getURLInfo = () =>{
+    
     let url="";
     if(type=="comics"){
         url=  `${baseUrl}${type}/${info}?title=${toSearchInfo}&ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;

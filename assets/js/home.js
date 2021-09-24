@@ -36,6 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 var paramsInfo = new URLSearchParams(window.location.search);
+formSearch.addEventListener('submit', function () {
+    getFormInfo(event, "index.html?");
+});
 //----------- CREATE CARD -------------
 var comicClass = "comics";
 var characterClass = "characters";
@@ -67,21 +70,6 @@ var createCard = function (list, classCont, resultss) {
     createButtons(pagesTotal, results);
     main.appendChild(results);
 };
-//-----------SEARCH BY FILTERS------------
-var getFormInfo = function (event) {
-    event.preventDefault();
-    var form = event.target;
-    params.set('wordToSearch', "");
-    params.set('type', "");
-    params.set('order', "");
-    params.set('page', "");
-    params.set('wordToSearch', form.addSearch.value);
-    params.set('type', form.type.value);
-    params.set('order', form.order.value);
-    params.set('page', "1");
-    window.location.href = 'index.html?' + params.toString();
-};
-formSearch.addEventListener('submit', getFormInfo);
 //-------------SEARCH FILTERS-----------------
 var updateResults = function (results) {
     var type = params.get('type');

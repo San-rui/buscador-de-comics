@@ -1,5 +1,10 @@
 let paramsInfo= new URLSearchParams(window.location.search);
 
+
+formSearch.addEventListener('submit', ()=>{
+	getFormInfo(event, "index.html?");
+});
+
 //----------- CREATE CARD -------------
 
 const comicClass = "comics";
@@ -45,24 +50,7 @@ const createCard = (list : DataContainer , classCont, resultss)=>{
     main.appendChild(results);
 };
 
-//-----------SEARCH BY FILTERS------------
 
-const getFormInfo = (event)=>{
-    event.preventDefault();
-    const form= event.target;
-    params.set('wordToSearch', "");
-    params.set('type', "");
-    params.set('order', "");
-    params.set('page', "");
-
-    params.set('wordToSearch', form.addSearch.value);
-    params.set('type', form.type.value);
-    params.set('order', form.order.value);
-    params.set('page', "1");
-    window.location.href='index.html?'+params.toString();
-};
-
-formSearch.addEventListener('submit', getFormInfo);
 
 //-------------SEARCH FILTERS-----------------
 
