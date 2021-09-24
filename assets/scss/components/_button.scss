@@ -1,16 +1,18 @@
 button{
     font-size: 1.2rem;
-    width:10rem;
-    height: 2.5rem;
+    width:160px;
+    height: 40px;
     padding: 0 2% 0 2%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     background-color:$primary;
     color:white;
-    background-color:$primary;
+    background-color:$button;
+    margin-left: 1rem;
+    
 }
 button:hover{
     background-color:$primary-hover;
