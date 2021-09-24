@@ -52,7 +52,6 @@ var createCard = function (list, classCont, resultss) {
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
-    var name = (classCont == "comics") ? "title" : "name";
     for (var _i = 0, resultss_1 = resultss; _i < resultss_1.length; _i++) {
         var item = resultss_1[_i];
         var detail = item.id;
@@ -72,18 +71,17 @@ var createCard = function (list, classCont, resultss) {
 var getFormInfo = function (event) {
     event.preventDefault();
     var form = event.target;
-    var searchData = {
-        wordToSearch: form.addSearch.value,
-        type: form.type.value,
-        order: form.order.value
-    };
-    params.set('wordToSearch', searchData.wordToSearch);
-    params.set('type', searchData.type);
-    params.set('order', searchData.order);
+    params.set('wordToSearch', "");
+    params.set('type', "");
+    params.set('order', "");
+    params.set('page', "");
+    params.set('wordToSearch', form.addSearch.value);
+    params.set('type', form.type.value);
+    params.set('order', form.order.value);
+    params.set('page', "1");
     window.location.href = 'index.html?' + params.toString();
 };
 formSearch.addEventListener('submit', getFormInfo);
-console.log("Params", params.toString());
 //-------------SEARCH FILTERS-----------------
 var updateResults = function (results) {
     var type = params.get('type');
@@ -101,29 +99,23 @@ var offset = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
 var typeData = (params.get("type")) ? (params.get("type")) : "comics";
 var orderData = (params.get("order"));
 var toSearch = encodeURIComponent(params.get('wordToSearch'));
-console.log("tosearch", params.get('wordToSearch'));
 //-------------------GET URL --------------------------------
 var getURL = function () {
     var url = "";
     if (params.get("type") == null) {
         url = "" + baseUrl + typeData + "?orderBy=title&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-        console.log("URL:", url);
     }
     else if (typeData == "comics" && toSearch !== "") {
         url = "" + baseUrl + typeData + "?title=" + toSearch + "&orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-        console.log("URL:", url);
     }
     else if (typeData == "comics" && toSearch == "") {
         url = "" + baseUrl + typeData + "?orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-        console.log("URL:", url);
     }
     else if (typeData == "characters" && toSearch !== "") {
         url = "" + baseUrl + typeData + "?name=" + toSearch + "&orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-        console.log("URL:", url);
     }
     else if (typeData == "characters" && toSearch == "") {
         url = "" + baseUrl + typeData + "?orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-        console.log("URL:", url);
     }
     return url;
 };

@@ -41,11 +41,11 @@ const controlsSearch = [
 						name: "Z-A",
 					},
 					{
-						id: "modified",
+						id: "-focDate",
 						name: "Más nuevos",
 					},
 					{
-						id: "-modified",
+						id: "focDate",
 						name: "Más viejos",
 					},
 				],
@@ -90,13 +90,61 @@ tittleSearch.appendChild(document.createTextNode("Búsqueda"));
 inputContainer.classList.add('input-container')
 selectContainer.classList.add('select-container');
 
+const elemOrder = document.createElement("select");
+elemOrder.id="order";
+
+
+const handlerForm =(event)=>{
+	event.preventDefault();
+	elemOrder.innerHTML="";
+
+	const typeInfo= event.target;
+	if(typeInfo.value=="comics"){
+
+		for(const item of controlsSearch){
+			if(item.type=="select"){
+
+				for(const element of item.options){
+					if(element.id=="comics"){
+
+						for(const item of element.options){
+							const op = document.createElement("option");
+							op.value = item.id.toString();
+							op.appendChild(document.createTextNode(item.name));
+							elemOrder.appendChild(op);
+						}
+					}
+				}
+			}
+		}
+
+	}else{
+		for(const item of controlsSearch){
+			if(item.type=="select"){
+
+				for(const element of item.options){
+					if(element.id=="characters"){
+
+						for(const item of element.options){
+							const op = document.createElement("option");
+							op.value = item.id.toString();
+							op.appendChild(document.createTextNode(item.name));
+							elemOrder.appendChild(op);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+}
+
 const makeForm = (form, ctrls, parent, containerSearch) => {
 	let elem;
-	let elemOrder;
 
     for (const control of ctrls) {
 		
-
         if(control.type === "select"){
             const labelselect = document.createElement('label');
             labelselect.appendChild(document.createTextNode(control.name));
@@ -113,8 +161,8 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
 					labelselectOrder.appendChild(document.createTextNode("ORDEN"));
 					
 					elem = document.createElement("select");
-					elemOrder = document.createElement("select");
-					elemOrder.id="order";
+
+					elem.addEventListener('change', handlerForm);
 
 					for(const cont of control.options){
 
@@ -125,22 +173,23 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
 						selectContainer.appendChild(elem);
 						selectContainer.appendChild(labelselectOrder);
 						selectContainer.appendChild(elemOrder);
-
-						const {options}=cont;
-
-						for(const item of options){
-							const op = document.createElement("option");
-							op.value = item.id.toString();
-							op.appendChild(document.createTextNode(item.name));
-							elemOrder.appendChild(op);
-						}
+					
+							if(cont.id=="comics"){
+		
+								for(const item of cont.options){
+		
+									const op = document.createElement("option");
+									op.value = item.id.toString();
+									op.appendChild(document.createTextNode(item.name));
+									elemOrder.appendChild(op);
+								}
+							}
 					}
 					
 				}
 			break;
 
 			default:
-				
 				elem = document.createElement("input");
 				elem.type = control.type;
                 elem.placeholder=placeHolderText;
