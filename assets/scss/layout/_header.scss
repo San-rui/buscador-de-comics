@@ -4,6 +4,9 @@
 	height: 27rem;
 	display: flex;
 	flex-direction: column;
+	border-bottom: solid 7px;
+    border-bottom-color: $active-number;
+
 	h1{
 		font-family: 'Bangers', cursive;
 		height:12%;

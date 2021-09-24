@@ -1,7 +1,12 @@
 .form-search{
     display: flex;
     justify-content: space-between;
-
+    background-color:$primary;
+    height: 8rem;
+    padding: 0 1.5rem 0 1.5rem;
+    border-radius: 60px;
+    box-shadow: 10px 10px 5px 0px rgba(46,77,125,0.75);
+    margin-top: 1rem;
 
     .select-container{
         font-weight: 800;
@@ -14,6 +19,8 @@
         label{
             margin: 0 1% 0 4%;
             text-align: end;
+            color:$primary-white;
+            margin-right: 2rem;
         }
         select{
             font-weight: 800;
@@ -21,10 +28,9 @@
             width:9rem;
             height: 2rem;
             margin:  0 2% 0 0;
+            padding-right: 0.5rem;
             border: none;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
+            border-radius: 7px;
             outline: none;
         }
         
@@ -34,8 +40,6 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        border-bottom: 2px solid;
-        border-bottom-color: $primary;
 
         input{
             font-weight: 400;
@@ -45,17 +49,20 @@
             border: none;
             margin-left: 25px;
             outline: none;
+            border-radius:10px;
         }
         input::placeholder{
             color:$secondary;
             font-weight: 800;
             font-size: 1.5rem;
+            padding-left: 1rem;
         }
         input:active{
             outline: none;
         }
         i{
-            color:$primary;
+            color:$primary-white;
+            font-size: 2rem;
         }
     }
     
