@@ -208,6 +208,8 @@ containerPages.appendChild(previousPage);
 
 const createButtons =(pagesNumber, container, pageloc)=>{
 
+	let params= new URLSearchParams(window.location.search);
+
     let count = 0;
     let arrayPageNumber =[];
     let auxArray=[];
@@ -228,12 +230,9 @@ const createButtons =(pagesNumber, container, pageloc)=>{
             count ++
             arrayPageNumber.push(count);
         };
-    
+
         for(const page of auxArray){
     
-            //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
-            (!pageClicked || pageClicked==1)? previousPage.classList.add('hidden') : previousPage.setAttribute('href',  `${pageloc}page=${pageClicked-1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
-            (pageClicked==arrayPageNumber.length)? nextPage.classList.add('hidden') :nextPage.setAttribute('href',  `${pageloc}page=${pageClicked+1}&wordTosearch=${params.get('wordToSearch')}&orderBy=${params.get('order')}`);
     
             //---CREATE LIST OF ANCHORS-----
             const itemList= document.createElement('li');
@@ -242,6 +241,14 @@ const createButtons =(pagesNumber, container, pageloc)=>{
             pageNumner.setAttribute('id', `${page}`);
             itemList.appendChild(pageNumner);
             pageNumner.innerHTML=`${page}`;
+
+			let next=Number(pageClicked)+1;
+			let previous= Number(pageClicked)-1;
+
+			console.log(pageClicked, previous)
+
+			nextPage.setAttribute('id', `${next}`);
+			previousPage.setAttribute('id', `${previous}`);
     
             if(Number(pageNumner.innerHTML)==pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1){
                 itemList.classList.add('clicked-number');
@@ -250,6 +257,22 @@ const createButtons =(pagesNumber, container, pageloc)=>{
             params.set('page', pageNumner.id);
             
             pageNumner.setAttribute('href', `${pageloc}${params.toString()}`);
+
+			//---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
+            if(!pageClicked || pageClicked==1){
+				previousPage.classList.add('hidden');
+			}  else{
+				params.set('page', previousPage.id);
+				previousPage.setAttribute('href', `${pageloc}${params.toString()}`);
+			};
+
+            if(pageClicked==arrayPageNumber.length){
+				nextPage.classList.add('hidden')
+
+			} else{
+				params.set('page', nextPage.id);
+				nextPage.setAttribute('href', `${pageloc}${params.toString()}`);
+			}; 
             
             //---SET ITEMS INTO CONTAINER-----
             listUl.appendChild(itemList);
@@ -266,14 +289,13 @@ const createButtons =(pagesNumber, container, pageloc)=>{
 //-----------SEARCH BY FILTERS------------
 
 const getFormInfo = (event, data:string)=>{
-    console.log(" hola",event.target)
+
     event.preventDefault();
     const form= event.target;
     params.set('wordToSearch', null);
     params.set('type', null);
     params.set('order', null);
-    params.set('page', null);
-    params.set('info', null);
+	params.set('info', null);
 
     params.set('wordToSearch', form.addSearch.value);
     params.set('type', form.type.value);

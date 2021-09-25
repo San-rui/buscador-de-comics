@@ -58,8 +58,9 @@ var createCard = function (list, classCont, resultsList) {
     for (var _i = 0, resultsList_1 = resultsList; _i < resultsList_1.length; _i++) {
         var item = resultsList_1[_i];
         var detail = item.id;
-        paramsInfo.set('info', detail);
-        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + paramsInfo.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n            ";
+        params.set('info', detail);
+        params.set('page', "1");
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + params.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n            ";
     }
     ;
     var pagesTotal = getNumberPages(list.total, list.limit);
@@ -95,14 +96,11 @@ var getURL = function () {
     else if (typeData == "comics" && toSearch !== "") {
         url = "" + baseUrl + typeData + "?title=" + toSearch + "&orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
     }
-    else if (typeData == "comics" && toSearch == "") {
+    else if (toSearch == "") {
         url = "" + baseUrl + typeData + "?orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
     }
     else if (typeData == "characters" && toSearch !== "") {
         url = "" + baseUrl + typeData + "?name=" + toSearch + "&orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
-    }
-    else if (typeData == "characters" && toSearch == "") {
-        url = "" + baseUrl + typeData + "?orderBy=" + orderData + "&ts=1&apikey=" + apiKey + "&hash=" + hash + "&offset=" + offset;
     }
     return url;
 };
@@ -134,7 +132,6 @@ var getMarvelSection = function (url, className) { return __awaiter(_this, void 
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
-                alert("La API esta fuera de servicio");
                 return [3 /*break*/, 4];
             case 4:
                 ;

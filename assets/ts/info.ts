@@ -1,3 +1,6 @@
+let offsetToInfo= (pageClicked) ? Number(pageClicked) *20-20 : 0;
+
+
 formSearch.addEventListener('submit', ()=>{
 	getFormInfo(event, "../index.html?");
 });
@@ -181,8 +184,6 @@ const getInfoAssociated = async(url)=>{
     const listItems= items.data;
     const resultsItems= listItems.results;
 
-    console.log(listItems)
-
     for(const item of resultsItems){
         if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
             item.thumbnail.path='../assets/images/clean'
@@ -210,11 +211,20 @@ const getMarvelInfo = async(url)=>{
     createInfoCard(resultsItems);
     infoAssociated(resultsItems);
     const infoResults= infoAssociated(resultsItems);
-    getInfoAssociated(infoResults)
+    console.log(infoResults)
+
+    let newURL= infoResults.split('&');
+    newURL.length=newURL.length-1;
+    let joinURL=newURL.toString();
+    let finalURL= joinURL.replaceAll(',' ,'&')
+
+    let URLModified= finalURL+`&offset=${offsetToInfo}`;
+
+    console.log(URLModified)
+
+    getInfoAssociated(URLModified);
 
 }
 
 getMarvelInfo(urlToUseInfo);
 
-
-console.log(info)
