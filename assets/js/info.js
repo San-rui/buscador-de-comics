@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
+var offsetToInfo = (pageClicked) ? Number(pageClicked) * 20 - 20 : 0;
 formSearch.addEventListener('submit', function () {
     getFormInfo(event, "../index.html?");
 });
@@ -174,7 +175,6 @@ var getInfoAssociated = function (url) { return __awaiter(_this, void 0, void 0,
                 items = _a.sent();
                 listItems = items.data;
                 resultsItems = listItems.results;
-                console.log(listItems);
                 for (_i = 0, resultsItems_1 = resultsItems; _i < resultsItems_1.length; _i++) {
                     item = resultsItems_1[_i];
                     if (item.thumbnail.path == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available') {
@@ -188,7 +188,7 @@ var getInfoAssociated = function (url) { return __awaiter(_this, void 0, void 0,
 }); };
 //---------------GET INFO FROM API MARVEL-------------
 var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults;
+    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults, newURL, joinURL, finalURL, URLModified;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, fetch(url)];
@@ -209,10 +209,16 @@ var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, fun
                 createInfoCard(resultsItems);
                 infoAssociated(resultsItems);
                 infoResults = infoAssociated(resultsItems);
-                getInfoAssociated(infoResults);
+                console.log(infoResults);
+                newURL = infoResults.split('&');
+                newURL.length = newURL.length - 1;
+                joinURL = newURL.toString();
+                finalURL = joinURL.replaceAll(',', '&');
+                URLModified = finalURL + ("&offset=" + offsetToInfo);
+                console.log(URLModified);
+                getInfoAssociated(URLModified);
                 return [2 /*return*/];
         }
     });
 }); };
 getMarvelInfo(urlToUseInfo);
-console.log(info);

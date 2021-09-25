@@ -28,19 +28,18 @@ const createCard = (list : DataContainer , classCont, resultsList)=>{
 
     for(const item of resultsList){
         let detail=item.id;
-        paramsInfo.set('info', detail);
-
+        params.set('info', detail);
+        params.set('page', "1");
         
             contentHTML += `
             <div class=${classCont}>
-                <a href="./pages/info.html?${paramsInfo.toString()}">
+                <a href="./pages/info.html?${params.toString()}">
                     <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}" class="img-thumbnail">
                     <h3>${item["name"] || item["title"]}</h3>
                     </a>
             </div>
             ` 
     };
-
     const pagesTotal= getNumberPages(list.total, list.limit);
 
     resultNumber.innerHTML = `${list.total} RESULTADOS`;
@@ -84,14 +83,11 @@ const getURL = () =>{
     } else if(typeData=="comics" && toSearch!==""){
         url=  `${baseUrl}${typeData}?title=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
         
-    } else if(typeData=="comics" && toSearch==""){
+    } else if(toSearch==""){
         url=  `${baseUrl}${typeData}?orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
         
     }else if(typeData=="characters" && toSearch!==""){
         url=  `${baseUrl}${typeData}?name=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
-        
-    }else if(typeData=="characters" && toSearch==""){
-        url=  `${baseUrl}${typeData}?orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
     }
     return url;
 }
@@ -119,7 +115,7 @@ const getMarvelSection = async(url, className)=>{
     
     }
     catch(err){
-        alert("La API esta fuera de servicio"); 
+        //alert("La API esta fuera de servicio"); 
     };
 };
 
