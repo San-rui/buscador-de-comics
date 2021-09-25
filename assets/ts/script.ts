@@ -85,66 +85,37 @@ const elemOrder = document.createElement("select");
 elemOrder.id="order";
 
 
-const handlerForm =(event)=>{
+const handlerSubmit =(event)=>{
     event.preventDefault();
     elemOrder.innerHTML="";
 
     const typeInfo= event.target;
-    if(typeInfo.value=="comics"){
+	const ctrl = controlsSearch.filter(elem => elem.name === 'Tipo')[0];
 
-        for(const item of controlsSearch){
-            if(item.type=="select"){
+	for( const element of ctrl.options) {
+		if(element.id==typeInfo.value){
 
-                for(const element of item.options){
-                    if(element.id=="comics"){
-
-                        for(const item of element.options){
-                            const op = document.createElement("option");
-                            op.value = item.id.toString();
-                            op.appendChild(document.createTextNode(item.name));
-                            elemOrder.appendChild(op);
-                        }
-                    }
-                }
-            }
-        }
-
-    }else{
-        for(const item of controlsSearch){
-            if(item.type=="select"){
-
-                for(const element of item.options){
-                    if(element.id=="characters"){
-
-                        for(const item of element.options){
-                            const op = document.createElement("option");
-                            op.value = item.id.toString();
-                            op.appendChild(document.createTextNode(item.name));
-                            elemOrder.appendChild(op);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-}
+			for(const item of element.options){
+				const op = document.createElement("option");
+				op.value = item.id.toString();
+				op.appendChild(document.createTextNode(item.name));
+				elemOrder.appendChild(op);
+			};
+		} ;
+	};
+};
 
 const makeForm = (form, ctrls, parent, containerSearch) => {
     let elem;
 
     for (const control of ctrls) {
-        
-        if(control.type === "select"){
-            const labelselect = document.createElement('label');
-            labelselect.appendChild(document.createTextNode(control.name));
-            selectContainer.appendChild(labelselect);
-        }
 
         switch (control.type) {
-            
             case "select":
+
+				const labelselect = document.createElement('label');
+				labelselect.appendChild(document.createTextNode(control.name));
+				selectContainer.appendChild(labelselect);
                 
                 if(control.type=="select" && control.options!==undefined){
 
@@ -153,7 +124,7 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
                     
                     elem = document.createElement("select");
 
-                    elem.addEventListener('change', handlerForm);
+                    elem.addEventListener('change', handlerSubmit);
 
                     for(const cont of control.options){
 
@@ -168,7 +139,6 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
                             if(cont.id=="comics"){
         
                                 for(const item of cont.options){
-        
                                     const op = document.createElement("option");
                                     op.value = item.id.toString();
                                     op.appendChild(document.createTextNode(item.name));
@@ -176,17 +146,18 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
                                 }
                             }
                     }
-                    
                 }
             break;
 
-            default:
-                elem = document.createElement("input");
+			case "search":
+				elem = document.createElement("input");
                 elem.type = control.type;
                 elem.placeholder=placeHolderText;
                 inputContainer.appendChild(icon)
                 inputContainer.appendChild(elem);
                 break;
+
+            default:
         }
         elem.name= control.name;
         elem.id= control.id;
@@ -209,7 +180,6 @@ const baseUrl: string = "https://gateway.marvel.com:443/v1/public/";
 
 const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
 const hash : string ="bca60ca0198d3e720005add814760dde";
-
 
 //-------------------GET NUMBER OF PAGES---------------
 
@@ -289,8 +259,6 @@ const createButtons =(pagesNumber, container, pageloc)=>{
             
         };
     }
-
-    
 };
 
 
