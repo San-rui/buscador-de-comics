@@ -76,65 +76,41 @@ inputContainer.classList.add('input-container');
 selectContainer.classList.add('select-container');
 var elemOrder = document.createElement("select");
 elemOrder.id = "order";
-var handlerForm = function (event) {
+var handlerSubmit = function (event) {
     event.preventDefault();
     elemOrder.innerHTML = "";
     var typeInfo = event.target;
-    if (typeInfo.value == "comics") {
-        for (var _i = 0, controlsSearch_1 = controlsSearch; _i < controlsSearch_1.length; _i++) {
-            var item = controlsSearch_1[_i];
-            if (item.type == "select") {
-                for (var _a = 0, _b = item.options; _a < _b.length; _a++) {
-                    var element = _b[_a];
-                    if (element.id == "comics") {
-                        for (var _c = 0, _d = element.options; _c < _d.length; _c++) {
-                            var item_1 = _d[_c];
-                            var op = document.createElement("option");
-                            op.value = item_1.id.toString();
-                            op.appendChild(document.createTextNode(item_1.name));
-                            elemOrder.appendChild(op);
-                        }
-                    }
-                }
+    var ctrl = controlsSearch.filter(function (elem) { return elem.name === 'Tipo'; })[0];
+    for (var _i = 0, _a = ctrl.options; _i < _a.length; _i++) {
+        var element = _a[_i];
+        if (element.id == typeInfo.value) {
+            for (var _b = 0, _c = element.options; _b < _c.length; _b++) {
+                var item = _c[_b];
+                var op = document.createElement("option");
+                op.value = item.id.toString();
+                op.appendChild(document.createTextNode(item.name));
+                elemOrder.appendChild(op);
             }
+            ;
         }
+        ;
     }
-    else {
-        for (var _e = 0, controlsSearch_2 = controlsSearch; _e < controlsSearch_2.length; _e++) {
-            var item = controlsSearch_2[_e];
-            if (item.type == "select") {
-                for (var _f = 0, _g = item.options; _f < _g.length; _f++) {
-                    var element = _g[_f];
-                    if (element.id == "characters") {
-                        for (var _h = 0, _j = element.options; _h < _j.length; _h++) {
-                            var item_2 = _j[_h];
-                            var op = document.createElement("option");
-                            op.value = item_2.id.toString();
-                            op.appendChild(document.createTextNode(item_2.name));
-                            elemOrder.appendChild(op);
-                        }
-                    }
-                }
-            }
-        }
-    }
+    ;
 };
 var makeForm = function (form, ctrls, parent, containerSearch) {
     var elem;
     for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
         var control = ctrls_1[_i];
-        if (control.type === "select") {
-            var labelselect = document.createElement('label');
-            labelselect.appendChild(document.createTextNode(control.name));
-            selectContainer.appendChild(labelselect);
-        }
         switch (control.type) {
             case "select":
+                var labelselect = document.createElement('label');
+                labelselect.appendChild(document.createTextNode(control.name));
+                selectContainer.appendChild(labelselect);
                 if (control.type == "select" && control.options !== undefined) {
                     var labelselectOrder = document.createElement('label');
                     labelselectOrder.appendChild(document.createTextNode("ORDEN"));
                     elem = document.createElement("select");
-                    elem.addEventListener('change', handlerForm);
+                    elem.addEventListener('change', handlerSubmit);
                     for (var _a = 0, _b = control.options; _a < _b.length; _a++) {
                         var cont = _b[_a];
                         var op = document.createElement("option");
@@ -156,13 +132,14 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
                     }
                 }
                 break;
-            default:
+            case "search":
                 elem = document.createElement("input");
                 elem.type = control.type;
                 elem.placeholder = placeHolderText;
                 inputContainer.appendChild(icon);
                 inputContainer.appendChild(elem);
                 break;
+            default:
         }
         elem.name = control.name;
         elem.id = control.id;
