@@ -1,3 +1,14 @@
+//-----------LOADING-----------
+var containerLoading = document.createElement('div');
+containerLoading.setAttribute('class', 'container-loadig');
+var loading = document.createElement('div');
+loading.setAttribute('class', 'loading');
+containerLoading.appendChild(loading);
+document.body.appendChild(containerLoading);
+window.onload = function () {
+    containerLoading.style.visibility = 'hidden';
+    containerLoading.style.opacity = '0';
+};
 //-------------GO BACK PARAMETERS------------------
 var goBack = document.createElement('a');
 goBack.innerHTML = "Volver";
