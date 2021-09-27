@@ -49,8 +49,6 @@ const createCard = (list : DataContainer , classCont, resultsList)=>{
     main.appendChild(results);
 };
 
-
-
 //-------------SEARCH FILTERS-----------------
 
 const updateResults = (results) =>{
@@ -115,7 +113,7 @@ const getMarvelSection = async(url, className)=>{
     
     }
     catch(err){
-        //alert("La API esta fuera de servicio"); 
+        alert("La API esta fuera de servicio"); 
     };
 };
 
