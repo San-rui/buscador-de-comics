@@ -72,14 +72,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center; }
-  .container-pages .page-next-previous {
-    padding: 0.5rem;
-    text-align: center;
-    text-decoration: none;
-    border: none;
-    border-radius: 0.3rem;
-    background-color: #081324;
-    color: whitesmoke; }
 
 .container-all-info {
   width: 100%;
@@ -123,6 +115,10 @@ body {
   align-items: flex-start; }
   .container-info h3, .container-info h4, .container-info p {
     margin-bottom: 1rem; }
+
+.footer-img {
+  width: 3rem;
+  margin: 0 0.5rem 0 0.5rem; }
 
 .form-search {
   display: flex;
@@ -269,17 +265,25 @@ ul {
   padding: 0; }
   ul .pagination-number {
     list-style: none;
-    width: 2rem;
-    border-radius: 0.2rem;
+    border-radius: 0.8rem;
     background-color: #081324;
     text-align: center;
-    margin: 0 1rem  0 1rem;
-    padding: 0.2rem 0 0.2rem 0; }
+    margin: 0 0.5rem  0 0.5rem;
+    padding: 0.18rem 0.5rem 0.18rem 0.5rem; }
     ul .pagination-number a {
       color: whitesmoke;
       text-decoration: none; }
   ul .clicked-number {
     background-color: #083a85; }
+
+.anchor-page-style {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.arrow {
+  width: 1.8rem;
+  margin-right: 0.5rem; }
 
 .go-back {
   font-size: 1.2rem;

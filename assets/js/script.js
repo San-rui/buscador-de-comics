@@ -168,12 +168,27 @@ var pageClicked = Number(params.get("page"));
 var containerPages = document.createElement('div');
 containerPages.classList.add('container-pages');
 var listUl = document.createElement('ul');
+var firstPage = document.createElement('a');
+var firstPageArrow = document.createElement('img');
+firstPageArrow.setAttribute('src', '../assets/images/first.png');
+firstPageArrow.classList.add('arrow');
+firstPage.appendChild(firstPageArrow);
+var lastPage = document.createElement('a');
+var lastPageArrow = document.createElement('img');
+lastPageArrow.setAttribute('src', '../assets/images/last.png');
+lastPageArrow.classList.add('arrow');
+lastPage.appendChild(lastPageArrow);
 var previousPage = document.createElement('a');
-previousPage.innerHTML = "Página anterior";
+var previousPageArrow = document.createElement('img');
+previousPageArrow.setAttribute('src', '../assets/images/previous.png');
+previousPageArrow.classList.add('arrow');
+previousPage.appendChild(previousPageArrow);
 var nextPage = document.createElement('a');
-nextPage.innerHTML = "Página Siguiente";
-previousPage.classList.add('page-next-previous');
-nextPage.classList.add('page-next-previous');
+var nextPageArrow = document.createElement('img');
+nextPageArrow.setAttribute('src', '../assets/images/next.png');
+nextPageArrow.classList.add('arrow');
+nextPage.appendChild(nextPageArrow);
+containerPages.appendChild(firstPage);
 containerPages.appendChild(previousPage);
 var createButtons = function (pagesNumber, container, pageloc) {
     var params = new URLSearchParams(window.location.search);
@@ -201,43 +216,51 @@ var createButtons = function (pagesNumber, container, pageloc) {
             //---CREATE LIST OF ANCHORS-----
             var itemList = document.createElement('li');
             itemList.classList.add('pagination-number');
-            var pageNumner = document.createElement('a');
-            pageNumner.setAttribute('id', "" + page);
-            itemList.appendChild(pageNumner);
-            pageNumner.innerHTML = "" + page;
-            var next = Number(pageClicked) + 1;
+            var pageNumber = document.createElement('a');
+            pageNumber.setAttribute('id', "" + page);
+            itemList.appendChild(pageNumber);
+            pageNumber.innerHTML = "" + page;
+            var next = (!pageClicked) ? pageClicked = 1 : Number(pageClicked) + 1;
             var previous = Number(pageClicked) - 1;
-            console.log(pageClicked, previous);
             nextPage.setAttribute('id', "" + next);
             previousPage.setAttribute('id', "" + previous);
-            if (Number(pageNumner.innerHTML) == pageClicked || !pageClicked && Number(pageNumner.innerHTML) == 1) {
+            if (Number(pageNumber.innerHTML) == pageClicked || !pageClicked && Number(pageNumber.innerHTML) == 1) {
                 itemList.classList.add('clicked-number');
             }
             ;
             //---SET QUERY PARAMS TO NUMBER BUTTONS-----
-            params.set('page', pageNumner.id);
-            pageNumner.setAttribute('href', "" + pageloc + params.toString());
-            //---SET QUERY PARAMS PREVIOUS AND NEXT BUTTON-----
+            params.set('page', pageNumber.id);
+            pageNumber.setAttribute('href', "" + pageloc + params.toString());
+            //---HIDE INACTIVE BUTTONS-----
             if (!pageClicked || pageClicked == 1) {
                 previousPage.classList.add('hidden');
+                firstPage.classList.add('hidden');
             }
             else {
+                params.set('page', "1");
+                firstPage.setAttribute('href', "" + pageloc + params.toString());
                 params.set('page', previousPage.id);
                 previousPage.setAttribute('href', "" + pageloc + params.toString());
+                firstPage.classList.add('anchor-page-style');
+                previousPage.classList.add('anchor-page-style');
             }
-            ;
             if (pageClicked == arrayPageNumber.length) {
                 nextPage.classList.add('hidden');
+                lastPage.classList.add('hidden');
             }
             else {
                 params.set('page', nextPage.id);
                 nextPage.setAttribute('href', "" + pageloc + params.toString());
+                params.set('page', "" + pagesNumber);
+                lastPage.setAttribute('href', "" + pageloc + params.toString());
+                lastPage.classList.add('anchor-page-style');
+                nextPage.classList.add('anchor-page-style');
             }
-            ;
             //---SET ITEMS INTO CONTAINER-----
             listUl.appendChild(itemList);
             containerPages.appendChild(listUl);
             containerPages.appendChild(nextPage);
+            containerPages.appendChild(lastPage);
             container.appendChild(containerPages);
         }
         ;

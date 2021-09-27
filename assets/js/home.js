@@ -132,6 +132,7 @@ var getMarvelSection = function (url, className) { return __awaiter(_this, void 
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
+                alert("La API esta fuera de servicio");
                 return [3 /*break*/, 4];
             case 4:
                 ;

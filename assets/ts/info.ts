@@ -179,7 +179,8 @@ const urlToUseInfo= getURLInfo();
 
 const getInfoAssociated = async(url)=>{
 
-    const response = await fetch(url);
+    try{
+        const response = await fetch(url);
     const items = await response.json();
     const listItems= items.data;
     const resultsItems= listItems.results;
@@ -191,38 +192,46 @@ const getInfoAssociated = async(url)=>{
     }
 
     createCardInfoAssociated(listItems,resultsItems);
+    }
+    catch(err){
+        alert("La API esta fuera de servicio"); 
+    };
+
+    
 };
 
 //---------------GET INFO FROM API MARVEL-------------
 
 const getMarvelInfo = async(url)=>{
-    const response = await fetch(url);
-    const items = await response.json();
 
-    const listItems= items.data;
-    const resultsItems= listItems.results;
+    try{
+        const response = await fetch(url);
+        const items = await response.json();
+        const listItems= items.data;
+        const resultsItems= listItems.results;
 
-    for(const item of resultsItems){
-        if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
-            item.thumbnail.path='../assets/images/clean'
-        }
+        for(const item of resultsItems){
+            if(item.thumbnail.path== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+                item.thumbnail.path='../assets/images/clean'
+            }
+        };
+
+        createInfoCard(resultsItems);
+        infoAssociated(resultsItems);
+        const infoResults= infoAssociated(resultsItems);
+        console.log(infoResults)
+
+        let newURL= infoResults.split('&');
+        newURL.length=newURL.length-1;
+        let joinURL=newURL.toString();
+        let finalURL= joinURL.replaceAll(',' ,'&')
+
+        let URLModified= finalURL+`&offset=${offsetToInfo}`;
+        getInfoAssociated(URLModified);
+    }
+    catch(err){
+        alert("La API esta fuera de servicio"); 
     };
-
-    createInfoCard(resultsItems);
-    infoAssociated(resultsItems);
-    const infoResults= infoAssociated(resultsItems);
-    console.log(infoResults)
-
-    let newURL= infoResults.split('&');
-    newURL.length=newURL.length-1;
-    let joinURL=newURL.toString();
-    let finalURL= joinURL.replaceAll(',' ,'&')
-
-    let URLModified= finalURL+`&offset=${offsetToInfo}`;
-
-    console.log(URLModified)
-
-    getInfoAssociated(URLModified);
 
 }
 

@@ -153,4 +153,3 @@ type DataContainer= {
 	results: Comic[] | Character [],
 }
 
-

@@ -164,10 +164,12 @@ var getURLInfo = function () {
 var urlToUseInfo = getURLInfo();
 //---------------GET INFO ASSOCISTED FROM API MARVEL-------------
 var getInfoAssociated = function (url) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listItems, resultsItems, _i, resultsItems_1, item;
+    var response, items, listItems, resultsItems, _i, resultsItems_1, item, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch(url)];
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, fetch(url)];
             case 1:
                 response = _a.sent();
                 return [4 /*yield*/, response.json()];
@@ -182,16 +184,25 @@ var getInfoAssociated = function (url) { return __awaiter(_this, void 0, void 0,
                     }
                 }
                 createCardInfoAssociated(listItems, resultsItems);
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                alert("La API esta fuera de servicio");
+                return [3 /*break*/, 4];
+            case 4:
+                ;
                 return [2 /*return*/];
         }
     });
 }); };
 //---------------GET INFO FROM API MARVEL-------------
 var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, function () {
-    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults, newURL, joinURL, finalURL, URLModified;
+    var response, items, listItems, resultsItems, _i, resultsItems_2, item, infoResults, newURL, joinURL, finalURL, URLModified, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch(url)];
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, fetch(url)];
             case 1:
                 response = _a.sent();
                 return [4 /*yield*/, response.json()];
@@ -215,8 +226,14 @@ var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, fun
                 joinURL = newURL.toString();
                 finalURL = joinURL.replaceAll(',', '&');
                 URLModified = finalURL + ("&offset=" + offsetToInfo);
-                console.log(URLModified);
                 getInfoAssociated(URLModified);
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _a.sent();
+                alert("La API esta fuera de servicio");
+                return [3 /*break*/, 4];
+            case 4:
+                ;
                 return [2 /*return*/];
         }
     });
