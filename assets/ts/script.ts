@@ -73,8 +73,9 @@ const controlsSearch = [
     },
 ];
 
-const container= document.createElement('div');
+
 const main= document.createElement('main');
+
 const formSearch = document.createElement("form");
 const searchContainerGeneral = document.createElement('div');
 const placeHolderText="Ingresa tu búsqueda";
@@ -87,7 +88,7 @@ button.type = "submit";
 button.appendChild(document.createTextNode("Buscar"));
 
 main.classList.add('container');
-container.appendChild(main);
+document.body.appendChild(main);
 searchContainerGeneral.classList.add('search-container-general')
 formSearch.classList.add('form-search')
 icon.classList.add("fas", "fa-search", 'fa-lg');

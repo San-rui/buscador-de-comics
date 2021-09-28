@@ -1,6 +1,6 @@
 .characters{
     overflow: hidden;
-    width: 11rem;
+    width: 10.4rem;
     height: 22rem;
     margin-bottom:0.5rem;
     background-color:$primary;
@@ -11,10 +11,14 @@
     a{
         text-decoration: none;
         display: flex;
+        
 
         img{
             height: 260px;
             transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             
         }
 
@@ -31,7 +35,6 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             color:$primary-white;
-            margin:0;
             position: absolute;
             left: 0px;
             bottom: 0px;
@@ -48,49 +51,43 @@
                 background-color:$tertiary;
             }
     }
-}
-
-    
+};
 
 
 .comics{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     overflow: hidden;
-    width: 14rem;
-    height: 25rem;
+    width: calc(100% / 5 - 2 * 10px);
+    height: calc(100% / 4 - 2 * 10px);
     margin-bottom:0.5rem;
-    position: relative;
     border-radius: 1%;
-    
+
     a{
-        width: 100%;
         text-decoration: none;
         
         img{
-            height: 80%; 
+            width: 14rem;
+            height: 22rem;
             box-shadow: 0 26px 24px -16px $primary-hover;
             transform: translateY(0);
             transition: 0.2s;
-            
+        }
+        h3{
+            height:3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color:$primary;
+            margin:0;
+            padding-left: 0.5rem;
         }
     }
 
-    h3{
-        width: 80%;
-        height:20%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        color:$primary;
-        margin:0;
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        z-index: 1;
-        padding-left: 0.5rem;
-    }
-
+    
     a:hover{
         img{
             transform: translateY(-10px);
@@ -101,4 +98,63 @@
             color:$tertiary;
         }
     }
-}
+};
+
+@include media-breakpoint-max($xl){
+    .comics{
+
+        a{
+            img{
+                width: 100%;
+                height: 80%;
+            }
+
+            h3{
+                height:5rem;
+                
+            }
+        }
+    }
+};
+
+@include media-breakpoint-max($lg){
+    .comics{
+        width: 30%;
+
+        a{
+            img{
+                width: 100%;
+                height: 80%;
+            }
+        }
+    }
+};
+
+@include media-breakpoint-max($md){
+    .characters{
+        width: 100%;
+        height:35rem;
+        a{
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            
+    
+            img{
+                height: 35rem;
+                
+            }
+
+            h3{
+                height: 20%;
+            }
+        }
+        
+
+    }
+
+    .comics{
+        width: 100%;
+    }
+};
+

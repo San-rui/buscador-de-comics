@@ -7,10 +7,10 @@ ul{
     align-items: center;
     margin:0;
     padding:0;
+    flex-wrap: wrap;
 
     .pagination-number{
         list-style: none;
-        //width: 2rem;
         border-radius: 0.8rem;
         background-color:$primary;
         text-align: center;
@@ -34,12 +34,12 @@ ul{
     display: flex;
     justify-content: center;
     align-items: center;
-}
+};
 
 .arrow{
     width: 1.8rem;
     margin-right: 0.5rem;
-}
+};
 
 .go-back{
     font-size: 1.2rem;
@@ -60,3 +60,11 @@ ul{
     background-color:$primary-hover;
 };
 
+@include media-breakpoint-max($lg){
+    .go-back{
+        align-self: center;
+        margin-bottom: 1rem;
+
+    };
+    
+};
