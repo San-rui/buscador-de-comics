@@ -6,8 +6,7 @@
     top:0;
     transition: all 2.5s ease;
     z-index: 10000;
-
-}
+};
 
 .loading{
     border: 15px solid rgb(212, 92, 92);
@@ -26,10 +25,10 @@
 
     animation: turn 1.5s linear infinite;
 
-}
+};
 
 @keyframes turn{
     from { transform: rotate(0deg);}
     to { transform: rotate(360deg);}
-}
+};
 

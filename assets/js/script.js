@@ -65,7 +65,6 @@ var controlsSearch = [
         ]
     },
 ];
-var container = document.createElement('div');
 var main = document.createElement('main');
 var formSearch = document.createElement("form");
 var searchContainerGeneral = document.createElement('div');
@@ -78,7 +77,7 @@ var button = document.createElement("button");
 button.type = "submit";
 button.appendChild(document.createTextNode("Buscar"));
 main.classList.add('container');
-container.appendChild(main);
+document.body.appendChild(main);
 searchContainerGeneral.classList.add('search-container-general');
 formSearch.classList.add('form-search');
 icon.classList.add("fas", "fa-search", 'fa-lg');
