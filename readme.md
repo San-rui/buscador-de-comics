@@ -4,7 +4,7 @@ En este proyecto he realizado una aplicación que permite listar cómics y perso
 link a la aplicación: https://buscadordecomics.netlify.app/
 
 
-Para Ada, en el módulo 5 en el que se evalúa asincronismo. 
+Para Ada, en el módulo 6 en el que se evalúa asincronismo. 
 
 Las funcionalidades que hemos tenido que darle a la aplicación han sido las siguientes:
 
