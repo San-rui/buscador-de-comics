@@ -101,6 +101,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center; }
+  .results-container p {
+    margin-top: 1rem; }
+  .results-container h3 {
+    margin-top: 2rem; }
 
 .container-info {
   color: whitesmoke;

@@ -76,6 +76,14 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    p{
+        margin-top: 1rem;
+    }
+
+    h3{
+        margin-top: 2rem;
+    }
 };
 
 .container-info{

@@ -55,6 +55,10 @@ var createCard = function (list, classCont, resultsList) {
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
+    if (resultsList.length == 0) {
+        results.appendChild(noResuls);
+    }
+    console.log(resultsList);
     for (var _i = 0, resultsList_1 = resultsList; _i < resultsList_1.length; _i++) {
         var item = resultsList_1[_i];
         var detail = item.id;

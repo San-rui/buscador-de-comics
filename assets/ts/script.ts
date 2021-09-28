@@ -13,7 +13,8 @@ window.onload= function(){
 	containerLoading.style.opacity='0';
 }
 
-
+const noResuls= document.createElement('h3');
+noResuls.innerHTML="No se han encontrado resultados"
 
 //-------------GO BACK PARAMETERS------------------
 const goBack= document.createElement('a');
