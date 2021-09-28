@@ -40,7 +40,7 @@ Las funcionalidades que hemos tenido que darle a la aplicación han sido las sig
   o	Se debe poder ir a la página anterior
   o	Se deben deshabilitar los botones correspondientes cuando no puedan ser utilizados (por ejemplo, si se está en la última página, no se debe poder utilizar el botón de ir a la última página ni el de avanzar página)
 
-# Desafíos extra (opcionales)
+# Desafíos extra
 •   Agregar la cantidad de páginas y la página actual en el paginado
 •   Agregar un botón que permita ir a la página exacta de la última búsqueda realizada.
 
