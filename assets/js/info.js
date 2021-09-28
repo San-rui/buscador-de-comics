@@ -114,7 +114,10 @@ var createComicCard = function (data) {
     var titlePublicationDate = document.createElement('h4');
     titlePublicationDate.appendChild(document.createTextNode("Publicado:"));
     var PublicationDate = document.createElement('p');
-    PublicationDate.innerHTML = data[0].modified;
+    var dateString = new Date(data[0].modified);
+    var dateFinal = ("0" + dateString.getDate()).slice(-2) + "-" + ("0" + (dateString.getMonth() + 1)).slice(-2) + "-" +
+        dateString.getFullYear();
+    PublicationDate.innerHTML = dateFinal;
     var titleScreenwriter = document.createElement('h4');
     titleScreenwriter.appendChild(document.createTextNode("Guionistas:"));
     var screenwrite = document.createElement('p');
