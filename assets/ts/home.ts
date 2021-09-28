@@ -80,6 +80,7 @@ const toSearch=encodeURIComponent(params.get('wordToSearch'));
 
 //-------------------GET URL --------------------------------
 
+
 const getURL = () =>{
     let url="";
     
@@ -87,13 +88,13 @@ const getURL = () =>{
         url = `${baseUrl}${typeData}?orderBy=title&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
 
     } else if(typeData=="comics" && toSearch!==""){
-        url=  `${baseUrl}${typeData}?title=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        url=  `${baseUrl}${typeData}?titleStartsWith=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
         
     } else if(toSearch==""){
         url=  `${baseUrl}${typeData}?orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
         
     }else if(typeData=="characters" && toSearch!==""){
-        url=  `${baseUrl}${typeData}?name=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
+        url=  `${baseUrl}${typeData}?nameStartsWith=${toSearch}&orderBy=${orderData}&ts=1&apikey=${apiKey}&hash=${hash}&offset=${offset}`;
     }
     return url;
 }
