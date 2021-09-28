@@ -1,20 +1,67 @@
-//-----------LOADING-----------
+//----------------VARIABLES-----------------
+
+//-----------------API COMICS---------------
+const baseUrl: string = "https://gateway.marvel.com:443/v1/public/";
+
+const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
+const hash : string ="bca60ca0198d3e720005add814760dde";
+
+const main= document.createElement('main');
+const formSearch = document.createElement("form");
+const searchContainerGeneral = document.createElement('div');
+const placeHolderText="Ingresa tu búsqueda";
+const icon = document.createElement('i');
+const tittleSearch= document.createElement('h2');
+const inputContainer = document.createElement('div');
+const selectContainer = document.createElement('div');
+const button = document.createElement("button");
+button.type = "submit";
+button.appendChild(document.createTextNode("Buscar"));
+
+main.classList.add('container');
+document.body.appendChild(main);
+searchContainerGeneral.classList.add('search-container-general')
+formSearch.classList.add('form-search')
+icon.classList.add("fas", "fa-search", 'fa-lg');
+tittleSearch.appendChild(document.createTextNode("Búsqueda"));
+inputContainer.classList.add('input-container')
+selectContainer.classList.add('select-container');
+
+const elemOrder = document.createElement("select");
+elemOrder.id="order";
+
 const containerLoading= document.createElement('div');
+const loading= document.createElement('div');
 containerLoading.setAttribute('class', 'container-loadig');
 
-const loading= document.createElement('div');
-loading.setAttribute('class', 'loading');
 
+let params= new URLSearchParams(window.location.search);
+let pageClicked = Number(params.get("page"));
+const containerPages= document.createElement('div');
+const listUl = document.createElement('ul');
+let firstPage= document.createElement('a');
+let firstPageArrow= document.createElement('img');
+let lastPage= document.createElement('a');
+let lastPageArrow= document.createElement('img');
+let previousPage= document.createElement('a');
+let previousPageArrow= document.createElement('img');
+let nextPage= document.createElement('a');
+let nextPageArrow= document.createElement('img');
+
+//-------------LOADING-----------
+
+loading.setAttribute('class', 'loading');
 containerLoading.appendChild(loading)
 document.body.appendChild(containerLoading);
 
 window.onload= function(){
 	containerLoading.style.visibility='hidden';
 	containerLoading.style.opacity='0';
-}
+};
 
+//-----------NO RESULTS TEXT TO SHOW-----------
 const noResuls= document.createElement('h3');
-noResuls.innerHTML="No se han encontrado resultados"
+noResuls.innerHTML="No se han encontrado resultados";
 
 //-------------GO BACK PARAMETERS------------------
 const goBack= document.createElement('a');
@@ -23,7 +70,7 @@ goBack.setAttribute('href', "javascript:history.back()");
 goBack.classList.add('go-back');  
 
 //-------------SEARCH BAR-------------
-const controlsSearch = [
+const controlsSearch: Control = [
     {
         type: "search",
         name: "addSearch",
@@ -75,32 +122,6 @@ const controlsSearch = [
 ];
 
 
-const main= document.createElement('main');
-
-const formSearch = document.createElement("form");
-const searchContainerGeneral = document.createElement('div');
-const placeHolderText="Ingresa tu búsqueda";
-const icon = document.createElement('i');
-const tittleSearch= document.createElement('h2');
-const inputContainer = document.createElement('div');
-const selectContainer = document.createElement('div');
-const button = document.createElement("button");
-button.type = "submit";
-button.appendChild(document.createTextNode("Buscar"));
-
-main.classList.add('container');
-document.body.appendChild(main);
-searchContainerGeneral.classList.add('search-container-general')
-formSearch.classList.add('form-search')
-icon.classList.add("fas", "fa-search", 'fa-lg');
-tittleSearch.appendChild(document.createTextNode("Búsqueda"));
-inputContainer.classList.add('input-container')
-selectContainer.classList.add('select-container');
-
-const elemOrder = document.createElement("select");
-elemOrder.id="order";
-
-
 const handlerSubmit =(event)=>{
     event.preventDefault();
     elemOrder.innerHTML="";
@@ -134,12 +155,11 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
 				selectContainer.appendChild(labelselect);
                 
                 if(control.type=="select" && control.options!==undefined){
-
+					
                     const labelselectOrder = document.createElement('label');
                     labelselectOrder.appendChild(document.createTextNode("ORDEN"));
                     
                     elem = document.createElement("select");
-
                     elem.addEventListener('change', handlerSubmit);
 
                     for(const cont of control.options){
@@ -151,9 +171,9 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
                         selectContainer.appendChild(elem);
                         selectContainer.appendChild(labelselectOrder);
                         selectContainer.appendChild(elemOrder);
-                    
+						
                             if(cont.id=="comics"){
-        
+								
                                 for(const item of cont.options){
                                     const op = document.createElement("option");
                                     op.value = item.id.toString();
@@ -190,15 +210,7 @@ const makeForm = (form, ctrls, parent, containerSearch) => {
 
 makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
 
-//-----------------API COMICS---------------
-
-const baseUrl: string = "https://gateway.marvel.com:443/v1/public/";
-
-const apiKey: string = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
-const hash : string ="bca60ca0198d3e720005add814760dde";
-
 //-------------------GET NUMBER OF PAGES---------------
-
 const getNumberPages = (total, limitPerPage)=>{
     let pages=0;
     return pages = Math.ceil(total/ limitPerPage);
@@ -206,39 +218,22 @@ const getNumberPages = (total, limitPerPage)=>{
 
 //------------- PAGINATION-----------------------
 
-let params= new URLSearchParams(window.location.search);
-let pageClicked = Number(params.get("page"));
-
-const containerPages= document.createElement('div');
 containerPages.classList.add('container-pages');
-const listUl = document.createElement('ul');
-
-let firstPage= document.createElement('a');
-let firstPageArrow= document.createElement('img');
 firstPageArrow.setAttribute('src', '../assets/images/first.png');
 firstPageArrow.classList.add('arrow');
 firstPage.appendChild(firstPageArrow);
-
-let lastPage= document.createElement('a');
-let lastPageArrow= document.createElement('img');
 lastPageArrow.setAttribute('src', '../assets/images/last.png');
 lastPageArrow.classList.add('arrow');
 lastPage.appendChild(lastPageArrow);
-
-let previousPage= document.createElement('a');
-let previousPageArrow= document.createElement('img');
 previousPageArrow.setAttribute('src', '../assets/images/previous.png');
 previousPageArrow.classList.add('arrow');
 previousPage.appendChild(previousPageArrow)
-
-let nextPage= document.createElement('a');
-let nextPageArrow= document.createElement('img');
 nextPageArrow.setAttribute('src', '../assets/images/next.png');
 nextPageArrow.classList.add('arrow');
 nextPage.appendChild(nextPageArrow);
-
 containerPages.appendChild(firstPage);
 containerPages.appendChild(previousPage);
+let contentHTML= '';
 
 const createButtons =(pagesNumber, container, pageloc)=>{
 
@@ -265,7 +260,7 @@ const createButtons =(pagesNumber, container, pageloc)=>{
         };
 
         for(const page of auxArray){
-    
+			
             //---CREATE LIST OF ANCHORS-----
             const itemList= document.createElement('li');
             itemList.classList.add('pagination-number');
@@ -279,7 +274,7 @@ const createButtons =(pagesNumber, container, pageloc)=>{
 			nextPage.setAttribute('id', `${next}`);
 			previousPage.setAttribute('id', `${previous}`);
 
-    
+			
             if(Number(pageNumber.innerHTML)==pageClicked || !pageClicked && Number(pageNumber.innerHTML) == 1){
                 itemList.classList.add('clicked-number');
             };
@@ -321,8 +316,6 @@ const createButtons =(pagesNumber, container, pageloc)=>{
         };
     }
 };
-
-
 
 //-----------SEARCH BY FILTERS------------
 
