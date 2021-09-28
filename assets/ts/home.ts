@@ -20,11 +20,19 @@ tittleResult.innerHTML= "Resultados";
 const resultNumber = document.createElement('p');
 resultNumber.classList.add('style-result-number');
 
+
+
 const createCard = (list : DataContainer , classCont, resultsList)=>{
 
     results.appendChild(tittleResult);
     results.appendChild(containerElement);
     results.appendChild(resultNumber);
+
+    if(resultsList.length==0){
+        results.appendChild(noResuls)
+    }
+
+    console.log(resultsList)
 
     for(const item of resultsList){
         let detail=item.id;

@@ -87,6 +87,9 @@ var infoAsso = function (data) {
 //------------------CREATE CARD INFO ASSOCIATED-------------------------
 var contentHTML = '';
 var createCardInfoAssociated = function (data, results) {
+    if (results.length == 0) {
+        main.appendChild(noResuls);
+    }
     var classInfo = (type == "comics") ? "characters" : "comics";
     for (var _i = 0, results_2 = results; _i < results_2.length; _i++) {
         var item = results_2[_i];

@@ -9,6 +9,8 @@ window.onload = function () {
     containerLoading.style.visibility = 'hidden';
     containerLoading.style.opacity = '0';
 };
+var noResuls = document.createElement('h3');
+noResuls.innerHTML = "No se han encontrado resultados";
 //-------------GO BACK PARAMETERS------------------
 var goBack = document.createElement('a');
 goBack.innerHTML = "Volver";

@@ -71,6 +71,10 @@ const infoAsso = (data)=>{
 let contentHTML= '';
 const createCardInfoAssociated =(data, results)=>{
 
+    if(results.length==0){
+        main.appendChild(noResuls)
+    }
+
     const classInfo = (type=="comics")? "characters": "comics";
 
     for(const item of results){
@@ -157,7 +161,7 @@ const createInfoCard = (data)=>{
     containerAllInfo.appendChild(containerInfo);
     main.appendChild(containerAllInfo);
     main.appendChild(totalResultTitle);
-    main.appendChild(numberOfResult)
+    main.appendChild(numberOfResult);
 };
 
 //------------------GET URL-------------------------
