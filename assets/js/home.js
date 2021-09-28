@@ -35,21 +35,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-var paramsInfo = new URLSearchParams(window.location.search);
+//-------------VARIABLES-------------------
+var comicClass = "comics";
+var characterClass = "characters";
+var results = document.createElement('div');
+var containerElement = document.createElement('div');
+var tittleResult = document.createElement('h2');
+var resultNumber = document.createElement('p');
+//---------------------------------------
 formSearch.addEventListener('submit', function () {
     getFormInfo(event, "index.html?");
 });
 //----------- CREATE CARD -------------
-var comicClass = "comics";
-var characterClass = "characters";
-var results = document.createElement('div');
 results.classList.add('results-container');
-var contentHTML = '';
-var containerElement = document.createElement('div');
 containerElement.classList.add('img-item');
-var tittleResult = document.createElement('h2');
 tittleResult.innerHTML = "Resultados";
-var resultNumber = document.createElement('p');
 resultNumber.classList.add('style-result-number');
 var createCard = function (list, classCont, resultsList) {
     results.appendChild(tittleResult);
@@ -58,13 +58,12 @@ var createCard = function (list, classCont, resultsList) {
     if (resultsList.length == 0) {
         results.appendChild(noResuls);
     }
-    console.log(resultsList);
     for (var _i = 0, resultsList_1 = resultsList; _i < resultsList_1.length; _i++) {
         var item = resultsList_1[_i];
         var detail = item.id;
         params.set('info', detail);
         params.set('page', "1");
-        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + params.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\" class=\"img-thumbnail\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n            ";
+        contentHTML += "\n            <div class=" + classCont + ">\n                <a href=\"./pages/info.html?" + params.toString() + "\">\n                    <img src=\"" + item.thumbnail.path + "." + item.thumbnail.extension + "\" alt=\"" + (item.name || item.title) + "\">\n                    <h3>" + (item["name"] || item["title"]) + "</h3>\n                    </a>\n            </div>\n            ";
     }
     ;
     var pagesTotal = getNumberPages(list.total, list.limit);

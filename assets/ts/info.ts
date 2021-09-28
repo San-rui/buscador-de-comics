@@ -10,33 +10,26 @@ formSearch.addEventListener('submit', ()=>{
 let info= encodeURIComponent(params.get('info'));
 let type= (params.get("type")) ? (params.get("type")): "comics"
 let toSearchInfo = params.get('wordToSearch');
-
 const containerAllInfo= document.createElement('div');
-containerAllInfo.classList.add('container-all-info');
-
 const containerInfo = document.createElement('div');
-containerInfo.classList.add('container-info');
-
 const imgInfo = document.createElement('img');
 const title= document.createElement('h3');
 const titleDescription= document.createElement('h4');
-titleDescription.appendChild(document.createTextNode("Descripción:"));
 const description= document.createElement('p');
-
-let urlAssociated=""
+let urlAssociated="";
 const containerInfoAssociated = document.createElement('div');
-containerInfoAssociated.classList.add('container-info-associated');
-
 const containerInfoPlusPages= document.createElement('div');
-containerInfoPlusPages.classList.add('container-info-plus-pages')
 const containerPagination= document.createElement('div');
-
 const totalResultTitle= document.createElement('h2');
-totalResultTitle.innerHTML=(type=="comics")? "Personajes": "Comics";
-
 const numberOfResult = document.createElement('p');
-numberOfResult.classList.add('style-result-number');
 
+containerAllInfo.classList.add('container-all-info');
+containerInfo.classList.add('container-info');
+titleDescription.appendChild(document.createTextNode("Descripción:"));
+containerInfoAssociated.classList.add('container-info-associated');
+containerInfoPlusPages.classList.add('container-info-plus-pages')
+totalResultTitle.innerHTML=(type=="comics")? "Personajes": "Comics";
+numberOfResult.classList.add('style-result-number');
 
 //------------------INFO ASSOCIATED-------------------------
 
@@ -68,13 +61,11 @@ const infoAsso = (data)=>{
 
 //------------------CREATE CARD INFO ASSOCIATED-------------------------
 
-let contentHTML= '';
 const createCardInfoAssociated =(data, results)=>{
 
     if(results.length==0){
         main.appendChild(noResuls)
     }
-
     const classInfo = (type=="comics")? "characters": "comics";
 
     for(const item of results){
@@ -83,7 +74,6 @@ const createCardInfoAssociated =(data, results)=>{
         params.set('page', "1");
         params.set('info', id);
         params.set('type', classInfo);
-
 
         let urlItem = item.urls[0].url;
         contentHTML+=`
@@ -106,7 +96,6 @@ const createCardInfoAssociated =(data, results)=>{
     createButtons (pagesTotal, containerPagination, "./info.html?")
 };
 
-
 //------------------CREATE CARD INFO COMICS-------------------------
 
 const createComicCard = (data)=>{
@@ -120,7 +109,6 @@ const createComicCard = (data)=>{
     let dateFinal= ("0" + dateString.getDate()).slice(-2) + "-" + ("0"+(dateString.getMonth()+1)).slice(-2) + "-" +
     dateString.getFullYear();
     PublicationDate.innerHTML=dateFinal;
-
 
     const titleScreenwriter= document.createElement('h4');
     titleScreenwriter.appendChild(document.createTextNode("Guionistas:"));
@@ -136,10 +124,8 @@ const createComicCard = (data)=>{
     description.innerHTML=data[0].description;
 
     containerInfo.appendChild(title);
-    
     containerInfo.appendChild(titlePublicationDate);
     containerInfo.appendChild(PublicationDate);
-
     containerInfo.appendChild(titleScreenwriter);
     containerInfo.appendChild(screenwrite);
 };
@@ -157,7 +143,6 @@ const createInfoCard = (data)=>{
         description.innerHTML=data[0].description;
         containerInfo.appendChild(title);
     }
-    
     containerInfo.appendChild(titleDescription);
     containerInfo.appendChild(description);
 
@@ -180,7 +165,7 @@ const getURLInfo = () =>{
         url=  `${baseUrl}${type}/${info}?name=${toSearchInfo}&ts=1&apikey=${apiKey}&hash=${hash}&offset=0`;
     }
     return url;
-}
+};
 
 const urlToUseInfo= getURLInfo();
 
@@ -205,8 +190,6 @@ const getInfoAssociated = async(url)=>{
     catch(err){
         alert("La API esta fuera de servicio"); 
     };
-
-    
 };
 
 //---------------GET INFO FROM API MARVEL-------------
@@ -228,7 +211,6 @@ const getMarvelInfo = async(url)=>{
         createInfoCard(resultsItems);
         infoAssociated(resultsItems);
         const infoResults= infoAssociated(resultsItems);
-        console.log(infoResults)
 
         let newURL= infoResults.split('&');
         newURL.length=newURL.length-1;
@@ -242,7 +224,7 @@ const getMarvelInfo = async(url)=>{
         alert("La API esta fuera de servicio"); 
     };
 
-}
+};
 
 getMarvelInfo(urlToUseInfo);
 

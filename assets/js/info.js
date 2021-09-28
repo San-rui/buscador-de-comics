@@ -44,23 +44,23 @@ var info = encodeURIComponent(params.get('info'));
 var type = (params.get("type")) ? (params.get("type")) : "comics";
 var toSearchInfo = params.get('wordToSearch');
 var containerAllInfo = document.createElement('div');
-containerAllInfo.classList.add('container-all-info');
 var containerInfo = document.createElement('div');
-containerInfo.classList.add('container-info');
 var imgInfo = document.createElement('img');
 var title = document.createElement('h3');
 var titleDescription = document.createElement('h4');
-titleDescription.appendChild(document.createTextNode("Descripción:"));
 var description = document.createElement('p');
 var urlAssociated = "";
 var containerInfoAssociated = document.createElement('div');
-containerInfoAssociated.classList.add('container-info-associated');
 var containerInfoPlusPages = document.createElement('div');
-containerInfoPlusPages.classList.add('container-info-plus-pages');
 var containerPagination = document.createElement('div');
 var totalResultTitle = document.createElement('h2');
-totalResultTitle.innerHTML = (type == "comics") ? "Personajes" : "Comics";
 var numberOfResult = document.createElement('p');
+containerAllInfo.classList.add('container-all-info');
+containerInfo.classList.add('container-info');
+titleDescription.appendChild(document.createTextNode("Descripción:"));
+containerInfoAssociated.classList.add('container-info-associated');
+containerInfoPlusPages.classList.add('container-info-plus-pages');
+totalResultTitle.innerHTML = (type == "comics") ? "Personajes" : "Comics";
 numberOfResult.classList.add('style-result-number');
 //------------------INFO ASSOCIATED-------------------------
 var infoAssociated = function (data) {
@@ -85,7 +85,6 @@ var infoAsso = function (data) {
     return arrayReults;
 };
 //------------------CREATE CARD INFO ASSOCIATED-------------------------
-var contentHTML = '';
 var createCardInfoAssociated = function (data, results) {
     if (results.length == 0) {
         main.appendChild(noResuls);
@@ -226,7 +225,6 @@ var getMarvelInfo = function (url) { return __awaiter(_this, void 0, void 0, fun
                 createInfoCard(resultsItems);
                 infoAssociated(resultsItems);
                 infoResults = infoAssociated(resultsItems);
-                console.log(infoResults);
                 newURL = infoResults.split('&');
                 newURL.length = newURL.length - 1;
                 joinURL = newURL.toString();

@@ -1,7 +1,45 @@
-//-----------LOADING-----------
+//----------------VARIABLES-----------------
+//-----------------API COMICS---------------
+var baseUrl = "https://gateway.marvel.com:443/v1/public/";
+var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
+var hash = "bca60ca0198d3e720005add814760dde";
+var main = document.createElement('main');
+var formSearch = document.createElement("form");
+var searchContainerGeneral = document.createElement('div');
+var placeHolderText = "Ingresa tu búsqueda";
+var icon = document.createElement('i');
+var tittleSearch = document.createElement('h2');
+var inputContainer = document.createElement('div');
+var selectContainer = document.createElement('div');
+var button = document.createElement("button");
+button.type = "submit";
+button.appendChild(document.createTextNode("Buscar"));
+main.classList.add('container');
+document.body.appendChild(main);
+searchContainerGeneral.classList.add('search-container-general');
+formSearch.classList.add('form-search');
+icon.classList.add("fas", "fa-search", 'fa-lg');
+tittleSearch.appendChild(document.createTextNode("Búsqueda"));
+inputContainer.classList.add('input-container');
+selectContainer.classList.add('select-container');
+var elemOrder = document.createElement("select");
+elemOrder.id = "order";
 var containerLoading = document.createElement('div');
-containerLoading.setAttribute('class', 'container-loadig');
 var loading = document.createElement('div');
+containerLoading.setAttribute('class', 'container-loadig');
+var params = new URLSearchParams(window.location.search);
+var pageClicked = Number(params.get("page"));
+var containerPages = document.createElement('div');
+var listUl = document.createElement('ul');
+var firstPage = document.createElement('a');
+var firstPageArrow = document.createElement('img');
+var lastPage = document.createElement('a');
+var lastPageArrow = document.createElement('img');
+var previousPage = document.createElement('a');
+var previousPageArrow = document.createElement('img');
+var nextPage = document.createElement('a');
+var nextPageArrow = document.createElement('img');
+//-------------LOADING-----------
 loading.setAttribute('class', 'loading');
 containerLoading.appendChild(loading);
 document.body.appendChild(containerLoading);
@@ -9,6 +47,7 @@ window.onload = function () {
     containerLoading.style.visibility = 'hidden';
     containerLoading.style.opacity = '0';
 };
+//-----------NO RESULTS TEXT TO SHOW-----------
 var noResuls = document.createElement('h3');
 noResuls.innerHTML = "No se han encontrado resultados";
 //-------------GO BACK PARAMETERS------------------
@@ -67,27 +106,6 @@ var controlsSearch = [
         ]
     },
 ];
-var main = document.createElement('main');
-var formSearch = document.createElement("form");
-var searchContainerGeneral = document.createElement('div');
-var placeHolderText = "Ingresa tu búsqueda";
-var icon = document.createElement('i');
-var tittleSearch = document.createElement('h2');
-var inputContainer = document.createElement('div');
-var selectContainer = document.createElement('div');
-var button = document.createElement("button");
-button.type = "submit";
-button.appendChild(document.createTextNode("Buscar"));
-main.classList.add('container');
-document.body.appendChild(main);
-searchContainerGeneral.classList.add('search-container-general');
-formSearch.classList.add('form-search');
-icon.classList.add("fas", "fa-search", 'fa-lg');
-tittleSearch.appendChild(document.createTextNode("Búsqueda"));
-inputContainer.classList.add('input-container');
-selectContainer.classList.add('select-container');
-var elemOrder = document.createElement("select");
-elemOrder.id = "order";
 var handlerSubmit = function (event) {
     event.preventDefault();
     elemOrder.innerHTML = "";
@@ -165,43 +183,28 @@ var makeForm = function (form, ctrls, parent, containerSearch) {
     document.body.appendChild(parent);
 };
 makeForm(formSearch, controlsSearch, main, searchContainerGeneral);
-//-----------------API COMICS---------------
-var baseUrl = "https://gateway.marvel.com:443/v1/public/";
-var apiKey = "b7ce8a4b69bf121a9d6e0b3caa7da4dc";
-var hash = "bca60ca0198d3e720005add814760dde";
 //-------------------GET NUMBER OF PAGES---------------
 var getNumberPages = function (total, limitPerPage) {
     var pages = 0;
     return pages = Math.ceil(total / limitPerPage);
 };
 //------------- PAGINATION-----------------------
-var params = new URLSearchParams(window.location.search);
-var pageClicked = Number(params.get("page"));
-var containerPages = document.createElement('div');
 containerPages.classList.add('container-pages');
-var listUl = document.createElement('ul');
-var firstPage = document.createElement('a');
-var firstPageArrow = document.createElement('img');
 firstPageArrow.setAttribute('src', '../assets/images/first.png');
 firstPageArrow.classList.add('arrow');
 firstPage.appendChild(firstPageArrow);
-var lastPage = document.createElement('a');
-var lastPageArrow = document.createElement('img');
 lastPageArrow.setAttribute('src', '../assets/images/last.png');
 lastPageArrow.classList.add('arrow');
 lastPage.appendChild(lastPageArrow);
-var previousPage = document.createElement('a');
-var previousPageArrow = document.createElement('img');
 previousPageArrow.setAttribute('src', '../assets/images/previous.png');
 previousPageArrow.classList.add('arrow');
 previousPage.appendChild(previousPageArrow);
-var nextPage = document.createElement('a');
-var nextPageArrow = document.createElement('img');
 nextPageArrow.setAttribute('src', '../assets/images/next.png');
 nextPageArrow.classList.add('arrow');
 nextPage.appendChild(nextPageArrow);
 containerPages.appendChild(firstPage);
 containerPages.appendChild(previousPage);
+var contentHTML = '';
 var createButtons = function (pagesNumber, container, pageloc) {
     var params = new URLSearchParams(window.location.search);
     var count = 0;

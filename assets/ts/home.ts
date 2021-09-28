@@ -1,26 +1,22 @@
-let paramsInfo= new URLSearchParams(window.location.search);
+//-------------VARIABLES-------------------
+const comicClass = "comics";
+const characterClass = "characters";
+const results = document.createElement('div');
+const containerElement = document.createElement('div');
+const tittleResult= document.createElement('h2');
+const resultNumber = document.createElement('p');
 
-
+//---------------------------------------
 formSearch.addEventListener('submit', ()=>{
 	getFormInfo(event, "index.html?");
 });
 
 //----------- CREATE CARD -------------
 
-const comicClass = "comics";
-const characterClass = "characters";
-
-const results = document.createElement('div');
 results.classList.add('results-container');
-let contentHTML= '';
-const containerElement = document.createElement('div');
 containerElement.classList.add('img-item');
-const tittleResult= document.createElement('h2');
 tittleResult.innerHTML= "Resultados";
-const resultNumber = document.createElement('p');
 resultNumber.classList.add('style-result-number');
-
-
 
 const createCard = (list : DataContainer , classCont, resultsList)=>{
 
@@ -32,8 +28,6 @@ const createCard = (list : DataContainer , classCont, resultsList)=>{
         results.appendChild(noResuls)
     }
 
-    console.log(resultsList)
-
     for(const item of resultsList){
         let detail=item.id;
         params.set('info', detail);
@@ -42,7 +36,7 @@ const createCard = (list : DataContainer , classCont, resultsList)=>{
             contentHTML += `
             <div class=${classCont}>
                 <a href="./pages/info.html?${params.toString()}">
-                    <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}" class="img-thumbnail">
+                    <img src="${item.thumbnail.path}.${item.thumbnail.extension}" alt="${item.name || item.title}">
                     <h3>${item["name"] || item["title"]}</h3>
                     </a>
             </div>
@@ -79,7 +73,6 @@ const orderData=(params.get("order"))
 const toSearch=encodeURIComponent(params.get('wordToSearch'));
 
 //-------------------GET URL --------------------------------
-
 
 const getURL = () =>{
     let url="";

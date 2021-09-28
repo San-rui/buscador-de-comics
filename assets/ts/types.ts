@@ -153,3 +153,28 @@ type DataContainer= {
 	results: Comic[] | Character [],
 }
 
+type Option={
+	id: string,
+    name: string,
+}
+
+type OptionType={
+	id: string,
+    name: string,
+	options: Option[]; 
+}
+
+type Control = [
+    {
+        type: string,
+        name: string,
+        id: string,
+    },
+    {
+        type: string,
+        name: string,
+        id: string,
+        options: OptionType[],
+    },
+];
+
